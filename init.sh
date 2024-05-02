@@ -12,7 +12,7 @@ echo "Iniciando la aplicación frontend..."
 start "" "C:\Program Files\Git\bin\bash.exe" -c "npm run dev" # Abre una consola aparte para poder cerrar el frontend mas facil
 
 # Ir al directorio del backend
-cd BackEnd/src
+#cd BackEnd/src
 # Instalar las dependencias del backend
 echo "Instalando dependencias del backend..."
 #npm install
