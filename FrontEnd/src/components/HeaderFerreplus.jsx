@@ -1,7 +1,19 @@
 import React from 'react'
 import logo from '../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 export const HeaderFerreplus = () => {
+
+  const navigate = useNavigate();
+
+  function redirectInicioSesion() {
+    navigate("/inicioSesion");
+  }
+
+  function redirectRegistro() {
+    navigate("/registrarse");
+  }
+
   return (
     <header>
 
@@ -9,18 +21,18 @@ export const HeaderFerreplus = () => {
         <img src={logo} alt="" id="logoFerreplus" />
       </a>
 
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Buscá en Ferreplus..." />
-        <button type="submit" class="search-button">
-          <i class="fa fa-search"></i>Buscar
+      <div className="search-container">
+        <input type="text" className="search-input" placeholder="Buscá en Ferreplus..." />
+        <button type="submit" className="search-button">
+          <i className="fa fa-search"></i>Buscar
         </button>
       </div>
 
       <div className="botones">
-        <button className='botonesInicioSesion'>
+        <button className='botonesInicioSesion' onClick={redirectInicioSesion}>
           Iniciar sesión
         </button>
-        <button className='botonesInicioSesion' id='botonRegistro'>
+        <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}>
           Registrarse
         </button>
       </div>

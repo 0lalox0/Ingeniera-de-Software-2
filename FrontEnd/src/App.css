@@ -44,6 +44,8 @@
   color: #888;
 }
 
+/* HEADER */
+
 header {
   width: 100%;
   height: 13em;
@@ -144,11 +146,43 @@ header {
 .search-input:focus {
   outline: none;
   margin: 0%;
-  border: 2px solid #210c98;
+  border: 3px solid #210c98;
 }
 
 .search-button:focus {
   outline: none;
-  margin: 0%;
+  margin: 3px;
   border: none;
+}
+
+/* FORMULARIO LOGIN */
+
+.formularioLogin, .formularioRegistro {
+  border: 2px solid #210c98;
+  padding-top: 2.5vh;
+  padding-left: 4vh;
+  padding-right: 4vh;
+}
+
+.formularioLogin p {
+  padding-top: 1.2vh;
+  margin-bottom: 1vh;
+}
+
+.formularioLogin #botonRegistro {
+  margin-left: 0;
+  margin-bottom: 1vh;
+}
+
+.formularioRegistro button {
+  margin-left: 0;
+  padding: 12px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 3px;
 }
