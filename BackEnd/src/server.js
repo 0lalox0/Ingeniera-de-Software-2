@@ -1,4 +1,5 @@
 import express from 'express';
+
 const app = express();
 const initDB = require('../config/db')
 
@@ -16,7 +17,6 @@ app.post('/api/test', (req, res) => { //test boton Hola
 });
 app.listen(8000, () => {
     console.log('Server started at http://localhost:8000');
-<<<<<<< HEAD
 });
 app.use((req, res, next) => {  //todo esto
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,11 +29,3 @@ app.use((req, res, next) => {  //todo esto
     res.status(500).json({ error: 'Internal Server Error' });
   };
   app.use(errorHandler);
-=======
-}   );
-
-
-
-//inicializacion de la base de datos
-initDB()
->>>>>>> f9326178d5f3d0cd492b755623ceca23713b9b84
