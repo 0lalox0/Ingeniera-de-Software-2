@@ -1,7 +1,7 @@
 import express from 'express';
 
 const app = express();
-const initDB = require('../config/db')
+//const initDB = require('../config/db')
 
 
 app.use(express.json());
