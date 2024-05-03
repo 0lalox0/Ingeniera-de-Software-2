@@ -1,6 +1,7 @@
 import express from 'express';
+import { initDB } from '../config/db.js'
+
 const app = express();
-const initDB = require('../config/db')
 
 
 app.use(express.json());
@@ -16,6 +17,4 @@ app.listen(8000, () => {
 }   );
 
 
-
-//inicializacion de la base de datos
 initDB()
