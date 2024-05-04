@@ -13,6 +13,7 @@ admin.initializeApp({
 const app = express();
 //const initDB = require('../config/db')
 
+
 app.use(express.json());
 
 //Middleware que verifica el token
@@ -20,7 +21,7 @@ app.use(async (req, res, next) => {
   const { authtoken } = req.headers;
 
   req.user = await admin.auth().verifyIdToken(authorization);
-}
+});
 
 
 app.get('/', (req, res) => {
@@ -33,16 +34,16 @@ app.post('/api/test', (req, res) => { //test boton Hola
   console.log(req.body);
 });
 app.listen(8000, () => {
-  console.log('Server started at http://localhost:8000');
+    console.log('Server started at http://localhost:8000');
 });
 app.use((req, res, next) => {  //todo esto
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-const errorHandler = (err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: 'Internal Server Error' });
-};
-app.use(errorHandler);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  const errorHandler = (err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  };
+  app.use(errorHandler);
