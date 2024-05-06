@@ -5,9 +5,10 @@ import { Route, Routes } from 'react-router-dom'
 import { FormularioLogin } from './components/FormularioLogin'
 import { FormularioRegistro } from './components/FormularioRegistro'
 import { Productos } from './components/Productos'
+import { CambioContra } from './components/CambioContra'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
         <Route path='/inicioSesion' element={<FormularioLogin> </FormularioLogin>}></Route>
         <Route path='/registrarse' element={<FormularioRegistro> </FormularioRegistro>}></Route>
         <Route path='/productos' element={<Productos />} />
+        <Route path='/cambiocontra' element={<CambioContra></CambioContra>}></Route>
       </Routes>
     </>
   )

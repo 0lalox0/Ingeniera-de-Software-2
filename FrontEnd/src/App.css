@@ -155,18 +155,20 @@ header {
   border: none;
 }
 
-/* FORMULARIO LOGIN */
+/* FORMULARIO LOGIN Y REGISTRO*/
 
-.formularioLogin, .formularioRegistro {
+.formularioLogin,
+.formularioRegistro, .cambioContra {
   border: 2px solid #210c98;
   padding-top: 2.5vh;
+  margin-top: 25vh;
   padding-left: 4vh;
   padding-right: 4vh;
+  box-shadow: 10px 10px 10px 10px #ebf1f8;
 }
 
 .formularioLogin p {
-  padding-top: 1.2vh;
-  margin-bottom: 1vh;
+  margin: 2.5%;
 }
 
 .formularioLogin #botonRegistro {
@@ -184,5 +186,28 @@ header {
   cursor: pointer;
   font-size: 16px;
   font-weight: 400;
-  margin: 3px;
+  margin: 0.3%;
+}
+
+.errorContainer {
+  color: red;
+}
+
+.formularioRegistro a {
+  margin: 10vh;
+  padding: 1vh;
+}
+
+.textoRedireccion {
+  color: blue;
+  text-decoration: underline;
+}
+
+.textoRedireccion:hover {
+  cursor: pointer;
+}
+
+/*CAMBIAR CONTRA */
+.cambioContra button {
+  margin: 1.5vh;
 }

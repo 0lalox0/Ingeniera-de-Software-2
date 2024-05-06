@@ -6,11 +6,11 @@ export const HeaderFerreplus = () => {
 
   const navigate = useNavigate();
 
-  function redirectInicioSesion() {
+  const redirectInicioSesion = () => {
     navigate("/inicioSesion");
   }
 
-  function redirectRegistro() {
+  const redirectRegistro = () => {
     navigate("/registrarse");
   }
 

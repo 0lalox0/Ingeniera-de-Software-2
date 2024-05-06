@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 
 export const FormularioLogin = () => {
 
@@ -9,13 +9,15 @@ export const FormularioLogin = () => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+
     const olvidoContra = async () => {
-      try{
-       await sendPasswordResetEmail(getAuth(),email);
-      } catch (e){
-        setError(e.message);
-      }
+        try {
+            await sendPasswordResetEmail(getAuth(), email);
+        } catch (e) {
+            setError(e.message);
+        }
     }
+
     const logIn = async () => {
         try {
             await signInWithEmailAndPassword(getAuth(), email, password);
@@ -25,18 +27,21 @@ export const FormularioLogin = () => {
         }
     }
 
-    function redirectRegistro() {
+    const redirectRegistro = () => {
         navigate("/registrarse");
     }
 
+    const redirectCambio = () => {
+        navigate('/cambioContra');
+    }
 
     return (
         <div className='formularioLogin'>
-            {/* <form> */}
-            {error && <p className='error'>{error}</p>}
+            <h3>
+                ¡Iniciá sesión en Ferreplus Intercambios!
+            </h3>
             <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label">Mail</label>
-
+                <label htmlFor="exampleInputEmail1" className="form-label">Mail:</label>
                 <input
                     type="email"
                     className="form-control"
@@ -48,7 +53,7 @@ export const FormularioLogin = () => {
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label">Contraseña</label>
+                <label htmlFor="exampleInputPassword1" className="form-label">Contraseña:</label>
                 <input
                     className="form-control"
                     id="exampleInputPassword1"
@@ -57,21 +62,15 @@ export const FormularioLogin = () => {
                     value={password}
                     onChange={e => setPassword(e.target.value)} />
             </div>
-                <button className="btn btn-primary" onClick={logIn}>Iniciar sesión</button>
+            <button className="btn btn-primary" onClick={logIn}>Iniciar sesión</button>
 
-            {/* </form> */}
-            <p></p>
-            <div>
-            <button className='botonesInicioSesion' id='botonOlvide' onClick={olvidoContra}>
-                Olvide mi contraseña
-            </button>
-            </div>
-            <p>¿No tenés cuenta?</p>
-            <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}>
-                Registrarse
-            </button>
+            <p className='textoRedireccion' onClick={redirectCambio}> Olvidé mi contraseña </p>
 
+            {error && <p className='error'>{error}</p>}
 
+            <p onClick={redirectRegistro} className='textoRedireccion'>
+                ¿No tenés cuenta? Registrarse
+            </p>
         </div>
     );
 }
