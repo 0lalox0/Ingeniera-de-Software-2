@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 export const CambioContra = () => {
 
