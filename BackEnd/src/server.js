@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 import express from 'express';
 
 //Credenciales de Firebase
-const credentials = JS.parse(
+const credentials = JSON.parse(
   fs.readFileSync('../credentials.json')
 );
 admin.initializeApp({
