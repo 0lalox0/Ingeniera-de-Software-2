@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth';
 
 export const FormularioLogin = () => {
 
@@ -9,7 +9,13 @@ export const FormularioLogin = () => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
-
+    const olvidoContra = async () => {
+      try{
+       await sendPasswordResetEmail(getAuth(),email);
+      } catch (e){
+        setError(e.message);
+      }
+    }
     const logIn = async () => {
         try {
             await signInWithEmailAndPassword(getAuth(), email, password);
@@ -54,11 +60,17 @@ export const FormularioLogin = () => {
                 <button className="btn btn-primary" onClick={logIn}>Iniciar sesión</button>
 
             {/* </form> */}
-
+            <p></p>
+            <div>
+            <button className='botonesInicioSesion' id='botonOlvide' onClick={olvidoContra}>
+                Olvide mi contraseña
+            </button>
+            </div>
             <p>¿No tenés cuenta?</p>
             <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}>
                 Registrarse
             </button>
+
 
         </div>
     );
