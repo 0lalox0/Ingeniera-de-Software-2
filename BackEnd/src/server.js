@@ -1,6 +1,16 @@
 import fs from 'fs';
 import admin from 'firebase-admin';
 import express from 'express';
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+
+
+//mongodb connection
+dotenv.config()
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch((error) => console.error(error))
+
 
 //Credenciales de Firebase
 const credentials = JS.parse(
@@ -11,8 +21,6 @@ admin.initializeApp({
 });
 
 const app = express();
-//const initDB = require('../config/db')
-
 
 app.use(express.json());
 
