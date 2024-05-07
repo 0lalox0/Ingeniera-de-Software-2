@@ -3,6 +3,7 @@ import admin from 'firebase-admin';
 import express from 'express';
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import userRouter from './routes/user.js'
 
 
 //mongodb connection
@@ -10,7 +11,6 @@ dotenv.config()
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('Connected to MongoDB Atlas'))
 .catch((error) => console.error(error))
-
 
 //Credenciales de Firebase
 const credentials = JSON.parse(
@@ -31,6 +31,8 @@ app.use(async (req, res, next) => {
   req.user = await admin.auth().verifyIdToken(authorization);
 });
 
+//middleware de las rutas para la base de datos
+app.use('/api', userRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello');
