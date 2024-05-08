@@ -13,7 +13,6 @@ export const FormularioRegistro = () => {
 
     const clear = () => {
         ['labelContra1', 'labelContra2', 'labelFecha'].forEach(element => document.getElementById(element).className = '');
-        document.getElementById('errorContainer').innerHTML = '';
     }
 
     const checkDate = () => { // funcion para chequear si es mayor de edad
@@ -28,26 +27,23 @@ export const FormularioRegistro = () => {
     }
 
     const createAccount = async () => {
-        let errorContainer = document.getElementById('errorContainer');
         let labelContra1 = document.getElementById('labelContra1');
         let labelContra2 = document.getElementById('labelContra2');
         let labelFecha = document.getElementById('labelFecha');
         let mensajeError = document.createElement('p');
         clear();
+        if (password !== confirmPassword) {
+            setError('Las contraseñas no coinciden.');
+            labelContra1.className = 'errorContainer';
+            labelContra2.className = 'errorContainer';
+            return;
+        }
+        if (!checkDate()) {
+            setError('Se debe ser mayor de 18 años para poder registrarse.');
+            labelFecha.className = 'errorContainer';
+            return;
+        }
         try {
-            if (password !== confirmPassword) {
-                mensajeError.innerHTML = 'Las contraseñas no coinciden';
-                errorContainer.appendChild(mensajeError);
-                labelContra1.className = 'errorContainer';
-                labelContra2.className = 'errorContainer';
-                return;
-            }
-            if (!checkDate()) {
-                mensajeError.innerHTML = 'Se debe ser mayor de 18 años para poder registrarse.';
-                errorContainer.appendChild(mensajeError);
-                labelFecha.className = 'errorContainer';
-                return;
-            }
             await createUserWithEmailAndPassword(getAuth(), email, password);
             navigate('/productos');
         } catch (e) {
@@ -58,27 +54,27 @@ export const FormularioRegistro = () => {
 
     const redirectInicioSesion = () => {
         navigate("/inicioSesion");
-      }
+    }
 
     return (
         <div className='formularioRegistro'>
-            
+
             <h3>
                 ¡Registrate en Ferreplus Intercambios!
             </h3>
 
             <div className="mb-3">
-                <label> Nombre completo: </label>
-                <input className="form-control" type="text" placeholder='Juan' />
+                <label htmlFor='nombre'> Nombre completo: </label>
+                <input className="form-control" type="text" placeholder='Juan' id='nombre' />
             </div>
 
             <div className="mb-3">
-                <label> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' />
+                <label htmlFor='apellido'> Apellido: </label>
+                <input className="form-control" type="text" placeholder='Perez' id='apellido' />
             </div>
 
             <div className="mb-3">
-                <label id='labelFecha'> Fecha de nacimiento: </label>
+                <label id='labelFecha' htmlFor='fechaNacimiento'> Fecha de nacimiento: </label>
                 <input className="form-control" type="date" id='fechaNacimiento' />
             </div>
 
@@ -117,11 +113,9 @@ export const FormularioRegistro = () => {
             </div>
 
             <button className="btn btn-primary" onClick={createAccount}>Crear cuenta</button>
-            
+
             {error && <p className='errorContainer'>{error}</p>}
-            
-            <div className='errorContainer' id='errorContainer'></div>
-            
+
             <p onClick={redirectInicioSesion} className='textoRedireccion'>
                 ¿Ya estás registrado? Iniciar sesión
             </p>

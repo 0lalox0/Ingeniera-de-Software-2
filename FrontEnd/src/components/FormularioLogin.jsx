@@ -10,14 +10,6 @@ export const FormularioLogin = () => {
 
     const navigate = useNavigate();
 
-    const olvidoContra = async () => {
-        try {
-            await sendPasswordResetEmail(getAuth(), email);
-        } catch (e) {
-            setError(e.message);
-        }
-    }
-
     const logIn = async () => {
         try {
             await signInWithEmailAndPassword(getAuth(), email, password);

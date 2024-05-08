@@ -26,7 +26,7 @@ export const HeaderFerreplus = () => {
       </a>
 
       <div className="search-container">
-        <input type="text" className="search-input" placeholder="Buscá en Ferreplus..." />
+        <input type="text" className="search-input" placeholder="Buscá en Ferreplus..." id='buscador' />
         <button type="submit" className="search-button">
           <i className="fa fa-search"></i>Buscar
         </button>

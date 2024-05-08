@@ -158,7 +158,8 @@ header {
 /* FORMULARIO LOGIN Y REGISTRO*/
 
 .formularioLogin,
-.formularioRegistro, .cambioContra {
+.formularioRegistro,
+.cambioContra {
   border: 2px solid #210c98;
   padding-top: 2.5vh;
   margin-top: 25vh;
@@ -190,6 +191,7 @@ header {
 }
 
 .errorContainer {
+  margin-top: 0.5rem;
   color: red;
 }
 
@@ -208,6 +210,12 @@ header {
 }
 
 /*CAMBIAR CONTRA */
+
 .cambioContra button {
+  margin: 1.5vh;
+}
+
+.cambioContra button:focus,
+.cambioContra button:active {
   margin: 1.5vh;
 }
