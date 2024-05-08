@@ -2,4 +2,10 @@
 POST http://localhost:8000/api/users HTTP/1.1
 Content-Type: application/json
 
-{}
+{
+    "name": "Lautaro",
+    "lastname": "Gutierrez",
+    "email": "lautygutierrez5@gmail.com",
+    "password": "candebordonmiamor",
+    "date": "2001-06-06"
+}

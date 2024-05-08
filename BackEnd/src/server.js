@@ -41,7 +41,9 @@ app.use(async (req, res, next) => {
 });
 
 //middleware de las rutas para la base de datos
+app.use(express.json())
 app.use('/api', userRouter)
+
 
 app.get('/', (req, res) => {
   res.send('Hello');

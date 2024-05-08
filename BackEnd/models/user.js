@@ -1,12 +1,14 @@
-const mongoose = require('mongoose')
+import { Schema, model } from 'mongoose'
 
-const UserScheme = new mongoose.Schema(
+const UserSchema = new Schema(
     {
         name: {
-            type: String
+            type: String,
+            required: true
         },
         lastname: {
-            type: String
+            type: String,
+            required: true
         },
         email: {
             type: String,
@@ -14,13 +16,15 @@ const UserScheme = new mongoose.Schema(
             required: true
         },
         password: {
-            type: String
+            type: String,
+            required: true
         },
         date: {
-            type: Date
+            type: Date,
+            required: true
         }
     }
 )
 
 //los modelos serían como las tablas en SQL (+ o -)
-module.exports = mongoose.model('user', UserScheme)
+export default model('User', UserSchema)
