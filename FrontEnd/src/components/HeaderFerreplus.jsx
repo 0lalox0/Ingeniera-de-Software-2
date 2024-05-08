@@ -1,6 +1,8 @@
 import React from 'react'
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
+import useUser from '../hooks/useUser';
+import { getAuth, signOut } from 'firebase/auth';
 
 export const HeaderFerreplus = () => {
 
@@ -13,6 +15,8 @@ export const HeaderFerreplus = () => {
   const redirectRegistro = () => {
     navigate("/registrarse");
   }
+
+  const { user } = useUser();
 
   return (
     <header>
@@ -29,9 +33,16 @@ export const HeaderFerreplus = () => {
       </div>
 
       <div className="botones">
-        <button className='botonesInicioSesion' onClick={redirectInicioSesion}>
-          Iniciar sesión
-        </button>
+        {user
+          ? <button className='botonesInicioSesion' onClick={() => {
+            signOut(getAuth());
+          }}>
+            Cerrar sesión
+          </button>
+          : <button className='botonesInicioSesion' onClick={redirectInicioSesion}>
+            Iniciar sesión
+          </button>
+        }
         <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}>
           Registrarse
         </button>

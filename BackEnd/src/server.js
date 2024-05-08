@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 //Credenciales de Firebase
 const credentials = JSON.parse(
-  fs.readFileSync('../credentials.json')
+  fs.readFileSync('./credentials.json')
 );
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
