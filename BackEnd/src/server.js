@@ -27,8 +27,17 @@ app.use(express.json());
 //Middleware que verifica el token
 app.use(async (req, res, next) => {
   const { authtoken } = req.headers;
+  if (authtoken){
+    try{
+      req.user = await admin.auth().verifyIdToken(authtoken);
+    } catch (e) {
+      res.sendStatus(400);
+    }
+    
+  }
 
-  req.user = await admin.auth().verifyIdToken(authorization);
+  next();
+  
 });
 
 //middleware de las rutas para la base de datos
