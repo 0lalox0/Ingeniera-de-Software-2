@@ -67,6 +67,10 @@ header {
   left: 0;
 }
 
+#logoFerreplus:hover {
+  cursor: pointer;
+}
+
 .botones {
   position: absolute;
   top: 5em;
@@ -110,7 +114,7 @@ header {
 
 .search-container {
   display: flex;
-  position: absolute;
+  position: absolute; 
   justify-content: center;
   align-items: center;
 }
@@ -153,6 +157,29 @@ header {
   outline: none;
   margin: 3px;
   border: none;
+}
+
+.menuOpciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuOpciones ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  top: 10em;
+  position: absolute;
+}
+
+.menuOpciones li {
+  margin-right: 1.8em;
+}
+
+.menuOpciones li:hover {
+  cursor: pointer;
+  font-weight: bold;
 }
 
 /* FORMULARIO LOGIN Y REGISTRO*/

@@ -9,11 +9,15 @@ export const HeaderFerreplus = () => {
   const navigate = useNavigate();
 
   const redirectInicioSesion = () => {
-    navigate("/inicioSesion");
+    navigate('/inicioSesion');
   }
 
   const redirectRegistro = () => {
-    navigate("/registrarse");
+    navigate('/registrarse');
+  }
+
+  const redirectHome = () => {
+    navigate('/');
   }
 
   const { user } = useUser();
@@ -21,9 +25,7 @@ export const HeaderFerreplus = () => {
   return (
     <header>
 
-      <a href="/">
-        <img src={logo} alt="" id="logoFerreplus" />
-      </a>
+      <img src={logo} alt="" id="logoFerreplus" onClick={redirectHome} />
 
       <div className="search-container">
         <input type="text" className="search-input" placeholder="Buscá en Ferreplus..." id='buscador' />
@@ -32,20 +34,20 @@ export const HeaderFerreplus = () => {
         </button>
       </div>
 
+      <div className='menuOpciones'>
+        <ul>
+          <li>Catálogo de ventas</li>
+          <li>Intercambios</li>
+          <li>Sucursales</li>
+        </ul>
+      </div>
+
       <div className="botones">
         {user
-          ? <button className='botonesInicioSesion' onClick={() => {
-            signOut(getAuth());
-          }}>
-            Cerrar sesión
-          </button>
-          : <button className='botonesInicioSesion' onClick={redirectInicioSesion}>
-            Iniciar sesión
-          </button>
+          ? <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); }}> Cerrar sesión </button>
+          : <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
         }
-        <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}>
-          Registrarse
-        </button>
+        <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
       </div>
 
     </header>

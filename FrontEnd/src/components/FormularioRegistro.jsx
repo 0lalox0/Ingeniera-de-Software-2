@@ -5,6 +5,9 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export const FormularioRegistro = () => {
 
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [date, setDate] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,59 +30,77 @@ export const FormularioRegistro = () => {
     }
 
     const createAccount = async () => {
-        let labelContra1 = document.getElementById('labelContra1');
-        let labelContra2 = document.getElementById('labelContra2');
-        let labelFecha = document.getElementById('labelFecha');
-        let mensajeError = document.createElement('p');
         clear();
-        if (password !== confirmPassword) {
-            setError('Las contraseñas no coinciden.');
-            labelContra1.className = 'errorContainer';
-            labelContra2.className = 'errorContainer';
+        if (name == '') {
+            setError('Se debe ingresar un nombre.');
+            return;
+        }
+        if (surname == '') {
+            setError('Se debe ingresar un apellido.');
+            return;
+        }
+        if (!date) {
+            setError('Se debe seleccionar una fecha.');
             return;
         }
         if (!checkDate()) {
             setError('Se debe ser mayor de 18 años para poder registrarse.');
-            labelFecha.className = 'errorContainer';
+            return;
+        }
+        if (email == '') {
+            setError('Se debe ingresar un mail.');
+            return;
+        }
+        if (password == '') {
+            setError('Se debe ingresar una contraseña.');
+            return;
+        }
+        if (confirmPassword == '') {
+            setError('Se debe confirmar la contraseña.');
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError('Las contraseñas no coinciden.');
             return;
         }
         try {
             await createUserWithEmailAndPassword(getAuth(), email, password);
             navigate('/productos');
         } catch (e) {
-            mensajeError.innerHTML = 'Error de base de datos';
             setError(e.message);
         }
     }
 
     const redirectInicioSesion = () => {
-        navigate("/inicioSesion");
+        navigate('/inicioSesion');
     }
 
     return (
         <div className='formularioRegistro'>
 
-            <h3>
+            <h3 style={{ color: "#242465" }}>
                 ¡Registrate en Ferreplus Intercambios!
             </h3>
 
             <div className="mb-3">
-                <label htmlFor='nombre'> Nombre completo: </label>
-                <input className="form-control" type="text" placeholder='Juan' id='nombre' />
+                <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre completo: </label>
+                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} />
             </div>
 
             <div className="mb-3">
-                <label htmlFor='apellido'> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' id='apellido' />
+                <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
+                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} />
             </div>
 
             <div className="mb-3">
-                <label id='labelFecha' htmlFor='fechaNacimiento'> Fecha de nacimiento: </label>
-                <input className="form-control" type="date" id='fechaNacimiento' />
+                <label id='labelFecha' htmlFor='fechaNacimiento' style=
+                    {{ color: error === 'Se debe seleccionar una fecha.' || error === 'Se debe ser mayor de 18 años para poder registrarse.' ? 'red' : 'black' }}>
+                    Fecha de nacimiento: </label>
+                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} />
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label"> Mail: </label>
+                <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un mail.' ? 'red' : 'black' }}> Mail: </label>
                 <input
                     type="email"
                     className="form-control"
@@ -91,7 +112,9 @@ export const FormularioRegistro = () => {
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1'>Contraseña:</label>
+                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
+                    {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                    Contraseña:</label>
                 <input
                     className="form-control"
                     id="exampleInputPassword1"
@@ -102,7 +125,9 @@ export const FormularioRegistro = () => {
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2'>Confirmar contraseña:</label>
+                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
+                    {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                    Confirmar contraseña:</label>
                 <input
                     className="form-control"
                     id="exampleInputPassword2"
@@ -116,9 +141,7 @@ export const FormularioRegistro = () => {
 
             {error && <p className='errorContainer'>{error}</p>}
 
-            <p onClick={redirectInicioSesion} className='textoRedireccion'>
-                ¿Ya estás registrado? Iniciar sesión
-            </p>
+            <p onClick={redirectInicioSesion} className='textoRedireccion'> ¿Ya estás registrado? Iniciar sesión </p>
         </div >
     )
 }
