@@ -12,18 +12,22 @@ export const Productos = () => {
 
     return (
         <div>
-            <h1>Productos de Ferreplus</h1>
-            <ul>
-                {productos.map((producto) => (
-                    <li key={producto.id}>
-                        {producto.nombre} - ${producto.precio}
-                        {user
-                            ? <button>Comprar</button>
-                            : <button>Login para comprar</button>
-                        }
-                    </li>
-                ))}
-            </ul>
+            <div className="titulo-productos">
+                <h1 style={{ color: "#242465" }} >Productos de Ferreplus</h1>
+            </div>
+            <div className="productos-intercambio">
+                <ul>
+                    {productos.map((producto) => (
+                        <li key={producto.id}>
+                            {producto.nombre} - ${producto.precio}
+                            {user
+                                ? <button>Comprar</button>
+                                : <button>Login para comprar</button>
+                            }
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }

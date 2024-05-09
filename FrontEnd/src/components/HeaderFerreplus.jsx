@@ -8,16 +8,20 @@ export const HeaderFerreplus = () => {
 
   const navigate = useNavigate();
 
-  const redirectInicioSesion = () => {
-    navigate('/inicioSesion');
-  }
+  const redirectInicioSesion = () => navigate('/inicioSesion');
 
-  const redirectRegistro = () => {
-    navigate('/registrarse');
-  }
+  const redirectRegistro = () => navigate('/registrarse');
 
-  const redirectHome = () => {
-    navigate('/');
+  const redirectHome = () => navigate('/');
+
+  const redirectProductos = () => navigate('/productos');
+
+  const redirectIntercambios = () => navigate('/intercambios');
+
+  const redirectSucursales = () => navigate('/sucursales');
+
+  const isActive = (path) => {
+    return location.pathname === path;
   }
 
   const { user } = useUser();
@@ -36,18 +40,23 @@ export const HeaderFerreplus = () => {
 
       <div className='menuOpciones'>
         <ul>
-          <li>Catálogo de ventas</li>
-          <li>Intercambios</li>
-          <li>Sucursales</li>
+          <li onClick={redirectProductos} className={isActive('/productos') ? 'paginaActiva' : ''}> Catálogo de ventas</li>
+          <li onClick={redirectIntercambios} className={isActive('/intercambios') ? 'paginaActiva' : ''}> Intercambios</li>
+          <li onClick={redirectSucursales} className={isActive('/sucursales') ? 'paginaActiva' : ''}> Sucursales</li>
         </ul>
       </div>
 
       <div className="botones">
         {user
-          ? <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); }}> Cerrar sesión </button>
-          : <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
+          ? <>
+          <button className='botonesInicioSesion' id='botonMiPerfil'> Mi Perfil </button>
+          <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); }}> Cerrar sesión </button>
+          </> 
+          : <>
+            <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
+            <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
+          </>
         }
-        <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
       </div>
 
     </header>

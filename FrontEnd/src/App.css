@@ -48,7 +48,8 @@
 
 header {
   width: 100%;
-  height: 13em;
+  height: 22%;
+  /* cambiar por porcentaje asi es responsive*/
   background-color: #ebf1f8;
   top: 0%;
   position: absolute;
@@ -60,8 +61,8 @@ header {
 }
 
 #logoFerreplus {
-  height: 13em;
-  width: 17em;
+  height: 100%;
+  width: 17%;
   position: absolute;
   top: 0;
   left: 0;
@@ -73,7 +74,7 @@ header {
 
 .botones {
   position: absolute;
-  top: 5em;
+  top: 40%;
   right: 1em;
   display: flex;
   align-items: center;
@@ -114,7 +115,7 @@ header {
 
 .search-container {
   display: flex;
-  position: absolute; 
+  position: absolute;
   justify-content: center;
   align-items: center;
 }
@@ -169,7 +170,7 @@ header {
   display: flex;
   list-style-type: none;
   padding: 0;
-  top: 10em;
+  top: 80%;
   position: absolute;
 }
 
@@ -180,6 +181,22 @@ header {
 .menuOpciones li:hover {
   cursor: pointer;
   font-weight: bold;
+}
+
+#botonMiPerfil {
+  background-color: #4545ae;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 3px;
+  transition: border-color 0.25s;
+}
+
+#botonMiPerfil:hover {
+  background-color: #242465;
+  border-color: #9da2f4;
 }
 
 /* FORMULARIO LOGIN Y REGISTRO*/
@@ -245,4 +262,27 @@ header {
 .cambioContra button:focus,
 .cambioContra button:active {
   margin: 1.5vh;
+}
+
+/* SUCURSALES */
+.titulo-sucursales,
+.titulo-intercambios,
+.titulo-productos {
+  display: flex;
+  position: absolute;
+  left: 1%;
+  top: 25%;
+}
+
+.paginaActiva {
+  font-weight: bold;
+  color: #242465;
+}
+
+
+/* PRODUCTOS */
+.productos-intercambio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

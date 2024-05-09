@@ -27,13 +27,9 @@ export const FormularioLogin = () => {
         }
     }
 
-    const redirectRegistro = () => {
-        navigate('/registrarse');
-    }
+    const redirectRegistro = () => navigate('/registrarse');
 
-    const redirectCambio = () => {
-        navigate('/cambioContra');
-    }
+    const redirectCambio = () => navigate('/cambioContra');
 
     return (
         <div className='formularioLogin'>

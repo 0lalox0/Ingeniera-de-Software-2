@@ -14,9 +14,7 @@ export const FormularioRegistro = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const clear = () => {
-        ['labelContra1', 'labelContra2', 'labelFecha'].forEach(element => document.getElementById(element).className = '');
-    }
+    const clear = () => ['labelContra1', 'labelContra2', 'labelFecha'].forEach(element => document.getElementById(element).className = '');
 
     const checkDate = () => { // funcion para chequear si es mayor de edad
         const valorFecha = document.getElementById('fechaNacimiento').value;
@@ -71,9 +69,7 @@ export const FormularioRegistro = () => {
         }
     }
 
-    const redirectInicioSesion = () => {
-        navigate('/inicioSesion');
-    }
+    const redirectInicioSesion = () => navigate('/inicioSesion');
 
     return (
         <div className='formularioRegistro'>
