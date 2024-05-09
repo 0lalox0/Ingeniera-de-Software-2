@@ -5,7 +5,7 @@ export const Productos = () => {
         { id: 1, nombre: 'Producto 1', precio: 100 },
         { id: 2, nombre: 'Producto 2', precio: 200 },
         { id: 3, nombre: 'Producto 3', precio: 300 },
-        // Agrega más productos aquí
+        // Productos de prueba, los vamos a tener que sacar de la bd
     ];
 
     const { user, isLoading } = useUser();

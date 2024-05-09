@@ -49,7 +49,6 @@
 header {
   width: 100%;
   height: 22%;
-  /* cambiar por porcentaje asi es responsive*/
   background-color: #ebf1f8;
   top: 0%;
   position: absolute;
