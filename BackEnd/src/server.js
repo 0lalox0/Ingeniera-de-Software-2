@@ -3,7 +3,8 @@ import admin from 'firebase-admin';
 import express from 'express';
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import userRouter from './routes/user.js'
+import userRouter from './routes/userRoute.js'
+import sucursalRouter from './routes/sucursalRoute.js'
 
 
 //mongodb connection
@@ -43,6 +44,7 @@ app.use(async (req, res, next) => {
 //middleware de las rutas para la base de datos
 app.use(express.json())
 app.use('/api', userRouter)
+app.use('/api', sucursalRouter)
 
 
 app.get('/', (req, res) => {
