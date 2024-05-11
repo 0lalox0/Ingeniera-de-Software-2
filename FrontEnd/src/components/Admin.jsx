@@ -11,13 +11,13 @@ export const Admin = () => {
   const [message, setMessage] = useState('');
 
   const agregarSucursal = async () => {
-    horaApertura = horaApertura.toString();
-    horaCierre = horaCierre.toString();
+    const horaAperturaDate = new Date('1970-01-01T' + horaApertura);
+    const horaCierreDate = new Date('1970-01-01T' + horaCierre);
     console.log(
-      nombre, ciudad, calle, numero, horaApertura, horaCierre
+      nombre, ciudad, calle, numero, horaAperturaDate, horaCierreDate
     );
     try {
-      const response = await fetch('http://localhost:8000/sucursales', {
+      const response = await fetch('http://localhost:8000/api/sucursales', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,8 +27,8 @@ export const Admin = () => {
           ciudad,
           calle,
           numero,
-          horaApertura,
-          horaCierre
+          horarioApertura: horaAperturaDate,
+          horarioCierre: horaCierreDate
         })
       });
       const data = await response.json();

@@ -19,11 +19,11 @@ const SucursalSchema = new Schema({
         require: true
     },
     horarioApertura: {
-        type: String,
+        type: Date,
         require: true
     },
     horarioCierre: {
-        type: String,
+        type: Date,
         require: true
     },
 
