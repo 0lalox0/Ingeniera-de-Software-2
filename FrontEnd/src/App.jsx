@@ -8,6 +8,7 @@ import { Productos } from './components/Productos'
 import { CambioContra } from './components/CambioContra'
 import { Sucursales } from './components/Sucursales'
 import { Intercambios } from './components/Intercambios'
+import { Admin } from './components/Admin'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,13 +17,14 @@ function App() {
     <>
       <HeaderFerreplus></HeaderFerreplus>
       <Routes>
-        <Route path='/' element= {<Productos/>}></Route>
+        <Route path='/' element={<Productos />}></Route>
         <Route path='/inicioSesion' element={<FormularioLogin />}></Route>
         <Route path='/registrarse' element={<FormularioRegistro />}></Route>
         <Route path='/productos' element={<Productos />} />
         <Route path='/cambiocontra' element={<CambioContra />}></Route>
         <Route path='/sucursales' element={<Sucursales />}> </Route>
         <Route path='/intercambios' element={<Intercambios />}> </Route>
+        <Route path='/admin' element={<Admin />}> </Route>
       </Routes>
     </>
   )

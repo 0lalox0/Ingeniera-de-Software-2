@@ -202,7 +202,8 @@ header {
 
 .formularioLogin,
 .formularioRegistro,
-.cambioContra {
+.cambioContra, 
+.formularioSucursal {
   border: 2px solid #210c98;
   padding-top: 2.5vh;
   margin-top: 25vh;
@@ -236,11 +237,6 @@ header {
 .errorContainer {
   margin-top: 0.5rem;
   color: red;
-}
-
-.formularioRegistro a {
-  margin: 10vh;
-  padding: 1vh;
 }
 
 .textoRedireccion {
