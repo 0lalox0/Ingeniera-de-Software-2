@@ -10,8 +10,6 @@ export const Productos = () => {
 
     const { user, isLoading, role } = useUser();
 
-    console.log(user.email, isLoading, role);
-
     return (
         <div>
             <div className="titulo-productos">
