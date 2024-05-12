@@ -64,6 +64,31 @@ export const FormularioRegistro = () => {
         try {
             await createUserWithEmailAndPassword(getAuth(), email, password);
             navigate('/productos');
+
+            //si se crea la cuenta, hay que guardar la info en mongodb
+            try {
+                const response = await fetch('http://localhost:8000/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        lastname: surname,
+                        email,
+                        password,
+                        date
+                    })
+                });
+                const data = await response.json();
+                console.log(data);
+                setMessage("Usuario agregado con éxito!"); // Establecer mensaje de éxito
+            } catch (error) {
+                setMessage("Hubo un error al agregar al usuario a mongodb."); // Establecer mensaje de error
+            }
+
+
+
         } catch (e) {
             setError(e.message);
         }
