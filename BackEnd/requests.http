@@ -14,7 +14,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/users HTTP/1.1
 
 ###
-GET http://localhost:8000/api/users/663ba2bcaf2f47d8299c262f HTTP/1.1
+GET http://localhost:8000/api/users/663d83bc15eaeb6d61fe62e2 HTTP/1.1
 
 ###
 PUT http://localhost:8000/api/users/663ba2bcaf2f47d8299c262f HTTP/1.1
@@ -27,7 +27,8 @@ Content-Type: application/json
     "password": "candebordonmiamor",
     "date": "2001-06-06"
 }
-
+###
+GET  http://localhost:8000/api/users/juancruzdeu@gmail.com HTTP/1.1
 
 ###
 DELETE http://localhost:8000/api/users/663ba2bcaf2f47d8299c262f HTTP/1.1

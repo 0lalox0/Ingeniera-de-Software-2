@@ -1,6 +1,10 @@
 document.getElementById("buton").addEventListener("click",async () =>{
     console.log("hola");
-      const res = await fetch("http://localhost:8000/api/sucursales",{
+    let email = localStorage.getItem("email");
+    let t = "http://localhost:8000/api/users/" + email;
+    const res = await fetch(t);
+    console.log(res);
+    /*  const res = await fetch("http://localhost:8000/api/sucursales",{
     method:"POST",
     headers:{
         "Content-Type" : "application/json"
@@ -11,7 +15,7 @@ document.getElementById("buton").addEventListener("click",async () =>{
         calle: "Romeo",
         numero: 221
     })
-   });
+   });*/
  /*  const res = await fetch("http://localhost:8000/api/test",{
     method:"POST",
     headers:{

@@ -17,13 +17,13 @@ router.get('/users', (req, res) => {
 //get a user
 router.get('/users/:id', (req, res) => {
     const { id } = req.params
-    UserSchema.findById(id)
+    UserSchema.findOne({email: id})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
 //update a user
 router.put('/users/:id', (req, res) => {
-    const { id } = req.params
+    const { id } = req.params.id
     const { name, lastname, email, password, date } = req.body
     UserSchema.updateOne({ _id: id }, {$set: { name, lastname, email, password, date }})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
@@ -35,6 +35,12 @@ router.delete('/users/:id', (req, res) => {
     UserSchema.deleteOne( { _id: id })
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
+//Get a user id
+/*router.get('/users/:email', (req, res) => {
+    const { mail } = req.params
+    UserSchema.findById(mail)
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})*/
 //Config seguridad
 router.use((req, res, next) => {  //todo esto
     res.setHeader('Access-Control-Allow-Origin', '*');

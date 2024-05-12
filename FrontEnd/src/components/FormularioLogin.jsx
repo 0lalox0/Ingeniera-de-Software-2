@@ -21,6 +21,7 @@ export const FormularioLogin = () => {
         }
         try {
             await signInWithEmailAndPassword(getAuth(), email, password);
+            localStorage.setItem("email", email);
             navigate('/productos');
         } catch (e) {
             setError(e.message);
