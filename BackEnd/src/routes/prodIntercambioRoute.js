@@ -38,6 +38,17 @@ router.delete('/prodIntercambios/:id', (req, res) => {
     ProdInterSchema.deleteOne( { _id: id })
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
-
+//config de seguridad
+router.use((req, res, next) => {  //todo esto
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+  const errorHandler = (err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  };
+  router.use(errorHandler);
 
 export default router;
