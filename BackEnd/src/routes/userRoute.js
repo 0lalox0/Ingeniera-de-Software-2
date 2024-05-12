@@ -23,16 +23,16 @@ router.get('/users/:id', (req, res) => {
 
 //update a user
 router.put('/users/:id', (req, res) => {
-    const { id } = req.params.id
+    const { id } = req.params
     const { name, lastname, email, password, date } = req.body
-    UserSchema.updateOne({ _id: id }, {$set: { name, lastname, email, password, date }})
+    UserSchema.updateOne({ email: id }, {$set: { name, lastname, email, password, date }})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
 //delete a user
 router.delete('/users/:id', (req, res) => {
     const { id } = req.params
-    UserSchema.deleteOne( { _id: id })
+    UserSchema.deleteOne( { email: id })
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 //Get a user id

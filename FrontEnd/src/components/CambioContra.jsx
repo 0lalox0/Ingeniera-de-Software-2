@@ -14,6 +14,8 @@ export const CambioContra = () => {
         }
         try {
             await sendPasswordResetEmail(getAuth(), email);
+            //si se cambio la contraseña, hay que actualizar la base de datos
+            
         } catch (e) {
             setError(e.message);
         }

@@ -14,18 +14,18 @@ Content-Type: application/json
 GET http://localhost:8000/api/users HTTP/1.1
 
 ###
-GET http://localhost:8000/api/users/663d83bc15eaeb6d61fe62e2 HTTP/1.1
+GET http://localhost:8000/api/users/ciriellifrancogiovanni@gmail.com HTTP/1.1
 
 ###
-PUT http://localhost:8000/api/users/663ba2bcaf2f47d8299c262f HTTP/1.1
+PUT http://localhost:8000/api/users/ciriellifrancogiovanni@gmail.com HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Lautaro",
-    "lastname": "Gutierrez",
-    "email": "lautygutierrez5@gmail.com",
-    "password": "candebordonmiamor",
-    "date": "2001-06-06"
+    "name": "Franco Giovanni",
+    "lastname": "Cirielli",
+    "email": "ciriellifrancogiovanni@gmail.com",
+    "password": "amoalostitotech",
+    "date": "2002-09-12"
 }
 ###
 GET  http://localhost:8000/api/users/juancruzdeu@gmail.com HTTP/1.1
