@@ -8,7 +8,7 @@ export const Productos = () => {
         // Productos de prueba, los vamos a tener que sacar de la bd
     ];
 
-    const { user, isLoading } = useUser();
+    const { user, isLoading, role } = useUser();
 
     return (
         <div>
@@ -20,10 +20,13 @@ export const Productos = () => {
                     {productos.map((producto) => (
                         <li key={producto.id}>
                             {producto.nombre} - ${producto.precio}
-                            {user
-                                ? <button>Comprar</button>
-                                : <button>Login para comprar</button>
+                            {role === 'admin'
+                                ? <button>Borrar</button>
+                                : user
+                                    ? <button>Comprar</button>
+                                    : <button>Login para comprar</button>
                             }
+
                         </li>
                     ))}
                 </ul>
