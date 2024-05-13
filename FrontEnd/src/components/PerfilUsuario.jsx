@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useUser from '../hooks/useUser';
-import userIcon from '../assets/user-icon.jpg'
-import productos from '../assets/productos.jpg'
+import userIcon from '../assets/user-icon.png'
+import productos from '../assets/productos.png'
 import intercambio from '../assets/intercambio.png'
 import { Mantenimiento } from './Mantenimiento';
 
@@ -35,7 +35,6 @@ export const PerfilUsuario = () => {
                             <div className="card-content">
                                 <h3> Mis datos</h3>
                                 <p> Acá vas a poder ver y modificar tus datos. </p>
-                                <button> Modificar</button>
                             </div>
                         </div>
 
@@ -43,8 +42,7 @@ export const PerfilUsuario = () => {
                             <img src={productos} alt="" />
                             <div className="card-content">
                                 <h3> Mis productos</h3>
-                                <p> Acá vas a poder toda la información relacionada con tus productos.</p>
-                                <button> Administrar </button>
+                                <p> Acá vas a poder ver toda la información relacionada con tus productos.</p>
                             </div>
                         </div>
 
@@ -53,7 +51,6 @@ export const PerfilUsuario = () => {
                             <div className="card-content">
                                 <h3> Mis intercambios</h3>
                                 <p> Acá vas a poder toda la información relacionada con tus intercambios.</p>
-                                <button> Administrar </button>
                             </div>
                         </div>
 

@@ -289,8 +289,8 @@ header {
   display: flex;
   justify-content: center;
   top: 25vh;
-  margin: 20px;
-  padding: 20px;
+  margin: 1rem;
+  padding: 1.5rem;
   flex-wrap: wrap;
 }
 
@@ -298,7 +298,7 @@ header {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 20%;
+  margin-top: 22%;
 }
 
 .card {
@@ -307,6 +307,15 @@ header {
   overflow: hidden;
   box-shadow: 10px 10px 10px 10px #ebf1f8;
   margin: 20px;
+  transition: background-color 0.5s ease;
+  border: 2px solid transparent;
+  transition: border-color 1s ease;
+}
+
+.card:hover {
+  background-color: #ebf1f8;
+  border-color: #242465;
+  cursor: pointer;
 }
 
 .card img {
