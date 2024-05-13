@@ -9,13 +9,14 @@ export const PerfilUsuario = () => {
     const { role, user } = useUser();
 
     const [userInfo, setUserInfo] = useState('');
-
+    let e = localStorage.getItem("email");
+    let t = "http://localhost:8000/api/users/" + e
     useEffect(() => {
         buscarNombre();
     }, []);
 
     const buscarNombre = () => {
-        fetch(`http://localhost:8000/api/users/juancruzdeu@gmail.com`).then(response => {
+        fetch(t).then(response => {
             return response.json()
         }).then(data => {
             setUserInfo(data);

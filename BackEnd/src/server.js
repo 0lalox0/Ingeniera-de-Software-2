@@ -25,8 +25,7 @@ admin.initializeApp({
 const app = express();
 
 app.use(express.json());
-const whiteList = ['http://localhost:5173/'];
-app.use(cors({ origin: whiteList }));
+app.use(cors());
 //Middleware que verifica el token
 app.use(async (req, res, next) => {
   const { authtoken } = req.headers;
