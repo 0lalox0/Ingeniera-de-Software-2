@@ -2,9 +2,10 @@
  
 # Ir al directorio del backend
 cd BackEnd/
+#npm run dev
 # Instalar las dependencias del backend
 #echo "Instalando dependencias del backend..."
-#npm install
+npm install
 # iniciar el backend
 #npm install
 #echo "Iniciando el servidor backend..."

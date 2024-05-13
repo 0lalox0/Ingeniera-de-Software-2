@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
+import userIcon from '../assets/user-icon.jpg'
+import productos from '../assets/productos.jpg'
+import intercambio from '../assets/intercambio.png'
 
 export const Admin = () => {
 
@@ -43,42 +46,38 @@ export const Admin = () => {
   return (
     <>
       {role === 'admin' ?
-        <div className='formularioSucursal'>
-          <h1> Probando página del administrador</h1>
-          <h2>Agregar sucursal: </h2>
+        <div className='perfilUsuario'>
+          <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
+          <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus intercambios.</p>
+          <div className='card-container'>
+            <div className="card">
+              <img src={userIcon} alt="" />
+              <div className="card-content">
+                <h3> Agregar sucursal</h3>
+                <p> Acá vas a poder agregar sucursales de Ferreplus.</p>
+                <button> Agregar</button>
+              </div>
+            </div>
 
-          <div className="mb-3">
-            <label htmlFor="nombreSucursal"> Nombre </label>
-            <input className="form-control" type="text" id='nombreSucursal' value={nombre} onChange={e => setNombre(e.target.value)} />
+            <div className="card">
+              <img src={productos} alt="" />
+              <div className="card-content">
+                <h3> Eliminar sucursal</h3>
+                <p> Acá vas a poder eliminar sucursales de Ferreplus.</p>
+                <button> Eliminar </button>
+              </div>
+            </div>
+
+            <div className="card">
+              <img src={intercambio} alt="" />
+              <div className="card-content">
+                <h3> Mis intercambios</h3>
+                <p> Acá vas a poder toda la información relacionada con tus intercambios.</p>
+                <button> Administrar </button>
+              </div>
+            </div>
+
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="ciudadSucursal"> Ciudad: </label>
-            <input className="form-control" type="text" id='ciudadSucursal' value={ciudad} onChange={e => setCiudad(e.target.value)} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="calleSucursal">Calle: </label>
-            <input className="form-control" type="text" id='calleSucursal' value={calle} onChange={e => setCalle(e.target.value)} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="numeroSucursal"> Número: </label>
-            <input className="form-control" type="number" id='numeroSucursal' value={numero} onChange={e => setNumero(e.target.value)} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="horarioAperturaSucursal"> Horario de apertura: </label>
-            <input className="form-control" type="time" id='horarioAperturaSucursal' value={horaApertura} onChange={e => setApertura(e.target.value)} />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="horarioCierreSucursal">Horario de cierre: </label>
-            <input className="form-control" type="time" id='horarioCierreSucursal' value={horaCierre} onChange={e => setCierre(e.target.value)} />
-          </div>
-
-          <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
-          <p> {message} </p>
         </div>
         :
         <Mantenimiento> </Mantenimiento>

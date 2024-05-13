@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useUser from '../hooks/useUser';
 import userIcon from '../assets/user-icon.jpg'
 import productos from '../assets/productos.jpg'
@@ -6,13 +6,27 @@ import intercambio from '../assets/intercambio.png'
 import { Mantenimiento } from './Mantenimiento';
 
 export const PerfilUsuario = () => {
-    const { role } = useUser();
+    const { role, user } = useUser();
+
+    const [userInfo, setUserInfo] = useState('');
+
+    useEffect(() => {
+        buscarNombre();
+    }, []);
+
+    const buscarNombre = () => {
+        fetch(`http://localhost:8000/api/users/juancruzdeu@gmail.com`).then(response => {
+            return response.json()
+        }).then(data => {
+            setUserInfo(data);
+        })
+    }
 
     return (
         <>
             {role === 'cliente' ?
                 <div className='perfilUsuario'>
-                    <h1 style={{ color: "#242465" }}> Bienvenido a tu perfil, nombreUsuario</h1>
+                    <h1 style={{ color: "#242465" }}> Bienvenido a tu perfil, {userInfo.name}</h1>
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus intercambios.</p>
                     <div className='card-container'>
                         <div className="card">

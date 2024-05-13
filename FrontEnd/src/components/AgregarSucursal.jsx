@@ -34,20 +34,41 @@ export const AgregarSucursal = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                agregarSucursal();
-            }}>
-                <input type="text" placeholder="Nombre de la sucursal" value={nombre} onChange={e => setNombre(e.target.value)} />
-                <input type="text" placeholder="Ciudad" value={ciudad} onChange={e => setCiudad(e.target.value)} />
-                <input type="text" placeholder="Calle" value={calle} onChange={e => setCalle(e.target.value)} />
-                <input type="text" placeholder="Número" value={numero} onChange={e => setNumero(e.target.value)} />
-                <input type="text" placeholder="Horario de apertura" value={horarioApertura} onChange={e => setHorarioApertura(e.target.value)} />
-                <input type="text" placeholder="Horario de cierre" value={horarioCierre} onChange={e => setHorarioCierre(e.target.value)} />
-                <button type="submit">Guardar</button>
-            </form>
-            <p>{message}</p> {/* Mostrar el mensaje */}
+        <div className='formularioSucursal'>
+          <h2>Agregar sucursal: </h2>
+
+          <div className="mb-3">
+            <label htmlFor="nombreSucursal"> Nombre </label>
+            <input className="form-control" type="text" id='nombreSucursal' value={nombre} onChange={e => setNombre(e.target.value)} />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="ciudadSucursal"> Ciudad: </label>
+            <input className="form-control" type="text" id='ciudadSucursal' value={ciudad} onChange={e => setCiudad(e.target.value)} />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="calleSucursal">Calle: </label>
+            <input className="form-control" type="text" id='calleSucursal' value={calle} onChange={e => setCalle(e.target.value)} />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="numeroSucursal"> Número: </label>
+            <input className="form-control" type="number" id='numeroSucursal' value={numero} onChange={e => setNumero(e.target.value)} />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="horarioAperturaSucursal"> Horario de apertura: </label>
+            <input className="form-control" type="time" id='horarioAperturaSucursal' value={horaApertura} onChange={e => setApertura(e.target.value)} />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="horarioCierreSucursal">Horario de cierre: </label>
+            <input className="form-control" type="time" id='horarioCierreSucursal' value={horaCierre} onChange={e => setCierre(e.target.value)} />
+          </div>
+
+          <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
+          <p> {message} </p>
         </div>
     )
 }

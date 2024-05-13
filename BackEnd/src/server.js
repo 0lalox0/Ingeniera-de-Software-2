@@ -5,13 +5,13 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import userRouter from './routes/userRoute.js'
 import sucursalRouter from './routes/sucursalRoute.js'
-
+import cors from 'cors';
 
 //mongodb connection
 dotenv.config()
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch((error) => console.error(error))
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((error) => console.error(error))
 
 //Credenciales de Firebase
 const credentials = JSON.parse(
@@ -21,24 +21,26 @@ admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
 
+
 const app = express();
 
 app.use(express.json());
-
+const whiteList = ['http://localhost:5173/'];
+app.use(cors({ origin: whiteList }));
 //Middleware que verifica el token
 app.use(async (req, res, next) => {
   const { authtoken } = req.headers;
-  if (authtoken){
-    try{
+  if (authtoken) {
+    try {
       req.user = await admin.auth().verifyIdToken(authtoken);
     } catch (e) {
       res.sendStatus(400);
     }
-    
+
   }
 
   next();
-  
+
 });
 
 //middleware de las rutas para la base de datos
@@ -57,16 +59,16 @@ app.post('/api/test', (req, res) => { //test boton Hola
   console.log(req.body);
 });
 app.listen(8000, () => {
-    console.log('Server started at http://localhost:8000');
+  console.log('Server started at http://localhost:8000');
 });
 app.use((req, res, next) => {  //todo esto
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  });
-  const errorHandler = (err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  };
-  app.use(errorHandler);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+const errorHandler = (err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
+};
+app.use(errorHandler);
