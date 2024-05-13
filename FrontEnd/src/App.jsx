@@ -9,6 +9,7 @@ import { CambioContra } from './components/CambioContra'
 import { Sucursales } from './components/Sucursales'
 import { Intercambios } from './components/Intercambios'
 import { Admin } from './components/Admin'
+import { PerfilUsuario } from './components/PerfilUsuario'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -25,6 +26,7 @@ function App() {
         <Route path='/sucursales' element={<Sucursales />}> </Route>
         <Route path='/intercambios' element={<Intercambios />}> </Route>
         <Route path='/admin' element={<Admin />}> </Route>
+        <Route path='/perfilUsuario' element={<PerfilUsuario />}> </Route>
       </Routes>
     </>
   )

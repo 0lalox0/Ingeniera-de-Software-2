@@ -20,6 +20,8 @@ export const HeaderFerreplus = () => {
 
   const redirectSucursales = () => navigate('/sucursales');
 
+  const redirectPerfil = () => navigate('/perfilUsuario');
+
   const isActive = (path) => {
     return location.pathname === path;
   }
@@ -40,7 +42,7 @@ export const HeaderFerreplus = () => {
 
       <div className='menuOpciones'>
         <ul>
-          <li onClick={redirectProductos} className={isActive('/productos') ? 'paginaActiva' : ''}> Catálogo de ventas</li>
+          <li onClick={redirectProductos} className={isActive('/productos') || isActive('/') ? 'paginaActiva' : ''}> Catálogo de ventas</li>
           <li onClick={redirectIntercambios} className={isActive('/intercambios') ? 'paginaActiva' : ''}> Intercambios</li>
           <li onClick={redirectSucursales} className={isActive('/sucursales') ? 'paginaActiva' : ''}> Sucursales</li>
         </ul>
@@ -49,7 +51,7 @@ export const HeaderFerreplus = () => {
       <div className="botones">
         {user
           ? <>
-          <button className='botonesInicioSesion' id='botonMiPerfil'> Mi Perfil </button>
+          <button className='botonesInicioSesion' id='botonMiPerfil' onClick={redirectPerfil}> Mi Perfil </button>
           <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); }}> Cerrar sesión </button>
           </> 
           : <>
