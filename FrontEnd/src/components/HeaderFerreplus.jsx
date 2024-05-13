@@ -22,11 +22,13 @@ export const HeaderFerreplus = () => {
 
   const redirectPerfil = () => navigate('/perfilUsuario');
 
+  const redirectAdmin = () => navigate('/admin');
+
   const isActive = (path) => {
     return location.pathname === path;
   }
 
-  const { user } = useUser();
+  const { user, role } = useUser();
 
   return (
     <header>
@@ -49,14 +51,18 @@ export const HeaderFerreplus = () => {
       </div>
 
       <div className="botones">
-        {user
-          ? <>
+        {role === 'cliente' ? <>
           <button className='botonesInicioSesion' id='botonMiPerfil' onClick={redirectPerfil}> Mi Perfil </button>
-          <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); }}> Cerrar sesión </button>
+          <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
           </> 
+          : 
+          role === 'admin' ? <>
+            <button className='botonesInicioSesion' id='botonAdministrar'onClick={redirectAdmin}> Administrar </button>
+            <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
+          </>
           : <>
-            <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
-            <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
+          <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
+          <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
           </>
         }
       </div>

@@ -10,6 +10,12 @@ export const FormularioLogin = () => {
 
     const navigate = useNavigate();
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          logIn();
+        }
+      }; 
+
     const logIn = async () => {
         if (email == '') {
             setError('Se debe ingresar un mail.')
@@ -33,7 +39,7 @@ export const FormularioLogin = () => {
     const redirectCambio = () => navigate('/cambioContra');
 
     return (
-        <div className='formularioLogin'>
+        <div className='formularioLogin' onKeyDown={handleKeyDown}>
 
             <h3 style={{ color: "#242465" }}>
                 ¡Iniciá sesión en Ferreplus Intercambios!
@@ -48,7 +54,8 @@ export const FormularioLogin = () => {
                     aria-describedby="emailHelp"
                     placeholder='ejemplo123@gmail.com'
                     value={email}
-                    onChange={e => setEmail(e.target.value)} />
+                    onChange={e => setEmail(e.target.value)} 
+                    onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
@@ -59,7 +66,8 @@ export const FormularioLogin = () => {
                     type="password"
                     placeholder='Contraseña'
                     value={password}
-                    onChange={e => setPassword(e.target.value)} />
+                    onChange={e => setPassword(e.target.value)} 
+                    onKeyDown={handleKeyDown}/>
             </div>
             <button className="btn btn-primary" onClick={logIn}>Iniciar sesión</button>
 

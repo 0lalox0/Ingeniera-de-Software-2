@@ -27,6 +27,12 @@ export const FormularioRegistro = () => {
         return edad >= 18;
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          createAccount();
+        }
+      }; 
+
     const createAccount = async () => {
         clear();
         if (name == '') {
@@ -47,6 +53,10 @@ export const FormularioRegistro = () => {
         }
         if (email == '') {
             setError('Se debe ingresar un mail.');
+            return;
+        }
+        if (email.endsWith('@admin.ferreplus.com') || email.endsWith('@ferreplus.com')) {
+            setError('No se pueden usar emails de Ferreplus.')
             return;
         }
         if (password == '') {
@@ -82,13 +92,10 @@ export const FormularioRegistro = () => {
                 });
                 const data = await response.json();
                 console.log(data);
-                setMessage("Usuario agregado con éxito!"); // Establecer mensaje de éxito
+                setMessage("Usuario agregado con éxito!");
             } catch (error) {
-                setMessage("Hubo un error al agregar al usuario a mongodb."); // Establecer mensaje de error
+                setMessage("Hubo un error al agregar al usuario a mongodb.");
             }
-
-
-
         } catch (e) {
             setError(e.message);
         }
@@ -97,7 +104,7 @@ export const FormularioRegistro = () => {
     const redirectInicioSesion = () => navigate('/inicioSesion');
 
     return (
-        <div className='formularioRegistro'>
+        <div className='formularioRegistro' onKeyDown={handleKeyDown}>
 
             <h3 style={{ color: "#242465" }}>
                 ¡Registrate en Ferreplus Intercambios!
@@ -105,23 +112,23 @@ export const FormularioRegistro = () => {
 
             <div className="mb-3">
                 <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre completo: </label>
-                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} />
+                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
                 <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} />
+                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
                 <label id='labelFecha' htmlFor='fechaNacimiento' style=
                     {{ color: error === 'Se debe seleccionar una fecha.' || error === 'Se debe ser mayor de 18 años para poder registrarse.' ? 'red' : 'black' }}>
                     Fecha de nacimiento: </label>
-                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} />
+                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un mail.' ? 'red' : 'black' }}> Mail: </label>
+                <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un mail.' || error === 'No se pueden usar emails de Ferreplus.' ? 'red' : 'black' }}> Mail: </label>
                 <input
                     type="email"
                     className="form-control"
@@ -129,7 +136,8 @@ export const FormularioRegistro = () => {
                     aria-describedby="emailHelp"
                     placeholder='ejemplo123@gmail.com'
                     value={email}
-                    onChange={e => setEmail(e.target.value)} />
+                    onChange={e => setEmail(e.target.value)} 
+                    onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
@@ -142,7 +150,8 @@ export const FormularioRegistro = () => {
                     type="password"
                     placeholder='Contraseña'
                     value={password}
-                    onChange={e => setPassword(e.target.value)} />
+                    onChange={e => setPassword(e.target.value)} 
+                    onKeyDown={handleKeyDown}/>
             </div>
 
             <div className="mb-3">
@@ -155,7 +164,8 @@ export const FormularioRegistro = () => {
                     type="password"
                     placeholder='Repetir contraseña'
                     value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)} />
+                    onChange={e => setConfirmPassword(e.target.value)} 
+                    onKeyDown={handleKeyDown}/>
             </div>
 
             <button className="btn btn-primary" onClick={createAccount}>Crear cuenta</button>
