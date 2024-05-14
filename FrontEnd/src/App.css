@@ -269,11 +269,40 @@ header {
   top: 25%;
 }
 
+.titulo-sucursales h1,
+.titulo-intercambios h1,
+.titulo-productos h1{
+  font-size: calc(1.5rem + 1.5vw);
+}
+
+.titulo-sucursales p{
+  position: absolute;
+  display: flex;
+  top:100%;
+  font-weight: 600;
+  font-size: large;
+}
+
 .paginaActiva {
   font-weight: bold;
   color: #242465;
 }
 
+.clase-sucursales th, tbody, tr, thead, td{
+  border: 1px solid red
+}
+
+.clase-sucursales table {
+  position: absolute;
+  top: 36%;
+  left: 1%;
+  width: 95%;
+  margin-top: 1.2%;
+}
+
+.clase-sucursales th, td {
+  padding: 1rem;
+}
 
 /* PRODUCTOS */
 .productos-intercambio {
@@ -288,7 +317,7 @@ header {
   position: relative;
   display: flex;
   justify-content: center;
-  top: 25vh;
+  top: 20vh;
   margin: 1rem;
   padding: 1.5rem;
   flex-wrap: wrap;
@@ -298,7 +327,7 @@ header {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 22%;
+  margin-top: 23%;
 }
 
 .card {

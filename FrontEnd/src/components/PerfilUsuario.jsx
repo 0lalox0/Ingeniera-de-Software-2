@@ -28,7 +28,7 @@ export const PerfilUsuario = () => {
             {role === 'cliente' ?
                 <div className='perfilUsuario'>
                     <h1 style={{ color: "#242465" }}> Bienvenido a tu perfil, {userInfo.name}</h1>
-                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus intercambios.</p>
+                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus Intercambios.</p>
                     <div className='card-container'>
                         <div className="card">
                             <img src={userIcon} alt="" />
