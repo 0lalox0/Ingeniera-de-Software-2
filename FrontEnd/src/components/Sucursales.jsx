@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export const Sucursales = () => {
-    const sucursales = [
-        { id: 1, nombre: 'Sucursal La Plata', ciudad: 'La Plata', calle: 'Calle 9', numero: 45, horarioApertura: new Date('2024-1-1-08:00:00'), horarioCierre: new Date('2024-1-1-20:00:00') },
-        { id: 2, nombre: 'Sucursal San Lorenzo', ciudad: 'Almagro', calle: 'Avenida Almagro', numero: 713, horarioApertura: new Date('2024-1-1-08:00:00'), horarioCierre: new Date('2024-1-1-20:00:00') },
-        { id: 3, nombre: 'Sucursal Palermo', ciudad: 'Ciudad Autónoma de Buenos Aires', calle: '9 de Julio', numero: 123, horarioApertura: new Date('2024-1-1-07:00:00'), horarioCierre: new Date('2024-1-1-22:30:00') },
-        { id: 4, nombre: 'Sucursal Lanús', ciudad: 'Lanús', calle: 'Calle Lincoln', numero: 329, horarioApertura: new Date('2024-1-1-10:00:00'), horarioCierre: new Date('2024-1-1-23:15:00') }
-    ];
+    const [sucursales, setSucursales] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/sucursales')
+            .then(response => response.json())
+            .then(data => setSucursales(data))
+            .catch(error => console.error('Error:', error));
+    }, []);
 
     return (
         <div className='clase-sucursales'>
@@ -26,16 +28,21 @@ export const Sucursales = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {sucursales.map((sucursal) => (
-                        <tr key={sucursal.id}>
-                            <td>{sucursal.nombre}</td>
-                            <td>{sucursal.ciudad}</td>
-                            <td>{sucursal.calle}</td>
-                            <td>{sucursal.numero}</td>
-                            <td>{sucursal.horarioApertura.getHours()}:{sucursal.horarioApertura.getMinutes().toString().padStart(2, '0')}</td>
-                            <td>{sucursal.horarioCierre.getHours()}:{sucursal.horarioCierre.getMinutes().toString().padStart(2, '0')}</td>
-                        </tr>
-                    ))}
+                    {sucursales.map((sucursal) => {
+                        const horarioApertura = new Date(sucursal.horarioApertura);
+                        const horarioCierre = new Date(sucursal.horarioCierre);
+
+                        return (
+                            <tr key={sucursal._id}>
+                                <td>{sucursal.nombre}</td>
+                                <td>{sucursal.ciudad}</td>
+                                <td>{sucursal.calle}</td>
+                                <td>{sucursal.numero}</td>
+                                <td>{isNaN(horarioApertura) ? 'Invalid date' : horarioApertura.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                                <td>{isNaN(horarioCierre) ? 'Invalid date' : horarioCierre.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </table>
         </div>
