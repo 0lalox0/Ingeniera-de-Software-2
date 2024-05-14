@@ -11,6 +11,7 @@ import { Intercambios } from './components/Intercambios'
 import { Admin } from './components/Admin'
 import { PerfilUsuario } from './components/PerfilUsuario'
 import { AgregarSucursal } from './components/AgregarSucursal'
+import { GestionSucursales } from './components/GestionSucursales'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -26,8 +27,9 @@ function App() {
         <Route path='/cambiocontra' element={<CambioContra />}></Route>
         <Route path='/sucursales' element={<Sucursales />}> </Route>
         <Route path='/intercambios' element={<Intercambios />}> </Route>
-        <Route path='/admin' element={<Admin />}> </Route>
         <Route path='/perfilUsuario' element={<PerfilUsuario />}> </Route>
+        <Route path='/admin' element={<Admin />}> </Route>
+        <Route path='/admin/sucursales' element={<GestionSucursales />}> </Route>
         <Route path='/admin/agregarSucursal' element={<AgregarSucursal />}></Route>
       </Routes>
     </>

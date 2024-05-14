@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 export const Admin = () => {
   const { role } = useUser();
   const navigate = useNavigate();
-  const redirectAgregarSucursal = () => navigate('/admin/agregarSucursal');
+  const redirectSucursales = () => navigate('/admin/sucursales');
 
   return (
     <>
@@ -19,7 +19,7 @@ export const Admin = () => {
           <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus intercambios.</p>
           
           <div className='card-container' id='cardAdministrador'>
-            <div className="card" onClick={redirectAgregarSucursal}>
+            <div className="card" onClick={redirectSucursales}>
               <img src={sucursales} alt="" />
               <div className="card-content">
                 <h3> Gestionar sucursales</h3>
