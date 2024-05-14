@@ -29,9 +29,9 @@ export const FormularioRegistro = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-          createAccount();
+            createAccount();
         }
-      }; 
+    };
 
     const createAccount = async () => {
         clear();
@@ -112,19 +112,19 @@ export const FormularioRegistro = () => {
 
             <div className="mb-3">
                 <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre completo: </label>
-                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} onKeyDown={handleKeyDown}/>
+                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
                 <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} onKeyDown={handleKeyDown}/>
+                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
                 <label id='labelFecha' htmlFor='fechaNacimiento' style=
                     {{ color: error === 'Se debe seleccionar una fecha.' || error === 'Se debe ser mayor de 18 años para poder registrarse.' ? 'red' : 'black' }}>
                     Fecha de nacimiento: </label>
-                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} onKeyDown={handleKeyDown}/>
+                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
@@ -136,8 +136,8 @@ export const FormularioRegistro = () => {
                     aria-describedby="emailHelp"
                     placeholder='ejemplo123@gmail.com'
                     value={email}
-                    onChange={e => setEmail(e.target.value)} 
-                    onKeyDown={handleKeyDown}/>
+                    onChange={e => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
@@ -150,8 +150,8 @@ export const FormularioRegistro = () => {
                     type="password"
                     placeholder='Contraseña'
                     value={password}
-                    onChange={e => setPassword(e.target.value)} 
-                    onKeyDown={handleKeyDown}/>
+                    onChange={e => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
@@ -164,8 +164,8 @@ export const FormularioRegistro = () => {
                     type="password"
                     placeholder='Repetir contraseña'
                     value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)} 
-                    onKeyDown={handleKeyDown}/>
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    onKeyDown={handleKeyDown} />
             </div>
 
             <button className="btn btn-primary" onClick={createAccount}>Crear cuenta</button>

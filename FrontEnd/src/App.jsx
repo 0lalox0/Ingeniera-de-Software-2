@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { HeaderFerreplus } from './components/HeaderFerreplus'
+import { HeaderFerreplus } from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 import { FormularioLogin } from './components/FormularioLogin'
 import { FormularioRegistro } from './components/FormularioRegistro'
@@ -12,6 +12,7 @@ import { Admin } from './components/Admin'
 import { PerfilUsuario } from './components/PerfilUsuario'
 import { AgregarSucursal } from './components/AgregarSucursal'
 import { GestionSucursales } from './components/GestionSucursales'
+import { GestionEmpleados } from './components/GestionEmpleados'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -31,6 +32,7 @@ function App() {
         <Route path='/admin' element={<Admin />}> </Route>
         <Route path='/admin/sucursales' element={<GestionSucursales />}> </Route>
         <Route path='/admin/agregarSucursal' element={<AgregarSucursal />}></Route>
+        <Route path='/admin/empleados' element={<GestionEmpleados />}> </Route>
       </Routes>
     </>
   )

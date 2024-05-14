@@ -16,8 +16,11 @@ export const AgregarSucursal = () => {
   const { role } = useUser();
 
   const agregarSucursal = async () => {
+    const horaAperturaDate = new Date('1970-01-01T' + horarioApertura);
+    const horaCierreDate = new Date('1970-01-01T' + horarioCierre);
+
     try {
-      const response = await fetch('http://localhost:8000/sucursales', {
+      const response = await fetch('http://localhost:8000/api/sucursales', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,12 +30,11 @@ export const AgregarSucursal = () => {
           ciudad,
           calle,
           numero,
-          horarioApertura,
-          horarioCierre
+          horarioApertura: horaAperturaDate,
+          horarioCierre: horaCierreDate
         })
       });
       const data = await response.json();
-      console.log(data);
       setMessage("Sucursal agregada con éxito!"); // Establecer mensaje de éxito
     } catch (error) {
       setMessage("Hubo un error al agregar la sucursal."); // Establecer mensaje de error
@@ -97,7 +99,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
-          <p> {message} </p>
+          <p style={{ color: message === 'Sucursal agregada con éxito!' ? 'green' : 'red' }}> {message} </p>
           <p className="textoRedireccion" onClick={redirectSucursales}> Volver a Gestión de Sucursales</p>
         </div>
         : <Mantenimiento> </Mantenimiento>

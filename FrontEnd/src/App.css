@@ -62,7 +62,7 @@ header {
 
 #logoFerreplus {
   height: 100%;
-  width: 17%;
+  width: 20rem;
   position: absolute;
   top: 0;
   left: 0;
@@ -96,22 +96,26 @@ header {
   border-color: #646cff;
 }
 
-/* @media (max-width: 500px) {
-  .botones {
-    display: block;
-    right: 0;
-    left: 0;
-    margin: auto;
+@media (max-width: 880px) {
+
+  header .search-container,
+  header .menuOpciones,
+  header .botones {
+    display: none;
   }
 
-  .botonesInicioSesion {
-    margin-left: 0;
-    margin-top: 10px;
-    display: block;
-    width: 40%;
-    margin: 10px auto;
+  #logoFerreplus {
+    width: 35%;
   }
-} */
+
+  #dropdown {
+    display: block !important;
+  }
+}
+
+.dropdown-item:hover {
+  cursor: pointer;
+}
 
 .search-container {
   display: flex;
@@ -183,7 +187,9 @@ header {
   font-weight: bold;
 }
 
-#botonMiPerfil, #botonAdministrar {
+#botonMiPerfil,
+#botonAdministrar,
+#botonDropdownHeader {
   background-color: #4545ae;
   color: white;
   border: 1px solid transparent;
@@ -194,7 +200,8 @@ header {
   transition: border-color 0.25s;
 }
 
-#botonMiPerfil:hover, #botonAdministrar:hover {
+#botonMiPerfil:hover,
+#botonAdministrar:hover {
   background-color: #242465;
   border-color: #9da2f4;
 }
@@ -272,14 +279,14 @@ header {
 
 .titulo-sucursales h1,
 .titulo-intercambios h1,
-.titulo-productos h1{
+.titulo-productos h1 {
   font-size: calc(1.5rem + 1.5vw);
 }
 
-.titulo-sucursales p{
+.titulo-sucursales p {
   position: absolute;
   display: flex;
-  top:100%;
+  top: 100%;
   font-weight: 600;
   font-size: large;
 }
@@ -289,9 +296,15 @@ header {
   color: #242465;
 }
 
-.clase-sucursales th, tbody, tr, thead, td{
+.clase-sucursales th,
+tbody,
+tr,
+thead,
+td {
   border: 1px solid red
 }
+
+/* es para que se note el borde nomas x ahora */
 
 .clase-sucursales table {
   position: absolute;
@@ -301,7 +314,8 @@ header {
   margin-top: 1.2%;
 }
 
-.clase-sucursales th, td {
+.clase-sucursales th,
+td {
   padding: 1rem;
 }
 
@@ -314,7 +328,8 @@ header {
 
 /* PERFIL USUARIO */
 
-.perfilUsuario h1, #textoInfoPerfil {
+.perfilUsuario h1,
+#textoInfoPerfil {
   position: relative;
   display: flex;
   justify-content: center;
@@ -324,11 +339,15 @@ header {
   flex-wrap: wrap;
 }
 
+#textoInfoPerfil {
+  top:15vh;
+}
+
 .card-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 23%;
+  margin-top: 21%;
 }
 
 .card {

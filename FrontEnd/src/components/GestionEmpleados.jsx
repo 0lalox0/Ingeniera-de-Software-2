@@ -1,38 +1,37 @@
-import React from 'react'
-import useUser from '../hooks/useUser';
-import agregar from '../assets/agregar-sucursal.png';
-import eliminar from '../assets/eliminar-sucursal.png';
+import React from 'react';
+import agregar from '../assets/agregar-empleado.png';
+import eliminar from '../assets/eliminar-empleado.png';
 import mover from '../assets/mover-empleado.png';
+import useUser from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 import { Mantenimiento } from './Mantenimiento';
 
-export const GestionSucursales = () => {
+export const GestionEmpleados = () => {
     const { role } = useUser();
     const navigate = useNavigate();
-    const redirectAgregarSucursal = () => navigate('/admin/agregarSucursal');
     const redirectAdmin = () => navigate('/admin');
 
     return (
         <>
             {role === 'admin' ?
                 <div className='perfilUsuario'>
-                    <h1 style={{ color: "#242465" }}> Administración de Sucursales de Ferreplus Intercambios</h1>
-                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar todas las sucursales de Ferreplus intercambios.</p>
+                    <h1 style={{ color: "#242465" }}> Administración de Empleados de Ferreplus Intercambios</h1>
+                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar a todos los empleados de Ferreplus Intercambios.</p>
 
                     <div className='card-container' id='cardAdministrador'>
-                        <div className="card" onClick={redirectAgregarSucursal}>
+                        <div className="card">
                             <img src={agregar} alt="" />
                             <div className="card-content">
-                                <h3> Agregar sucursal</h3>
-                                <p> Acá vas a poder agregar una sucursal de Ferreplus.</p>
+                                <h3> Agregar empleado</h3>
+                                <p> Acá vas a poder agregar a un empleado al equipo de Ferreplus.</p>
                             </div>
                         </div>
 
                         <div className="card">
                             <img src={eliminar} alt="" />
                             <div className="card-content">
-                                <h3> Eliminar sucursal</h3>
-                                <p> Acá vas a poder eliminar una sucursal de Ferreplus.</p>
+                                <h3> Eliminar empleado</h3>
+                                <p> Acá vas a poder eliminar un empleado del equipo de Ferreplus.</p>
                             </div>
                         </div>
 

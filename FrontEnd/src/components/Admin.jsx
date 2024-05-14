@@ -10,13 +10,14 @@ export const Admin = () => {
   const { role } = useUser();
   const navigate = useNavigate();
   const redirectSucursales = () => navigate('/admin/sucursales');
+  const redirectEmpleados = () => navigate('/admin/empleados');
 
   return (
     <>
       {role === 'admin' ?
         <div className='perfilUsuario'>
           <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
-          <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus intercambios.</p>
+          <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus Intercambios.</p>
           
           <div className='card-container' id='cardAdministrador'>
             <div className="card" onClick={redirectSucursales}>
@@ -35,7 +36,7 @@ export const Admin = () => {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" onClick={redirectEmpleados}>
               <img src={empleados} alt="" />
               <div className="card-content">
                 <h3> Gestionar empleados</h3>

@@ -32,7 +32,6 @@ export const HeaderFerreplus = () => {
 
   return (
     <header>
-
       <img src={logo} alt="" id="logoFerreplus" onClick={redirectHome} />
 
       <div className="search-container">
@@ -65,6 +64,33 @@ export const HeaderFerreplus = () => {
               <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
             </>
         }
+        {/* falta empleado */}
+      </div>
+
+      <div id='dropdown' style={{ display: 'none' }}>
+        <div className="dropdown">
+          <a className="btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" id='botonDropdownHeader'>
+            Menú de opciones
+          </a>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" onClick={redirectHome}> Catálogo de ventas</a></li>
+            <li><a className="dropdown-item" onClick={redirectIntercambios}>Intercambios</a></li>
+            <li><a className="dropdown-item" onClick={redirectSucursales}>Sucursales</a></li>
+            {role === 'admin' ? <>
+              <li><a className="dropdown-item" onClick={redirectAdmin}>Administrar</a></li>
+              <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
+            </>
+              : role === 'cliente' ? <>
+                <li><a className="dropdown-item" onClick={redirectPerfil}>Mi Perfil</a></li>
+                <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
+              </>
+                : <>
+                  <li><a className="dropdown-item" onClick={redirectInicioSesion}>Iniciar sesión</a></li>
+                  <li><a className="dropdown-item" onClick={redirectRegistro}>Registrarse</a></li>
+                </>}
+            {/* falta empleado */}
+          </ul>
+        </div>
       </div>
 
     </header>

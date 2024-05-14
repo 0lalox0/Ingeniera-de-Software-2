@@ -42,8 +42,8 @@ Content-Type: application/json
     "ciudad": "La Plata",
     "calle": "8",
     "numero": 2515,
-    "horarioApertura": "8:00",
-    "horarioCierre": "20:00" 
+    "horarioApertura": "2024-05-14T08:00:00",
+    "horarioCierre": "2024-05-14T20:00:00" 
 }
 
 ###
