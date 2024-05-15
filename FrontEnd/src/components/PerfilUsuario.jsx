@@ -3,7 +3,9 @@ import useUser from '../hooks/useUser';
 import userIcon from '../assets/user-icon.png'
 import productos from '../assets/productos.png'
 import intercambio from '../assets/intercambio.png'
+import passIcon from '../assets/pass-icon.png'
 import { Mantenimiento } from './Mantenimiento';
+import { useNavigate } from 'react-router-dom';
 
 export const PerfilUsuario = () => {
     const { role, user } = useUser();
@@ -22,6 +24,8 @@ export const PerfilUsuario = () => {
             setUserInfo(data);
         })
     }
+    const navigate = useNavigate();
+    const redirectCambioContraSinEmail = () => navigate('/cambiocontrasinemail');
 
     return (
         <>
@@ -30,13 +34,6 @@ export const PerfilUsuario = () => {
                     <h1 style={{ color: "#242465" }}> Bienvenido a tu perfil, {userInfo.name}</h1>
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus Intercambios.</p>
                     <div className='card-container'>
-                        <div className="card">
-                            <img src={userIcon} alt="" />
-                            <div className="card-content">
-                                <h3> Mis datos</h3>
-                                <p> Acá vas a poder ver y modificar tus datos. </p>
-                            </div>
-                        </div>
 
                         <div className="card">
                             <img src={productos} alt="" />
@@ -51,6 +48,22 @@ export const PerfilUsuario = () => {
                             <div className="card-content">
                                 <h3> Mis intercambios</h3>
                                 <p> Acá vas a poder toda la información relacionada con tus intercambios.</p>
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <img src={userIcon} alt="" />
+                            <div className="card-content">
+                                <h3> Mis datos</h3>
+                                <p> Acá vas a poder ver y modificar tus datos. </p>
+                            </div>
+                        </div>
+
+                        <div className="card" onClick={redirectCambioContraSinEmail}>
+                            <img src={passIcon} alt="" />
+                            <div className="card-content">
+                                <h3> Cambiar contraseña</h3>
+                                <p> Acá vas a poder modificar tu contraseña. </p>
                             </div>
                         </div>
 
