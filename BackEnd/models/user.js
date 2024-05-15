@@ -15,10 +15,6 @@ const UserSchema = new Schema(
             unique: true,
             required: true
         },
-        password: {
-            type: String,
-            required: true
-        },
         date: {
             type: Date,
             required: true
