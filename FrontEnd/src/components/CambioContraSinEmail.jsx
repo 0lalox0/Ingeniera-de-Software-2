@@ -11,8 +11,8 @@ export const CambioContraSinEmail = () => {
     const [cambiar, setCambiar] = useState(true);
     const navigate = useNavigate();
 
-    const redirectInicioSesion = () => {
-        navigate('/inicio-sesion');
+    const redirectInicio = () => {
+        navigate('/');
     };
 
     const handleNewPasswordChange = (e) => {
@@ -76,7 +76,7 @@ export const CambioContraSinEmail = () => {
                     <div className='mensajeExito'>
                         <h2 style={{ color: "#242465" }}> ¡Listo!</h2>
                         <p> Su contraseña ha sido actualizada con exito</p>
-                        <p className='textoRedireccion' onClick={redirectInicioSesion}> Volver a iniciar sesión </p>
+                        <p className='textoRedireccion' onClick={redirectInicio}> Volver a inicio </p>
                     </div>
                 </>
             }
