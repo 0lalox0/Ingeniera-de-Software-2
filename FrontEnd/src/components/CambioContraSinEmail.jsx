@@ -17,7 +17,9 @@ export const CambioContraSinEmail = () => {
 
     const handleNewPasswordChange = (e) => {
         setNewPassword(e.target.value);
-        if (e.target.value !== confirmPassword) {
+        if (currentPassword === e.target.value) {
+            setError('La nueva contraseña no puede ser igual a la contraseña actual.');
+        } else if (e.target.value !== confirmPassword) {
             setError('La nueva contraseña y la confirmación de la contraseña no coinciden.');
         } else {
             setError('');
@@ -35,7 +37,7 @@ export const CambioContraSinEmail = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            cambiarContra();
+            cambiarContra(currentPassword, newPassword);
         }
     }
 
@@ -59,18 +61,19 @@ export const CambioContraSinEmail = () => {
     }
 
     return (
-        <div className='cambioContra' onKeyDown={handleKeyDown}>
+        <div className='cambioContra'>
             {cambiar ? (
                 <>
                     <h2> Cambiar contraseña</h2>
                     <label className='form-label' htmlFor='inputCurrentPassword'> Contraseña actual: </label>
-                    <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' />
+                    <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' onKeyDown={handleKeyDown} />
                     <label className='form-label' htmlFor='inputNewPassword'> Nueva contraseña: </label>
-                    <input type="password" className="form-control" value={newPassword} onChange={handleNewPasswordChange} id='inputNewPassword' />
+                    <input type="password" className="form-control" value={newPassword} onChange={handleNewPasswordChange} id='inputNewPassword' onKeyDown={handleKeyDown} />
                     <label className='form-label' htmlFor='inputConfirmPassword'> Confirmar nueva contraseña: </label>
-                    <input type="password" className="form-control" value={confirmPassword} onChange={handleConfirmPasswordChange} id='inputConfirmPassword' />
+                    <input type="password" className="form-control" value={confirmPassword} onChange={handleConfirmPasswordChange} id='inputConfirmPassword' onKeyDown={handleKeyDown} />
                     {error && <p className='errorContainer'> {error} </p>}
-                    <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>                </>
+                    <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>                
+                </>
             )
                 : <>
                     <div className='mensajeExito'>
