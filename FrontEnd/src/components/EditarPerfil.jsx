@@ -26,6 +26,11 @@ export const EditarPerfil = () => {
         }
     };
 
+    const validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     const validateDate = (date) => {
         const birthDate = new Date(date);
         const currentDate = new Date();
@@ -42,6 +47,12 @@ export const EditarPerfil = () => {
             setMessage('El campo no puede estar vacío.');
             return;
         }
+
+        if (isEmail && !validateEmail(field)) {
+            setMessage('El correo electrónico no es válido.');
+            return;
+        }
+
         const wasSuccessful = await updateAccount();
         if (wasSuccessful) {
             setIsEditing(false);
@@ -57,9 +68,10 @@ export const EditarPerfil = () => {
 
         if (user) {
             await updateEmail(user, newEmail).then(() => {
-                setMessage('Email actualizado con éxito en Firebase!');
+                console.log('Email actualizado con éxito en Firebase!');
+                localStorage.setItem("email", newEmail); // Actualizar el email en localStorage
             }).catch((error) => {
-                setMessage('Error al actualizar el email en Firebase');
+                console.log(`Error al actualizar el email en Firebase: ${error.message}`);
             });
         }
     };
@@ -175,26 +187,26 @@ export const EditarPerfil = () => {
             </div>
 
             <div className="mb-3">
-                <label htmlFor="emailUsuario"> Email: </label>
-                {isEditingEmail ? (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: 'white', border: '1px solid black' }}
-                            type="email" id='emailUsuario'
-                            value={email} onChange={e => setEmail(e.target.value)}
-                            placeholder='Email' onKeyDown={handleKeyDown} />
-                        <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
-                    </>
-                ) : (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                            type="email" id='emailUsuario'
-                            value={email} disabled />
-                        <button style={{ marginTop: '8px' }} onClick={() => setIsEditingEmail(true)}>Modificar</button>
-                    </>
-                )}
-            </div>
+    <label htmlFor="emailUsuario"> Email: </label>
+    {isEditingEmail ? (
+        <>
+            <input className="form-control"
+                style={{ backgroundColor: 'white', border: '1px solid black' }}
+                type="email" id='emailUsuario'
+                value={email} onChange={e => setEmail(e.target.value)}
+                placeholder='Email' onKeyDown={handleKeyDown} />
+            <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
+        </>
+    ) : (
+        <>
+            <input className="form-control"
+                style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
+                type="email" id='emailUsuario'
+                value={email} disabled />
+            <button style={{ marginTop: '8px' }} onClick={() => setIsEditingEmail(true)}>Modificar</button>
+        </>
+    )}
+</div>
 
             <div className="mb-3">
                 <label htmlFor="fechaNacimientoUsuario"> Fecha de nacimiento: </label>
