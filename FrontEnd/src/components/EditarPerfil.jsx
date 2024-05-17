@@ -47,17 +47,21 @@ export const EditarPerfil = () => {
             setMessage('El campo no puede estar vacío.');
             return;
         }
-
+    
         if (isEmail && !validateEmail(field)) {
             setMessage('El correo electrónico no es válido.');
             return;
         }
-
-        const wasSuccessful = await updateAccount();
-        if (wasSuccessful) {
-            setIsEditing(false);
-            if (isEmail) {
-                await updateEmailInFirebase(field);
+    
+        if (isEmail) {
+            const wasSuccessful = await updateEmailInFirebase(field);
+            if (wasSuccessful) {
+                setIsEditing(false);
+            }
+        } else {
+            const wasSuccessful = await updateAccount();
+            if (wasSuccessful) {
+                setIsEditing(false);
             }
         }
     };
@@ -65,15 +69,41 @@ export const EditarPerfil = () => {
     const updateEmailInFirebase = async (newEmail) => {
         const auth = getAuth();
         const user = auth.currentUser;
-
+    
         if (user) {
-            await updateEmail(user, newEmail).then(() => {
+            try {
+                await updateEmail(user, newEmail);
                 console.log('Email actualizado con éxito en Firebase!');
                 localStorage.setItem("email", newEmail); // Actualizar el email en localStorage
-            }).catch((error) => {
-                console.log(`Error al actualizar el email en Firebase: ${error.message}`);
-            });
+    
+                // Actualizar el email en mongo
+                const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: newEmail
+                    })
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el email en la base de datos');
+                }
+    
+                setMessage('Email actualizado con éxito!');
+                return true;
+            } catch (e) {
+                console.log(e.message);
+                if (e.message.includes("(auth/email-already-in-use)")) {
+                    setMessage("El email ingresado ya se encuentra registrado");
+                } else {
+                    setMessage("Error al actualizar el email");
+                }
+                return false;
+            }
         }
+        return false;
     };
 
     useEffect(() => {
@@ -229,7 +259,7 @@ export const EditarPerfil = () => {
                 )}
             </div>
 
-            <p style={{ color: message === 'Usuario actualizado con éxito!' ? '#07f717' : 'red' }}> {message} </p>
+            <p style={{ color: message === 'Email actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
             <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
         </div>
     )
