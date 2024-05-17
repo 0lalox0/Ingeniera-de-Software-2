@@ -96,7 +96,7 @@ header {
   border-color: #646cff;
 }
 
-@media (max-width: 880px) {
+@media (max-width: 900px) {
 
   header .search-container,
   header .menuOpciones,
@@ -105,11 +105,17 @@ header {
   }
 
   #logoFerreplus {
-    width: 35%;
+    width: 40%;
   }
 
   #dropdown {
     display: block !important;
+    position: absolute;
+    right: 1%;
+  }
+
+  .card-container {
+    margin-top: 21% !important;
   }
 }
 
@@ -347,7 +353,7 @@ td {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 21%;
+  margin-top: 12%;
 }
 
 .card {

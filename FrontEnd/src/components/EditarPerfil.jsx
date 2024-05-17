@@ -18,7 +18,7 @@ export const EditarPerfil = () => {
     const emailLocal = localStorage.getItem("email");
     const [error, setError] = useState('');
 
-
+    const redirectMiPerfil = () => navigate('/perfilusuario');
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -30,27 +30,22 @@ export const EditarPerfil = () => {
         const birthDate = new Date(date);
         const currentDate = new Date();
         const eighteenYearsAgo = new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDate());
-
         if (birthDate > eighteenYearsAgo) {
             setMessage('Debes tener al menos 18 años.');
             return false;
         }
-
         return true;
     };
-    const validateAndSave = async (field, setIsEditing, isEmail = false) => {
 
+    const validateAndSave = async (field, setIsEditing, isEmail = false) => {
         if (!field.trim()) {
             setMessage('El campo no puede estar vacío.');
             return;
         }
-
         const wasSuccessful = await updateAccount();
         if (wasSuccessful) {
             setIsEditing(false);
-
             if (isEmail) {
-
                 await updateEmailInFirebase(field);
             }
         }
@@ -68,7 +63,6 @@ export const EditarPerfil = () => {
             });
         }
     };
-
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -101,11 +95,11 @@ export const EditarPerfil = () => {
             setMessage('El campo fecha de nacimiento no puede estar vacío.');
             return false;
         }
-    
+
         if (!validateDate(date)) {
             return false;
         }
-    
+
         try {
             const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
                 method: 'PUT',
@@ -119,11 +113,11 @@ export const EditarPerfil = () => {
                     date: date
                 })
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error al actualizar el usuario');
             }
-    
+
             setMessage('Usuario actualizado con éxito!');
             return true;
         } catch (error) {
@@ -223,7 +217,8 @@ export const EditarPerfil = () => {
                 )}
             </div>
 
-            <p style={{ color: message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
+            <p style={{ color: message === 'Usuario actualizado con éxito!' ? '#07f717' : 'red' }}> {message} </p>
+            <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
         </div>
     )
 }

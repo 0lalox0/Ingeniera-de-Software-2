@@ -28,7 +28,7 @@ export const HeaderFerreplus = () => {
     return location.pathname === path;
   }
 
-  const { user, role } = useUser();
+  const { role } = useUser();
 
   return (
     <header>
@@ -76,6 +76,7 @@ export const HeaderFerreplus = () => {
             <li><a className="dropdown-item" onClick={redirectHome}> Catálogo de ventas</a></li>
             <li><a className="dropdown-item" onClick={redirectIntercambios}>Intercambios</a></li>
             <li><a className="dropdown-item" onClick={redirectSucursales}>Sucursales</a></li>
+            <li><hr className="dropdown-divider" /></li>
             {role === 'admin' ? <>
               <li><a className="dropdown-item" onClick={redirectAdmin}>Administrar</a></li>
               <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>

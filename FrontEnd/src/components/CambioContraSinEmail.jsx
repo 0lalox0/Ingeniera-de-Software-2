@@ -1,7 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, EmailAuthProvider, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
+import useUser from '../hooks/useUser';
+import { Mantenimiento } from './Mantenimiento';
 
 export const CambioContraSinEmail = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -10,30 +12,12 @@ export const CambioContraSinEmail = () => {
     const [error, setError] = useState('');
     const [cambiar, setCambiar] = useState(true);
     const navigate = useNavigate();
+    const currentPasswordRef = useRef(null);
+    const newPasswordRef = useRef(null);
+    const confirmPasswordRef = useRef(null);
+    const { role } = useUser();
 
-    const redirectInicio = () => {
-        navigate('/');
-    };
-
-    const handleNewPasswordChange = (e) => {
-        setNewPassword(e.target.value);
-        if (currentPassword === e.target.value) {
-            setError('La nueva contraseña no puede ser igual a la contraseña actual.');
-        } else if (e.target.value !== confirmPassword) {
-            setError('La nueva contraseña y la confirmación de la contraseña no coinciden.');
-        } else {
-            setError('');
-        }
-    }
-
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-        if (newPassword !== e.target.value) {
-            setError('La nueva contraseña y la confirmación de la contraseña no coinciden.');
-        } else {
-            setError('');
-        }
-    }
+    const redirectMiPerfil = () => navigate('/perfilusuario');
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -42,12 +26,39 @@ export const CambioContraSinEmail = () => {
     }
 
     const cambiarContra = async (currentPassword, newPassword) => {
+        [currentPasswordRef, newPasswordRef, confirmPasswordRef].forEach(label => label.current.style.color = '');
+        if (currentPassword === '') {
+            setError('Por favor, ingresá tu contraseña actual.');
+            currentPasswordRef.current.style.color = 'red';
+            return;
+        }
+        if (newPassword === '') {
+            setError('Por favor, ingresá la nueva contraseña.');
+            newPasswordRef.current.style.color = 'red';
+            return;
+        }
+        if (confirmPassword === '') {
+            setError('Por favor, confirmá tu contraseña.');
+            confirmPasswordRef.current.style.color = 'red';
+            return;
+        }
+        if (currentPassword === newPassword) {
+            setError('La nueva contraseña no puede ser igual a la contraseña actual.');
+            currentPasswordRef.current.style.color = 'red';
+            newPasswordRef.current.style.color = 'red';
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            setError('La nueva contraseña y la confirmación de la contraseña no coinciden.');
+            newPasswordRef.current.style.color = 'red';
+            confirmPasswordRef.current.style.color = 'red';
+            return;
+        }
+
         const auth = getAuth();
         const user = auth.currentUser;
         const email = localStorage.getItem("email");
-        console.log(email);
         const credential = EmailAuthProvider.credential(email, currentPassword);
-
         reauthenticateWithCredential(user, credential)
             .then(() => {
                 return updatePassword(user, newPassword);
@@ -55,34 +66,40 @@ export const CambioContraSinEmail = () => {
             .then(() => {
                 setCambiar(false);
             })
-            .catch((error) => {
-                setError('Error al reautenticar: ' + error.message);
+            .catch(() => {
+                setError('Error al reautenticar.');
+                currentPasswordRef.current.style.color = 'red';
             });
     }
 
     return (
-        <div className='cambioContra'>
-            {cambiar ? (
-                <>
-                    <h2> Cambiar contraseña</h2>
-                    <label className='form-label' htmlFor='inputCurrentPassword'> Contraseña actual: </label>
-                    <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' onKeyDown={handleKeyDown} />
-                    <label className='form-label' htmlFor='inputNewPassword'> Nueva contraseña: </label>
-                    <input type="password" className="form-control" value={newPassword} onChange={handleNewPasswordChange} id='inputNewPassword' onKeyDown={handleKeyDown} />
-                    <label className='form-label' htmlFor='inputConfirmPassword'> Confirmar nueva contraseña: </label>
-                    <input type="password" className="form-control" value={confirmPassword} onChange={handleConfirmPasswordChange} id='inputConfirmPassword' onKeyDown={handleKeyDown} />
-                    {error && <p className='errorContainer'> {error} </p>}
-                    <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>                
-                </>
-            )
-                : <>
-                    <div className='mensajeExito'>
-                        <h2 style={{ color: "#242465" }}> ¡Listo!</h2>
-                        <p> Su contraseña ha sido actualizada con exito</p>
-                        <p className='textoRedireccion' onClick={redirectInicio}> Volver a inicio </p>
-                    </div>
-                </>
-            }
-        </div>
+        <>
+            {role === 'cliente' ?
+                <div className='cambioContra' onKeyDown={handleKeyDown} >
+                    {cambiar ? (
+                        <>
+                            <h2> Cambiar contraseña </h2>
+                            <label className='form-label' htmlFor='inputCurrentPassword' ref={currentPasswordRef}> Contraseña actual: </label>
+                            <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' />
+                            <label className='form-label' htmlFor='inputNewPassword' ref={newPasswordRef}> Nueva contraseña: </label>
+                            <input type="password" className="form-control" value={newPassword} onChange={e => setNewPassword(e.target.value)} id='inputNewPassword' />
+                            <label className='form-label' htmlFor='inputConfirmPassword' ref={confirmPasswordRef}> Confirmar nueva contraseña: </label>
+                            <input type="password" className="form-control" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} id='inputConfirmPassword' />
+                            {error && <p className='errorContainer'> {error} </p>}
+                            <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>
+                            <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
+                        </>
+                    )
+                        : <>
+                            <div className='mensajeExito'>
+                                <h2 style={{ color: "#242465" }}> ¡Listo!</h2>
+                                <p> Su contraseña ha sido actualizada con exito</p>
+                                <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
+                            </div>
+                        </>
+                    }
+                </div>
+                : <Mantenimiento></Mantenimiento>}
+        </>
     )
 }

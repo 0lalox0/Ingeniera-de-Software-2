@@ -99,7 +99,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
-          <p style={{ color: message === 'Sucursal agregada con éxito!' ? 'green' : 'red' }}> {message} </p>
+          <p style={{ color: message === 'Sucursal agregada con éxito!' ? '#07f717' : 'red' }}> {message} </p>
           <p className="textoRedireccion" onClick={redirectSucursales}> Volver a Gestión de Sucursales</p>
         </div>
         : <Mantenimiento> </Mantenimiento>

@@ -55,7 +55,7 @@ export const FormularioRegistro = () => {
             setError('Se debe ingresar un mail.');
             return;
         }
-        if (email.endsWith('@admin.ferreplus.com') || email.endsWith('@ferreplus.com')) {
+        if (email.endsWith('ferreplus.com')) {2
             setError('No se pueden usar emails de Ferreplus.')
             return;
         }
@@ -74,8 +74,7 @@ export const FormularioRegistro = () => {
         try {
             await createUserWithEmailAndPassword(getAuth(), email, password);
             navigate('/productos');
-            localStorage.setItem("email", email);
-            //si se crea la cuenta, hay que guardar la info en mongodb
+            localStorage.setItem("email", email); //si se crea la cuenta, hay que guardar la info en mongodb
             try {
                 const response = await fetch('http://localhost:8000/api/users', {
                     method: 'POST',
@@ -90,7 +89,6 @@ export const FormularioRegistro = () => {
                     })
                 });
                 const data = await response.json();
-                console.log(data);
                 setMessage("Usuario agregado con éxito!");
             } catch (error) {
                 setMessage("Hubo un error al agregar al usuario a mongodb.");
