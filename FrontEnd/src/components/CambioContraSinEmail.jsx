@@ -66,8 +66,13 @@ export const CambioContraSinEmail = () => {
             .then(() => {
                 setCambiar(false);
             })
-            .catch(() => {
-                setError('Error al reautenticar.');
+            .catch((error) => {
+                console.log(error.message); 
+                if (error.message.includes("(auth/weak-password)")) {
+                    setError("La contraseña debe tener al menos 6 caracteres");
+                } else {
+                    setError("Error al reautenticar");
+                }
                 currentPasswordRef.current.style.color = 'red';
             });
     }
