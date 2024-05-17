@@ -16,6 +16,7 @@ import { GestionSucursales } from './components/GestionSucursales'
 import { GestionEmpleados } from './components/GestionEmpleados'
 import { SubirImagen } from './components/SubirImagen'
 import { EditarPerfil } from './components/EditarPerfil'
+import { EliminarSucursal } from './components/EliminarSucursal'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -39,6 +40,7 @@ function App() {
         <Route path='/admin/empleados' element={<GestionEmpleados />}> </Route>
         <Route path='/SubirImagen' element={<SubirImagen />}> </Route>
         <Route path='/editarPerfil' element={<EditarPerfil />}> </Route>
+        <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
       </Routes>
     </>
   )

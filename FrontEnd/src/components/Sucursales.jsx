@@ -16,22 +16,21 @@ export const Sucursales = () => {
                 <h1 style={{ color: "#242465" }}>Sucursales de Ferreplus</h1>
                 <p style={{ color: "#242465" }}> ¡Conocé las sucursales de Ferreplus!</p>
             </div>
-            <table>
+            <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Ciudad</th>
-                        <th>Calle</th>
-                        <th>Número</th>
-                        <th>Horario de Apertura</th>
-                        <th>Horario de Cierre</th>
+                        <th style={{ color: "#242465" }} scope="col">Nombre</th>
+                        <th style={{ color: "#242465" }} scope="col">Ciudad</th>
+                        <th style={{ color: "#242465" }} scope="col">Número</th>
+                        <th style={{ color: "#242465" }} scope="col">Calle</th>
+                        <th style={{ color: "#242465" }} scope="col">Horario de Apertura</th>
+                        <th style={{ color: "#242465" }} scope="col">Horario de Cierre</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="table-group-divider">
                     {sucursales.map((sucursal) => {
                         const horarioApertura = new Date(sucursal.horarioApertura);
                         const horarioCierre = new Date(sucursal.horarioCierre);
-
                         return (
                             <tr key={sucursal._id}>
                                 <td>{sucursal.nombre}</td>

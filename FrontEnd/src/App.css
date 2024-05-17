@@ -275,7 +275,6 @@ header {
 
 /* SUCURSALES */
 .titulo-sucursales,
-.titulo-intercambios,
 .titulo-productos {
   display: flex;
   position: absolute;
@@ -302,16 +301,6 @@ header {
   color: #242465;
 }
 
-.clase-sucursales th,
-tbody,
-tr,
-thead,
-td {
-  border: 1px solid red
-}
-
-/* es para que se note el borde nomas x ahora */
-
 .clase-sucursales table {
   position: absolute;
   top: 36%;
@@ -320,13 +309,33 @@ td {
   margin-top: 1.2%;
 }
 
-.clase-sucursales th,
-td {
-  padding: 1rem;
+th,
+td:hover {
+  cursor: default;
 }
 
+
+@media (max-height: 582px) {
+  .clase-sucursales table {
+    top: 45%;
+  }
+
+  header .search-container,
+  header .menuOpciones,
+  header .botones {
+    display: none;
+  }
+
+  #dropdown {
+    display: block !important;
+    position: absolute;
+    right: 1%;
+  }
+}
+
+
 /* PRODUCTOS */
-.productos-intercambio {
+.productos-compra {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,7 +355,7 @@ td {
 }
 
 #textoInfoPerfil {
-  top:15vh;
+  top: 15vh;
 }
 
 .card-container {
@@ -392,7 +401,6 @@ td {
   line-height: 1.3;
 }
 
-
 .contenedor-imagen {
   max-width: 100%;
   height: auto;
@@ -403,4 +411,16 @@ td {
 .contenedor-imagen img {
   max-width: 100%;
   height: auto;
+}
+
+/* INTERCAMBIOS */
+.clase-intercambios {
+  margin: 0 auto !important;
+  text-align: left !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  left: 1%;
+  top: 25%;
 }

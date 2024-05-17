@@ -8,22 +8,22 @@ export const Productos = () => {
         // Productos de prueba, los vamos a tener que sacar de la bd
     ];
 
-    const { user, isLoading, role } = useUser();
+    const { user, role } = useUser();
 
     return (
         <div>
             <div className="titulo-productos">
                 <h1 style={{ color: "#242465" }} >Productos de Ferreplus</h1>
             </div>
-            <div className="productos-intercambio">
+            <div className="productos-compra">
                 <ul>
                     {productos.map((producto) => (
                         <li key={producto.id}>
                             {producto.nombre} - ${producto.precio}
                             {role === 'admin'
                                 ? <button>Borrar</button>
-                                : user
-                                    ? <button>Comprar</button>
+                                : role === 'cliente' ?
+                                    <button> Comprar </button>
                                     : <button>Login para comprar</button>
                             }
 
