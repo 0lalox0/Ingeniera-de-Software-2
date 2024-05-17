@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { getAuth, updateEmail } from "firebase/auth";
+import useUser from '../hooks/useUser';
+import { Mantenimiento } from './Mantenimiento';
 
 
 
@@ -17,6 +19,7 @@ export const EditarPerfil = () => {
     const [isEditingSurname, setIsEditingSurname] = useState(false);
     const emailLocal = localStorage.getItem("email");
     const [error, setError] = useState('');
+    const { role } = useUser();
 
     const redirectMiPerfil = () => navigate('/perfilusuario');
 
@@ -47,12 +50,12 @@ export const EditarPerfil = () => {
             setMessage('El campo no puede estar vacío.');
             return;
         }
-    
+
         if (isEmail && !validateEmail(field)) {
             setMessage('El correo electrónico no es válido.');
             return;
         }
-    
+
         if (isEmail) {
             const wasSuccessful = await updateEmailInFirebase(field);
             if (wasSuccessful) {
@@ -69,13 +72,13 @@ export const EditarPerfil = () => {
     const updateEmailInFirebase = async (newEmail) => {
         const auth = getAuth();
         const user = auth.currentUser;
-    
+
         if (user) {
             try {
                 await updateEmail(user, newEmail);
                 console.log('Email actualizado con éxito en Firebase!');
                 localStorage.setItem("email", newEmail); // Actualizar el email en localStorage
-    
+
                 // Actualizar el email en mongo
                 const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
                     method: 'PUT',
@@ -86,11 +89,11 @@ export const EditarPerfil = () => {
                         email: newEmail
                     })
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Error al actualizar el email en la base de datos');
                 }
-    
+
                 setMessage('Email actualizado con éxito!');
                 return true;
             } catch (e) {
@@ -169,98 +172,102 @@ export const EditarPerfil = () => {
     };
 
     return (
-        <div className='formularioSucursal' onKeyDown={handleKeyDown}>
-            <h2>Editar perfil </h2>
-
-            <div className="mb-3">
-                <label htmlFor="nombreUsuario" style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre </label>
-                {isEditingName ? (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: 'white', border: '1px solid black' }}
-                            type="text" id='nombreUsuario'
-                            value={name} onChange={e => setName(e.target.value)}
-                            placeholder='Nombre' onKeyDown={handleKeyDown} />
-                        <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(name, setIsEditingName); }}>Guardar</button>
-                    </>
-                ) : (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                            type="text" id='nombreUsuario'
-                            value={name} disabled />
-                        <button style={{ marginTop: '8px' }} onClick={() => setIsEditingName(true)}>Modificar</button>
-                    </>
-                )}
-            </div>
-
-            <div className="mb-3">
-                <label htmlFor="apellidoUsuario"> Apellido: </label>
-                {isEditingSurname ? (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: 'white', border: '1px solid black' }}
-                            type="text" id='apellidoUsuario'
-                            value={surname} onChange={e => setSurname(e.target.value)}
-                            placeholder='Apellido' onKeyDown={handleKeyDown} />
-                        <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(surname, setIsEditingSurname); }}>Guardar</button>
-                    </>
-                ) : (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                            type="text" id='apellidoUsuario'
-                            value={surname} disabled />
-                        <button style={{ marginTop: '8px' }} onClick={() => setIsEditingSurname(true)}>Modificar</button>
-                    </>
-                )}
-            </div>
-
-            <div className="mb-3">
-    <label htmlFor="emailUsuario"> Email: </label>
-    {isEditingEmail ? (
         <>
-            <input className="form-control"
-                style={{ backgroundColor: 'white', border: '1px solid black' }}
-                type="email" id='emailUsuario'
-                value={email} onChange={e => setEmail(e.target.value)}
-                placeholder='Email' onKeyDown={handleKeyDown} />
-            <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
-        </>
-    ) : (
-        <>
-            <input className="form-control"
-                style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                type="email" id='emailUsuario'
-                value={email} disabled />
-            <button style={{ marginTop: '8px' }} onClick={() => setIsEditingEmail(true)}>Modificar</button>
-        </>
-    )}
-</div>
+            {role === 'cliente' ?
+                <div className='formularioSucursal' onKeyDown={handleKeyDown}>
+                    <h2>Editar perfil </h2>
 
-            <div className="mb-3">
-                <label htmlFor="fechaNacimientoUsuario"> Fecha de nacimiento: </label>
-                {isEditingDate ? (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: 'white', border: '1px solid black' }}
-                            type="date" id='fechaNacimientoUsuario'
-                            value={date} onChange={e => setDate(e.target.value)} />
-                        <button style={{ marginTop: '8px' }} onClick={() => { if (validateDate(date)) { updateAccount(); setIsEditingDate(false); } }}>Guardar</button>
-                    </>
-                ) : (
-                    <>
-                        <input className="form-control"
-                            style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                            type="date" id='fechaNacimientoUsuario'
-                            value={date} disabled />
-                        <button style={{ marginTop: '8px' }} onClick={() => setIsEditingDate(true)}>Modificar</button>
-                    </>
-                )}
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="nombreUsuario" style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre </label>
+                        {isEditingName ? (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
+                                    type="text" id='nombreUsuario'
+                                    value={name} onChange={e => setName(e.target.value)}
+                                    placeholder='Nombre' onKeyDown={handleKeyDown} />
+                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(name, setIsEditingName); }}>Guardar</button>
+                            </>
+                        ) : (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
+                                    type="text" id='nombreUsuario'
+                                    value={name} disabled />
+                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingName(true)}>Modificar</button>
+                            </>
+                        )}
+                    </div>
 
-            <p style={{ color: message === 'Email actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
-            <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
-        </div>
+                    <div className="mb-3">
+                        <label htmlFor="apellidoUsuario"> Apellido: </label>
+                        {isEditingSurname ? (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
+                                    type="text" id='apellidoUsuario'
+                                    value={surname} onChange={e => setSurname(e.target.value)}
+                                    placeholder='Apellido' onKeyDown={handleKeyDown} />
+                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(surname, setIsEditingSurname); }}>Guardar</button>
+                            </>
+                        ) : (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
+                                    type="text" id='apellidoUsuario'
+                                    value={surname} disabled />
+                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingSurname(true)}>Modificar</button>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="emailUsuario"> Email: </label>
+                        {isEditingEmail ? (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
+                                    type="email" id='emailUsuario'
+                                    value={email} onChange={e => setEmail(e.target.value)}
+                                    placeholder='Email' onKeyDown={handleKeyDown} />
+                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
+                            </>
+                        ) : (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
+                                    type="email" id='emailUsuario'
+                                    value={email} disabled />
+                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingEmail(true)}>Modificar</button>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="fechaNacimientoUsuario"> Fecha de nacimiento: </label>
+                        {isEditingDate ? (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
+                                    type="date" id='fechaNacimientoUsuario'
+                                    value={date} onChange={e => setDate(e.target.value)} />
+                                <button style={{ marginTop: '8px' }} onClick={() => { if (validateDate(date)) { updateAccount(); setIsEditingDate(false); } }}>Guardar</button>
+                            </>
+                        ) : (
+                            <>
+                                <input className="form-control"
+                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
+                                    type="date" id='fechaNacimientoUsuario'
+                                    value={date} disabled />
+                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingDate(true)}>Modificar</button>
+                            </>
+                        )}
+                    </div>
+
+                    <p style={{ color: message === 'Email actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
+                </div>
+                : <Mantenimiento></Mantenimiento>}
+        </>
     )
 }
