@@ -1,5 +1,22 @@
 document.getElementById("buton").addEventListener("click",async () =>{
-    console.log("hola");
+  console.log("hola");
+  function convertBase64(file){
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    return fileReader.result;
+  }
+  let t = "http://localhost:8000/subirImagen";
+  let img = convertBase64("C:\Users\lalo\Ingeniera-de-Software-2\BackEnd\src\Lalo.jpeg");
+  const res = await fetch("http://localhost:8000/subirImagen",{
+    method:"POST",
+    headers:{
+        "Content-Type" : "applicaation/json"
+    },
+    body: JSON.stringify({
+        image: img
+    })
+   });
+  /* console.log("hola");
     let email = localStorage.getItem("email");
     let t = "http://localhost:8000/api/users/" + email;
     try {
@@ -8,7 +25,7 @@ document.getElementById("buton").addEventListener("click",async () =>{
         console.log(data.name);
       } catch (error) {
         console.error('Error:', error);
-      }
+      }*/
     /*  const res = await fetch("http://localhost:8000/api/sucursales",{
     method:"POST",
     headers:{

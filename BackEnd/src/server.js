@@ -6,7 +6,15 @@ import dotenv from 'dotenv'
 import userRouter from './routes/userRoute.js'
 import sucursalRouter from './routes/sucursalRoute.js'
 import cors from 'cors';
+import uploadImage from './uploadImage.cjs'
+//Couldinary
+import {v2 as cloudinary} from 'cloudinary';
 
+cloudinary.config({ 
+  cloud_name: 'dr05fh5qy', 
+  api_key: '175555578283967', 
+  api_secret: 'tpDsgs61QWeIFeIOe4Pm8E_Hu3o' 
+});
 //mongodb connection
 dotenv.config()
 mongoose.connect(process.env.MONGODB_URI)
@@ -46,7 +54,12 @@ app.use(async (req, res, next) => {
 app.use(express.json())
 app.use('/api', userRouter)
 app.use('/api', sucursalRouter)
-
+//Cloudinary
+app.post("/SubirImagen", (req, res) => {
+  uploadImage(req.body.image)
+    .then((url) => res.send(url))
+    .catch((err) => res.status(500).send(err));
+});
 
 app.get('/', (req, res) => {
   res.send('Hello');
