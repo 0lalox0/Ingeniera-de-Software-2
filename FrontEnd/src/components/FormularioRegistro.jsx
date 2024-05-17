@@ -91,10 +91,20 @@ export const FormularioRegistro = () => {
                 const data = await response.json();
                 setMessage("Usuario agregado con éxito!");
             } catch (error) {
+                console.log(error.message);
                 setMessage("Hubo un error al agregar al usuario a mongodb.");
             }
         } catch (e) {
-            setError(e.message);
+            console.log(e.message);
+            if (e.message.includes("(auth/weak-password)")) {
+                setError("Contraseña débil");
+            } else if (e.message.includes("(auth/email-already-in-use)")) {
+                setError("El email ingresado ya se encuentra registrado");
+            } else if (e.message.includes("(auth/invalid-email)")) {
+                setError("Email inválido");
+            } else {
+                setError("Error al crear la cuenta");
+            }
         }
     }
 
