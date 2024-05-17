@@ -26,6 +26,7 @@ export const PerfilUsuario = () => {
     }
     const navigate = useNavigate();
     const redirectCambioContraSinEmail = () => navigate('/cambiocontrasinemail');
+    const redirectEditarPerfil = () => navigate('/editarPerfil');
 
     return (
         <>
@@ -51,7 +52,7 @@ export const PerfilUsuario = () => {
                             </div>
                         </div>
 
-                        <div className="card">
+                        <div className="card" onClick={redirectEditarPerfil}>
                             <img src={userIcon} alt="" />
                             <div className="card-content">
                                 <h3> Mis datos</h3>
