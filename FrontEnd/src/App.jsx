@@ -19,7 +19,6 @@ import { EditarPerfil } from './components/EditarPerfil'
 import { EliminarSucursal } from './components/EliminarSucursal'
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>

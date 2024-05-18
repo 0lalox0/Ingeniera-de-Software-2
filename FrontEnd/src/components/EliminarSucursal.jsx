@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Mantenimiento } from './Mantenimiento';
 import useUser from '../hooks/useUser';
+import { useNavigate } from 'react-router-dom';
 
 
 export const EliminarSucursal = () => {
     const { role } = useUser();
+    const navigate = useNavigate();
     const [sucursales, setSucursales] = useState([]);
-    const [confirmDelete, setConfirmDelete] = useState(null);
+    const [eliminar, setEliminar] = useState(false);
+    const [mensajeEliminar, setMensajeEliminar] = useState('');
+
+    const redirectSucursales = () => navigate('/admin/sucursales');
 
     useEffect(() => {
         fetch('http://localhost:8000/api/sucursales')
@@ -15,24 +20,53 @@ export const EliminarSucursal = () => {
             .catch(error => console.error('Error:', error));
     }, []);
 
-    const handleDeleteClick = (sucursalId) => setConfirmDelete(sucursalId);
+    const encontrarSucursal = (idSucursal) => {
+        return sucursales.find(s => s._id === idSucursal);
+    }
 
-    const handleConfirmClick = (sucursalId) => {
-        console.log(`Eliminar sucursal con ID: ${sucursalId}`);
-        setConfirmDelete(null);
+    const botonEliminar = (sucursalId) => {
+        setEliminar(sucursalId);
+        setMensajeEliminar('¿Estás seguro de querer borrar esta sucursal?');
+    }
+
+    const botonConfirmar = async (sucursalId) => {
+        setEliminar(null);
+        let sucursalEliminar = encontrarSucursal(sucursalId);
+        try {
+            const url = `http://localhost:8000/api/sucursales/${sucursalId}`;
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+
+            const response = await fetch(url, options);
+            if (!response.ok)
+                throw new Error('No se pudo eliminar la sucursal');
+        } catch {
+            setMensajeEliminar('Hubo un error al intentar eliminar la sucursal.');
+        }
+        setSucursales(sucursales.filter(sucursal => sucursal._id !== sucursalId));
+        setMensajeEliminar(`Se eliminó la sucursal con nombre ${sucursalEliminar.nombre}, ubicada en la calle ${sucursalEliminar.calle} número ${sucursalEliminar.numero} de la ciudad ${sucursalEliminar.ciudad}.`);
     };
 
-    const handleCancelClick = () => setConfirmDelete(null);
+    const botonCancelar = () => {
+        setEliminar(null);
+        setMensajeEliminar('');
+    }
 
     return (
         <>
             {role === 'admin' ?
                 <>
+                    <div className='eliminacion-sucursales'>
+                        <h1 style={{ color: "#242465" }}> Eliminar sucursal de Ferreplus </h1>
+                        <p className='textoRedireccion' onClick={redirectSucursales}> Volver a la gestión de sucursales</p>
+                        <p style={{ color: 'red' }}> {mensajeEliminar}</p>
+                    </div>
                     <div className='clase-sucursales'>
-                        <div className='titulo-sucursales'>
-                            <h1 style={{ color: "#242465" }}>Eliminar sucursal de Ferreplus</h1>
-                        </div>
-                        <table className="table table-hover">
+                        <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>
                             <thead>
                                 <tr>
                                     <th style={{ color: "#242465" }} scope="col">Nombre</th>
@@ -57,13 +91,13 @@ export const EliminarSucursal = () => {
                                             <td>{isNaN(horarioApertura) ? 'Invalid date' : horarioApertura.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                                             <td>{isNaN(horarioCierre) ? 'Invalid date' : horarioCierre.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                                             <td>
-                                                {confirmDelete === sucursal._id ? (
+                                                {eliminar === sucursal._id ? (
                                                     <>
-                                                        <button onClick={() => handleConfirmClick(sucursal._id)}>Confirmar</button>
-                                                        <button onClick={handleCancelClick}>Cancelar</button>
+                                                        <button onClick={() => botonConfirmar(sucursal._id)} className='botonEliminar'>Confirmar</button>
+                                                        <button onClick={botonCancelar}>Cancelar</button>
                                                     </>
                                                 ) : (
-                                                    <button onClick={() => handleDeleteClick(sucursal._id)}>Eliminar sucursal</button>
+                                                    <button onClick={() => botonEliminar(sucursal._id)} className='botonEliminar'>Eliminar sucursal</button>
                                                 )}
                                             </td>
                                         </tr>

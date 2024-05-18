@@ -314,7 +314,6 @@ td:hover {
   cursor: default;
 }
 
-
 @media (max-height: 582px) {
   .clase-sucursales table {
     top: 45%;
@@ -333,6 +332,36 @@ td:hover {
   }
 }
 
+.botonEliminar {
+  background-color: red;
+  color: white;
+  border: 2px solid transparent;
+  margin: 5px;
+  font-weight: 400;
+}
+
+.botonEliminar:hover {
+  border-color: rgb(215, 32, 22);
+}
+
+.eliminacion-sucursales {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 25%;
+  left: 0;
+  padding: 10px;
+  width: 100%;
+}
+
+.eliminacion-sucursales h1 {
+  font-size: calc(1.5rem + 1.5vw);
+}
+
+#tablaSucursalesEliminar {
+  top: 40%;
+}
 
 /* PRODUCTOS */
 .productos-compra {

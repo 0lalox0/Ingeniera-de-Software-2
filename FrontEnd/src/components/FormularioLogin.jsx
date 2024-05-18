@@ -12,9 +12,9 @@ export const FormularioLogin = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-          logIn();
+            logIn();
         }
-      }; 
+    };
 
     const logIn = async () => {
         if (email == '') {
@@ -54,20 +54,20 @@ export const FormularioLogin = () => {
                     aria-describedby="emailHelp"
                     placeholder='ejemplo123@gmail.com'
                     value={email}
-                    onChange={e => setEmail(e.target.value)} 
-                    onKeyDown={handleKeyDown}/>
+                    onChange={e => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown} />
             </div>
 
             <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" style={{color: error === 'Se debe ingresar la contraseña de ' + email ? 'red' : 'black'}}>Contraseña:</label>
+                <label htmlFor="exampleInputPassword1" className="form-label" style={{ color: error === 'Se debe ingresar la contraseña de ' + email ? 'red' : 'black' }}>Contraseña:</label>
                 <input
                     className="form-control"
                     id="exampleInputPassword1"
                     type="password"
                     placeholder='Contraseña'
                     value={password}
-                    onChange={e => setPassword(e.target.value)} 
-                    onKeyDown={handleKeyDown}/>
+                    onChange={e => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown} />
             </div>
             <button className="btn btn-primary" onClick={logIn}>Iniciar sesión</button>
 

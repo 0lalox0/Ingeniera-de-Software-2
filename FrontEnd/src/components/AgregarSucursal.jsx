@@ -15,6 +15,12 @@ export const AgregarSucursal = () => {
   const redirectSucursales = () => navigate('/admin/sucursales');
   const { role } = useUser();
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+        agregarSucursal();
+    }
+};
+
   const agregarSucursal = async () => {
     const horaAperturaDate = new Date('1970-01-01T' + horarioApertura);
     const horaCierreDate = new Date('1970-01-01T' + horarioCierre);
@@ -44,7 +50,7 @@ export const AgregarSucursal = () => {
   return (
     <>
       {role === 'admin' ?
-        <div className='formularioSucursal'>
+        <div className='formularioSucursal' onKeyDown={handleKeyDown}>
           <h2>Agregar sucursal: </h2>
 
           <div className="mb-3">
