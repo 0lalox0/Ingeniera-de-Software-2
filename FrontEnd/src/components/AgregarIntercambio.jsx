@@ -4,7 +4,7 @@ import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import axios from "axios";
 
-export const AgregarIntercambio = () => {
+export const AgregarIntercambio =  () => {
     const navigate = useNavigate();
     const { role } = useUser();
     const [sucursales, setSucursales] = useState([]);
@@ -68,12 +68,14 @@ export const AgregarIntercambio = () => {
     
         const uploadImage = async (f) => {
         const files = f;
-        console.log(f);
-        console.log(files.length);
+        //console.log(f);
+        //console.log(files.length);
     
         if (files.length === 1) {
           const base64 = await convertBase64(files[0]);
-          return uploadSingleImage(base64);
+          let IMG = uploadSingleImage(base64);
+          console.log(IMG);
+          return IMG;
         }
     
         const base64s = [];
@@ -161,18 +163,17 @@ export const AgregarIntercambio = () => {
         }
         return true;
     }
-
-    const publicarIntercambio = () => {
+        const publicarIntercambio = async () => {
         if (chequeo()) {
-            console.log(sucursal);
+            try{
+           // console.log(sucursal);
             let test = [fotos[0]];
-            let imagenes = uploadImage(test);
-            console.log(imagenes);
-            let imgs = [{
-                url : imagenes.secure_url,
-                id : imagenes.public_id
-            }];
-            const res =  fetch("http://localhost:8000/api/prodIntercambios",{
+            let imagenes = await uploadImage(test);
+            //console.log(imagenes);
+           // let imgs = [{ url : imagenes.secure_url,   id : imagenes.public_id}];
+           setTimeout(async function(){
+            console.log(url);
+            const res = await fetch("http://localhost:8000/api/prodIntercambios",{
                 method:"POST",
                 headers:{
                     "Content-Type" : "application/json"
@@ -180,7 +181,7 @@ export const AgregarIntercambio = () => {
                 body: JSON.stringify({
                     titulo: titulo,
                     descripcion: descripcion,
-                    fotos: imagenes.public_id, 
+                    fotos: url.public_id, 
                     categoria: categoria,
                     sucursal: sucursal._id,
                     inicioRango: horarioInicio,
@@ -188,8 +189,15 @@ export const AgregarIntercambio = () => {
                     idUsuario: localStorage.getItem("email")
                 })
                });
-            console.log(res);
+            }, 5000);
+            //console.log(res);
+            }catch (error) {
+                console.error("Error:", error);
+            }
+
         }
+        
+    
     }
 
     return (
