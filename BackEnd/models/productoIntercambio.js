@@ -10,7 +10,7 @@ const ProdInterSchema = new Schema({
         type: String,
     },
     fotos: {
-        type: Array,
+        type: String,
     },
     categoria: {
         type: String,
@@ -29,7 +29,7 @@ const ProdInterSchema = new Schema({
         require: true
     },
     idUsuario: {
-        type: ObjectId,
+        type: String,
         require: true
     }
 })

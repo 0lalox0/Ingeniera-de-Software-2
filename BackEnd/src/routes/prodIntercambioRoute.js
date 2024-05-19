@@ -5,7 +5,7 @@ const router = Router()
 
 //crear sucursal
 router.post('/prodIntercambios', (req, res) => {
-    req.body.fotos = "Nazi";
+    console.log(req.body)
     const prod = ProdInterSchema(req.body)
     prod.save()
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))

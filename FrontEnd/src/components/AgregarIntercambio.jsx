@@ -49,6 +49,7 @@ export const AgregarIntercambio = () => {
             console.log(res.data);
             setUrl(res.data);
             alert("Image uploaded Succesfully");
+            return res.data;
           })
           .catch(console.log);
       }
@@ -58,21 +59,21 @@ export const AgregarIntercambio = () => {
           .post("http://localhost:8000/uploadMultipleImages", { images })
           .then((res) => {
             console.log(res.data)
-            //setUrl(res.data);
+            //setUrl(res.data.secure_url);
             alert("Image uploaded Succesfully");
+            return res.data;
           })
           .catch(console.log);
       }
     
-      const uploadImage = async (f) => {
+        const uploadImage = async (f) => {
         const files = f;
         console.log(f);
         console.log(files.length);
     
         if (files.length === 1) {
           const base64 = await convertBase64(files[0]);
-          uploadSingleImage(base64);
-          return;
+          return uploadSingleImage(base64);
         }
     
         const base64s = [];
@@ -80,7 +81,7 @@ export const AgregarIntercambio = () => {
           var base = await convertBase64(files[i]);
           base64s.push(base);
         }
-        uploadMultipleImages(base64s);
+        return uploadMultipleImages(base64s);
       };
 
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
@@ -165,7 +166,29 @@ export const AgregarIntercambio = () => {
         if (chequeo()) {
             console.log(sucursal);
             let test = [fotos[0]];
-            uploadImage(test);
+            let imagenes = uploadImage(test);
+            console.log(imagenes);
+            let imgs = [{
+                url : imagenes.secure_url,
+                id : imagenes.public_id
+            }];
+            const res =  fetch("http://localhost:8000/api/prodIntercambios",{
+                method:"POST",
+                headers:{
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    titulo: titulo,
+                    descripcion: descripcion,
+                    fotos: imagenes.public_id, 
+                    categoria: categoria,
+                    sucursal: sucursal._id,
+                    inicioRango: horarioInicio,
+                    finRango: horarioFin,
+                    idUsuario: localStorage.getItem("email")
+                })
+               });
+            console.log(res);
         }
     }
 
