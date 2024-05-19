@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
+import axios from "axios";
 
 export const AgregarIntercambio = () => {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const AgregarIntercambio = () => {
     const [categoria, setCategoria] = useState('');
     const [horarioInicio, setHorarioInicio] = useState(null);
     const [horarioFin, setHorarioFin] = useState(null);
-
+    const [url, setUrl] = useState("");
     const refTitulo = useRef(null);
     const refDescripcion = useRef(null);
     const refFotos = useRef(null);
@@ -25,6 +26,62 @@ export const AgregarIntercambio = () => {
     const refHorariosF = useRef(null);
     const refHorariosP = useRef(null);
     
+    //Cloudinary
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+    
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+    
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
+        });
+      };
+    
+      function uploadSingleImage(base64) {
+        axios
+          .post("http://localhost:8000/SubirImagen", { image: base64 })
+          .then((res) => {
+            console.log(res.data);
+            setUrl(res.data);
+            alert("Image uploaded Succesfully");
+          })
+          .catch(console.log);
+      }
+    
+      function uploadMultipleImages(images) {
+        axios
+          .post("http://localhost:8000/uploadMultipleImages", { images })
+          .then((res) => {
+            console.log(res.data)
+            //setUrl(res.data);
+            alert("Image uploaded Succesfully");
+          })
+          .catch(console.log);
+      }
+    
+      const uploadImage = async (f) => {
+        const files = f;
+        console.log(f);
+        console.log(files.length);
+    
+        if (files.length === 1) {
+          const base64 = await convertBase64(files[0]);
+          uploadSingleImage(base64);
+          return;
+        }
+    
+        const base64s = [];
+        for (var i = 0; i < files.length; i++) {
+          var base = await convertBase64(files[i]);
+          base64s.push(base);
+        }
+        uploadMultipleImages(base64s);
+      };
 
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
 
@@ -107,7 +164,8 @@ export const AgregarIntercambio = () => {
     const publicarIntercambio = () => {
         if (chequeo()) {
             console.log(sucursal);
-            // acá se hace el post
+            let test = [fotos[0]];
+            uploadImage(test);
         }
     }
 

@@ -59,7 +59,7 @@ app.use('/api', prodIntercambiosRouter)
 //Cloudinary
 app.post("/SubirImagen", (req, res) => {
   uploadImage(req.body.image)
-    .then((url) => res.send(url))
+    .then((data) => res.send(data))
     .catch((err) => res.status(500).send(err));
 });
 
