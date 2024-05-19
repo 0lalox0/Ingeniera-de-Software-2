@@ -16,21 +16,27 @@ export const FormularioLogin = () => {
         }
     };
 
-    const logIn = async () => {
-        if (email == '') {
+    const chequeo = () => {
+        if (!email) {
             setError('Se debe ingresar un mail.')
-            return;
+            return false;
         }
-        if (password == '') {
+        if (!password) {
             setError('Se debe ingresar la contraseña de ' + email);
-            return;
+            return false;
         }
-        try {
-            await signInWithEmailAndPassword(getAuth(), email, password);
-            localStorage.setItem("email", email);
-            navigate('/productos');
-        } catch (e) {
-            setError(e.message);
+        return true;
+    }
+
+    const logIn = async () => {
+        if (chequeo()) {
+            try {
+                await signInWithEmailAndPassword(getAuth(), email, password);
+                localStorage.setItem("email", email);
+                navigate('/productos');
+            } catch (e) {
+                setError(e.message);
+            }
         }
     }
 
