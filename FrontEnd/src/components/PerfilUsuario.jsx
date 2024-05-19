@@ -8,7 +8,7 @@ import { Mantenimiento } from './Mantenimiento';
 import { useNavigate } from 'react-router-dom';
 
 export const PerfilUsuario = () => {
-    const { role, user } = useUser();
+    const { role } = useUser();
 
     const [userInfo, setUserInfo] = useState('');
     let e = localStorage.getItem("email");
@@ -27,6 +27,7 @@ export const PerfilUsuario = () => {
     const navigate = useNavigate();
     const redirectCambioContraSinEmail = () => navigate('/cambiocontrasinemail');
     const redirectEditarPerfil = () => navigate('/editarPerfil');
+    const redirectGestionIntercambios = () => navigate('/perfilUsuario/intercambios');
 
     return (
         <>
@@ -37,7 +38,7 @@ export const PerfilUsuario = () => {
                     <div className='card-container'>
 
                         <div className="card">
-                            <img src={productos} alt="" />
+                            <img src={productos} />
                             <div className="card-content">
                                 <h3> Mis productos</h3>
                                 <p> Acá vas a poder ver toda la información relacionada con tus productos.</p>
@@ -45,7 +46,7 @@ export const PerfilUsuario = () => {
                         </div>
 
                         <div className="card">
-                            <img src={intercambio} alt="" />
+                            <img src={intercambio} onClick={redirectGestionIntercambios}/>
                             <div className="card-content">
                                 <h3> Mis intercambios</h3>
                                 <p> Acá vas a poder toda la información relacionada con tus intercambios.</p>
@@ -53,7 +54,7 @@ export const PerfilUsuario = () => {
                         </div>
 
                         <div className="card" onClick={redirectEditarPerfil}>
-                            <img src={userIcon} alt="" />
+                            <img src={userIcon} />
                             <div className="card-content">
                                 <h3> Mis datos</h3>
                                 <p> Acá vas a poder ver y modificar tus datos. </p>

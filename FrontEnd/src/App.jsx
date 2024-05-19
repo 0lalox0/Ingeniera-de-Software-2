@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import { HeaderFerreplus } from './components/Header'
 import { Route, Routes } from 'react-router-dom'
@@ -17,6 +16,8 @@ import { GestionEmpleados } from './components/GestionEmpleados'
 import { SubirImagen } from './components/SubirImagen'
 import { EditarPerfil } from './components/EditarPerfil'
 import { EliminarSucursal } from './components/EliminarSucursal'
+import { GestionIntercambios } from './components/GestionIntercambios'
+import { AgregarIntercambio } from './components/AgregarIntercambio'
 
 function App() {
 
@@ -40,6 +41,8 @@ function App() {
         <Route path='/SubirImagen' element={<SubirImagen />}> </Route>
         <Route path='/editarPerfil' element={<EditarPerfil />}> </Route>
         <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
+        <Route path='/perfilUsuario/intercambios' element={<GestionIntercambios />}></Route>
+        <Route path='/perfilUsuario/agregarIntercambio' element={<AgregarIntercambio />}> </Route>
       </Routes>
     </>
   )

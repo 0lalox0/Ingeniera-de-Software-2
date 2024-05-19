@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export const FormularioRegistro = () => {
-
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [date, setDate] = useState('');
@@ -55,7 +54,7 @@ export const FormularioRegistro = () => {
             setError('Se debe ingresar un mail.');
             return;
         }
-        if (email.endsWith('ferreplus.com')) {2
+        if (email.endsWith('ferreplus.com')) {
             setError('No se pueden usar emails de Ferreplus.')
             return;
         }
