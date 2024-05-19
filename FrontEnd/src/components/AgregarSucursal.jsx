@@ -17,28 +17,29 @@ export const AgregarSucursal = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-        agregarSucursal();
+      agregarSucursal();
     }
-};
+  };
 
   const agregarSucursal = async () => {
-    const horaAperturaDate = new Date('1970-01-01T' + horarioApertura);
-    const horaCierreDate = new Date('1970-01-01T' + horarioCierre);
-
+    const horaAperturaDate = new Date('1970-01-01T' + horarioApertura + '-03:00');
+    const horaCierreDate = new Date('1970-01-01T' + horarioCierre + '-03:00');
+    let mandarSucursal = {
+      nombre: nombre,
+      ciudad: ciudad,
+      calle: calle,
+      numero: numero,
+      horarioApertura: horaAperturaDate,
+      horarioCierre: horaCierreDate
+    };
+    console.log(mandarSucursal);
     try {
       const response = await fetch('http://localhost:8000/api/sucursales', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          nombre,
-          ciudad,
-          calle,
-          numero,
-          horarioApertura: horaAperturaDate,
-          horarioCierre: horaCierreDate
-        })
+        body: JSON.stringify(mandarSucursal)
       });
       const data = await response.json();
       setMessage("Sucursal agregada con éxito!"); // Establecer mensaje de éxito

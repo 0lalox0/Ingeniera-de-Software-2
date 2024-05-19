@@ -7,13 +7,24 @@ export const AgregarIntercambio = () => {
     const navigate = useNavigate();
     const { role } = useUser();
     const [sucursales, setSucursales] = useState([]);
-    const [sucursalSeleccionada, setSucursalSeleccionada] = useState(null);
+    const [sucursal, setSucursal] = useState('');
     const [titulo, setTitulo] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [mensaje, setMensaje] = useState('');
+    const [fotos, setFotos] = useState([null, null]);
+    const [categoria, setCategoria] = useState('');
+    const [horarioInicio, setHorarioInicio] = useState(null);
+    const [horarioFin, setHorarioFin] = useState(null);
+
     const refTitulo = useRef(null);
     const refDescripcion = useRef(null);
     const refFotos = useRef(null);
+    const refCategoria = useRef(null);
+    const refSucursal = useRef(null);
+    const refHorariosI = useRef(null);
+    const refHorariosF = useRef(null);
+    const refHorariosP = useRef(null);
+    
 
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
 
@@ -26,25 +37,77 @@ export const AgregarIntercambio = () => {
 
     const seleccionarSucursal = (event) => {
         const idSeleccionada = event.target.value;
-        setSucursalSeleccionada(sucursales.find(s => s._id === idSeleccionada));
+        setSucursal(sucursales.find(s => s._id === idSeleccionada));
+    }
+
+    const seleccionarFotos = (index, e) => {
+        const newFiles = [...fotos];
+        newFiles[index] = e.target.files[0] || null;
+        setFotos(newFiles);
     }
 
     const chequeo = () => {
-        if (titulo === '') {
+        [refTitulo, refDescripcion, refFotos, refCategoria, refSucursal, refHorariosI, refHorariosF, refHorariosP].forEach(ref => ref.current.style.color = '');
+        setMensaje('');
+        if (!titulo) {
             setMensaje('Por favor, ingrese un título.');
             refTitulo.current.style.color = 'red';
             return false;
         }
-        if (descripcion === '') {
+        if (!descripcion) {
             setMensaje('Por favor, ingrese una descripción.');
             refDescripcion.current.style.color = 'red';
             return false;
         }
+        if (!fotos[0] && !fotos[1]) {
+            setMensaje('Por favor, suba por lo menos 1 foto.');
+            refFotos.current.style.color = 'red';
+            return false;
+        }
+        if (!categoria) {
+            setMensaje('Por favor, selecciona una categoría.');
+            refCategoria.current.style.color = 'red';
+            return false;
+        }
+        if (!sucursal) {
+            setMensaje('Por favor, seleccione una sucursal.');
+            refSucursal.current.style.color = 'red';
+            return false;
+        }
+        if (!horarioInicio) {
+            setMensaje('Por favor, seleccione un horario de inicio.');
+            refHorariosI.current.style.color = 'red';
+            return false;
+        }
+        if (!horarioFin) {
+            setMensaje('Por favor, seleccione un horario de fin.');
+            refHorariosF.current.style.color = 'red';
+            return false;
+        }
+        if (horarioInicio > horarioFin) {
+            setMensaje('Por favor, ingrese un horario válido.');
+            refHorariosI.current.style.color = 'red';
+            refHorariosF.current.style.color = 'red';
+            return false;
+        }
+        const horaA = new Date(sucursal.horarioApertura);
+        const horaC = new Date(sucursal.horarioCierre);
+        const horarioI = new Date('1970-01-01T' + horarioInicio);
+        const horarioF = new Date('1970-01-01T' + horarioFin);
+        if (horarioI < horaA || horarioF > horaC) {
+            setMensaje('Los horarios seleccionados no corresponden a los de la sucursal elegida.');
+            refHorariosI.current.style.color = 'red';
+            refHorariosF.current.style.color = 'red';
+            refHorariosP.current.style.color = 'red';
+            return false;
+        }
+        return true;
     }
 
     const publicarIntercambio = () => {
-        if (chequeo) {
-            console.log(sucursalSeleccionada);
+        if (chequeo()) {
+            console.log(sucursal);
+            // acá se hace el post
         }
     }
 
@@ -68,49 +131,49 @@ export const AgregarIntercambio = () => {
                     <div className="mb-3">
                         <label htmlFor="fotosIntercambio" ref={refFotos}> Fotos del producto: </label>
                         <p> Podés agregar hasta 2 fotos.</p>
-                        <input type="file" className="form-control" id='fotosIntercambio' accept="image/*" />
-                        <input type="file" className="form-control" accept="image/*" />
+                        <input type="file" className="form-control" id='fotosIntercambio' accept="image/*" onChange={(e) => seleccionarFotos(0, e)} />
+                        <input type="file" className="form-control" accept="image/*" onChange={(e) => seleccionarFotos(1, e)} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="categoria"> Categoría del producto: </label>
-                        <select className="form-select" id="categoria">
-                            <option key="categoria1" value="categoria1"> Construcción </option>
-                            <option key="categoria2" value="categoria2"> Madera </option>
-                            <option key="categoria3" value="categoria3"> Electricidad </option>
-                            <option key="categoria4" value="categoria4"> Herramientas </option>
-                            <option key="categoria5" value="categoria5"> Baño </option>
-                            <option key="categoria6" value="categoria6"> Cocina </option>
-                            <option key="categoria7" value="categoria7"> Jardín </option>
-                            <option key="categoria8" value="categoria8"> Ferretería </option>
-                            <option key="categoria9" value="categoria9"> Pintura </option>
-                            <option key="categoria10" value="categoria10"> Decoración </option>
-                            <option key="categoria11" value="categoria11"> Mobiliario </option>
-                            <option key="categoria12" value="categoria12"> Climatización </option>
+                        <label htmlFor="categoria" ref={refCategoria}> Categoría del producto: </label>
+                        <select className="form-select" id="categoria" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                            <option value="" disabled selected> Seleccione categoría...</option>
+                            <option key="categoria1" value="Construcción"> Construcción </option>
+                            <option key="categoria2" value="Madera"> Madera </option>
+                            <option key="categoria3" value="Electricidad"> Electricidad </option>
+                            <option key="categoria4" value="Herramientas"> Herramientas </option>
+                            <option key="categoria5" value="Baño"> Baño </option>
+                            <option key="categoria6" value="Cocina"> Cocina </option>
+                            <option key="categoria7" value="Jardín"> Jardín </option>
+                            <option key="categoria8" value="Ferretería"> Ferretería </option>
+                            <option key="categoria9" value="Pintura"> Pintura </option>
+                            <option key="categoria10" value="Decoración"> Decoración </option>
+                            <option key="categoria11" value="Mobiliario"> Mobiliario </option>
+                            <option key="categoria12" value="Climatización"> Climatización </option>
                         </select>
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="sucursalIntercambio"> Sucursal: </label>
-                        <select className='form-select' id="sucursalIntercambio" onChange={seleccionarSucursal}>
-                            {sucursales.map((sucursal) => {
-                                return (
-                                    <option key={sucursal._id} value={sucursal._id}> {sucursal.nombre}</option>
-                                )
-                            })}
+                        <label htmlFor="sucursalIntercambio" ref={refSucursal}> Sucursal del intercambio: </label>
+                        <select name="sucursalI" id="sucursalIntercambio" className='form-select' onChange={seleccionarSucursal}>
+                            <option value="" disabled selected> Seleccione sucursal...</option>
+                            {sucursales.map((sucursal) => (
+                                <option key={sucursal._id} value={sucursal._id}> {sucursal.nombre}</option>
+                            ))}
                         </select>
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="horarioInicioIntercambio"> Horario de inicio para intercambiar: </label>
-                        <input type="time" className="form-control" id='horarioInicioIntercambio' />
+                        <label htmlFor="horarioInicioIntercambio" ref={refHorariosI}> Horario de inicio para intercambiar: </label>
+                        <input type="time" className="form-control" id='horarioInicioIntercambio' value={horarioInicio} onChange={(e) => setHorarioInicio(e.target.value)} />
                     </div>
 
-                    <p> Recordá que el horario debe estar en el rango donde la sucursal elegida esté abierta.</p>
+                    <p ref={refHorariosP}> Recordá que el horario debe estar en el rango donde la sucursal elegida esté abierta.</p>
 
                     <div className="mb-3">
-                        <label htmlFor="horarioFinIntercambio"> Horario de fin para intercambiar: </label>
-                        <input type="time" className="form-control" id='horarioFinIntercambio' />
+                        <label htmlFor="horarioFinIntercambio" ref={refHorariosF}> Horario de fin para intercambiar: </label>
+                        <input type="time" className="form-control" id='horarioFinIntercambio' value={horarioFin} onChange={(e) => setHorarioFin(e.target.value)} />
                     </div>
 
                     <button className="btn btn-info" onClick={publicarIntercambio}> Publicar intercambio</button>

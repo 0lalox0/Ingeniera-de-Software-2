@@ -461,3 +461,9 @@ td:hover {
 #fotosIntercambio {
   margin-bottom: 1%;
 }
+
+.intercambios {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

@@ -32,77 +32,83 @@ export const FormularioRegistro = () => {
         }
     };
 
-    const createAccount = async () => {
-        clear();
-        if (name == '') {
+    const chequeo = () => {
+        if (!name) {
             setError('Se debe ingresar un nombre.');
-            return;
+            return false;
         }
-        if (surname == '') {
+        if (!surname) {
             setError('Se debe ingresar un apellido.');
-            return;
+            return false;
         }
         if (!date) {
             setError('Se debe seleccionar una fecha.');
-            return;
+            return false;
         }
         if (!checkDate()) {
             setError('Se debe ser mayor de 18 años para poder registrarse.');
-            return;
+            return false;
         }
-        if (email == '') {
+        if (!email) {
             setError('Se debe ingresar un mail.');
-            return;
+            return false;
         }
         if (email.endsWith('ferreplus.com')) {
             setError('No se pueden usar emails de Ferreplus.')
-            return;
+            return false;
         }
-        if (password == '') {
+        if (!password) {
             setError('Se debe ingresar una contraseña.');
-            return;
+            return false;
         }
-        if (confirmPassword == '') {
+        if (!confirmPassword) {
             setError('Se debe confirmar la contraseña.');
-            return;
+            return false;
         }
         if (password !== confirmPassword) {
             setError('Las contraseñas no coinciden.');
-            return;
+            return false;
         }
-        try {
-            await createUserWithEmailAndPassword(getAuth(), email, password);
-            navigate('/productos');
-            localStorage.setItem("email", email); //si se crea la cuenta, hay que guardar la info en mongodb
+        return true;
+    }
+
+    const createAccount = async () => {
+        clear();
+        if (chequeo()) {
             try {
-                const response = await fetch('http://localhost:8000/api/users', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name,
-                        lastname: surname,
-                        email,
-                        date
-                    })
-                });
-                const data = await response.json();
-                setMessage("Usuario agregado con éxito!");
-            } catch (error) {
-                console.log(error.message);
-                setMessage("Hubo un error al agregar al usuario a mongodb.");
-            }
-        } catch (e) {
-            console.log(e.message);
-            if (e.message.includes("(auth/weak-password)")) {
-                setError("Contraseña débil");
-            } else if (e.message.includes("(auth/email-already-in-use)")) {
-                setError("El email ingresado ya se encuentra registrado");
-            } else if (e.message.includes("(auth/invalid-email)")) {
-                setError("Email inválido");
-            } else {
-                setError("Error al crear la cuenta");
+                await createUserWithEmailAndPassword(getAuth(), email, password);
+                navigate('/productos');
+                localStorage.setItem("email", email); //si se crea la cuenta, hay que guardar la info en mongodb
+                try {
+                    const response = await fetch('http://localhost:8000/api/users', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name,
+                            lastname: surname,
+                            email,
+                            date
+                        })
+                    });
+                    const data = await response.json();
+                    setMessage("Usuario agregado con éxito!");
+                } catch (error) {
+                    console.log(error.message);
+                    setMessage("Hubo un error al agregar al usuario a mongodb.");
+                }
+            } catch (e) {
+                console.log(e.message);
+                if (e.message.includes("(auth/weak-password)")) {
+                    setError("Contraseña débil");
+                } else if (e.message.includes("(auth/email-already-in-use)")) {
+                    setError("El email ingresado ya se encuentra registrado");
+                } else if (e.message.includes("(auth/invalid-email)")) {
+                    setError("Email inválido");
+                } else {
+                    setError("Error al crear la cuenta");
+                }
             }
         }
     }

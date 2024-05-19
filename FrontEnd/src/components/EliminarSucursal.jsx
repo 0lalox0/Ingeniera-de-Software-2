@@ -86,8 +86,8 @@ export const EliminarSucursal = () => {
                                         <tr key={sucursal._id}>
                                             <td>{sucursal.nombre}</td>
                                             <td>{sucursal.ciudad}</td>
-                                            <td>{sucursal.calle}</td>
                                             <td>{sucursal.numero}</td>
+                                            <td>{sucursal.calle}</td>
                                             <td>{isNaN(horarioApertura) ? 'Invalid date' : horarioApertura.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                                             <td>{isNaN(horarioCierre) ? 'Invalid date' : horarioCierre.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                                             <td>
