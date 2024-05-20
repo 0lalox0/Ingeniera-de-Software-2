@@ -39,6 +39,24 @@ router.delete('/prodIntercambios/:id', (req, res) => {
     ProdInterSchema.deleteOne( { _id: id })
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
+
+
+// Obtener items con filtros
+router.get('/prodIntercambios/buscar', async (req, res) => {
+   
+    const { titulo, categoria, sucursal } = req.query;
+    const query = {};
+  
+    if (titulo) query.titulo = new RegExp(titulo, 'i'); // búsqueda insensible a mayúsculas/minúsculas
+    if (categoria) query.categoria = categoria;
+    if (sucursal) query.sucursal = sucursal;
+  
+    const items = await ProdInterSchema.find(query)
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
+
+
 //config de seguridad
 router.use((req, res, next) => {  //todo esto
     res.setHeader('Access-Control-Allow-Origin', '*');

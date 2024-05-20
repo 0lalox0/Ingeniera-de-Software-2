@@ -69,3 +69,6 @@ Content-Type: application/json
     "finRango": "18:00",
     "idUsuario":"663d83bc15eaeb6d61fe62e2"
 }
+
+###
+GET http://localhost:8000/api/prodIntercambios/buscar?titulo=Casco HTTP/1.1
