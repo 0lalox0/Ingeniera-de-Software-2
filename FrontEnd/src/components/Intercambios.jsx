@@ -6,8 +6,9 @@ export const Intercambios = () => {
     const { role } = useUser();
     const navigate = useNavigate();
     const [intercambios, setIntercambios] = useState([]);
-    const [sucursales, setSucursales] = useState([]);
-    const [users, setUsers] = useState([]);
+    const [sucursales, setSucursales] = useState({});
+    const [users, setUsers] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
 
@@ -18,19 +19,23 @@ export const Intercambios = () => {
             .catch(error => console.error('Error:', error));
     }, []);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/sucursales')
-            .then(response => response.json())
-            .then(data => setSucursales(data))
-            .catch(error => console.error('Error:', error));
-    }, []);
+    // useEffect(() => {
+    //     async () => {
+    //         await fetch('http://localhost:8000/api/sucursales')
+    //             .then(response => response.json())
+    //             .then(data => setSucursales(data))
+    //             .catch(error => console.error('Error:', error));
+    //     }
+    // }, []);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/users')
-            .then(response => response.json())
-            .then(data => setUsers(data))
-            .catch(error => console.error('Error:', error));
-    }, []);
+    // useEffect(() => {
+    //     async () => {
+    //         await fetch('http://localhost:8000/api/users')
+    //             .then(response => response.json())
+    //             .then(data => setUsers(data))
+    //             .catch(error => console.error('Error:', error));
+    //     }
+    // }, []);
 
     const buscarSucursal = (id) => {
         return sucursales.find(s => s._id === id);
@@ -38,6 +43,28 @@ export const Intercambios = () => {
 
     const buscarUsuario = (email) => {
         return users.find(u => u.email === email);
+    }
+
+    const sucursalParticular = async (id) => {
+        try {
+            const response = await fetch('http://localhost:8000/api/sucursales/' + id);
+            return response.json();
+        } catch (error) {
+            console.error('Error: ', error);
+        }
+    }
+
+    const usuarioParticular = async (email) => {
+        try {
+            const response = await fetch('http://localhost:8000/api/users/' + email);
+            return response.json();
+        } catch (error) {
+            console.error('Error: ', error);
+        }
+    }
+
+    if (loading) {
+        return <p>Cargando...</p>
     }
 
     return (
@@ -54,21 +81,24 @@ export const Intercambios = () => {
                 </>
                 <div className="intercambios">
                     {intercambios.map((intercambio) => {
-                        const usuario = buscarUsuario(intercambio.idUsuario);
+                        const usuario = usuarioParticular(intercambio.idUsuario);
+                        console.log(usuario.Object);
                         const linkFoto = intercambio.urlFotos[0];
+                        const sucursal = sucursalParticular(intercambio.sucursal);
+                        console.log(sucursal.Object);
                         return (
-                            <div class="card mb-3" >
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src={linkFoto} class="img-fluid rounded-start" />
+                            <div className="card mb-3"key= {intercambio._id} >
+                                <div className="row g-0">
+                                    <div className="col-md-4">
+                                        <img src={linkFoto} className="img-fluid rounded-start" />
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{intercambio.titulo}</h5>
-                                            <p class="card-text">Descripción del producto: {intercambio.descripcion}. 
-                                                Sucursal del intercambio: {buscarSucursal(intercambio.sucursal).nombre}. 
+                                    <div className="col-md-8">
+                                        <div className="card-body">
+                                            <h5 className="card-title">{intercambio.titulo}</h5>
+                                            <p className="card-text">Descripción del producto: {intercambio.descripcion}.
+                                                Sucursal del intercambio: {sucursal.nombre}
                                                 Rango horario: {intercambio.inicioRango} - {intercambio.finRango}</p>
-                                            <p class="card-text"><small class="text-body-secondary">Publicado por: {usuario.name} {usuario.lastname}</small></p>
+                                            <p className="card-text"><small className="text-body-secondary">Publicado por: {usuario.name} {usuario.lastname} </small></p>
                                         </div>
                                     </div>
                                 </div>
@@ -76,46 +106,46 @@ export const Intercambios = () => {
                         )
                     })}
 
-                    {/* <div class="card mb-3" >
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="..." class="img-fluid rounded-start" />
+                    {/* <div className="card mb-3" >
+                        <div className="row g-0">
+                            <div className="col-md-4">
+                                <img src="..." className="img-fluid rounded-start" />
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h5 className="card-title">Card title</h5>
+                                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card mb-3" >
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="..." class="img-fluid rounded-start" />
+                    <div className="card mb-3" >
+                        <div className="row g-0">
+                            <div className="col-md-4">
+                                <img src="..." className="img-fluid rounded-start" />
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h5 className="card-title">Card title</h5>
+                                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card mb-3" >
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="..." class="img-fluid rounded-start" />
+                    <div className="card mb-3" >
+                        <div className="row g-0">
+                            <div className="col-md-4">
+                                <img src="..." className="img-fluid rounded-start" />
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h5 className="card-title">Card title</h5>
+                                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                    <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
                                 </div>
                             </div>
                         </div>

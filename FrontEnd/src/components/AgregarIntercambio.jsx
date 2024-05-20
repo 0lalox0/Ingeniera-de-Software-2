@@ -26,6 +26,7 @@ export const AgregarIntercambio = () => {
     const refHorariosI = useRef(null);
     const refHorariosF = useRef(null);
     const refHorariosP = useRef(null);
+    const refMensaje = useRef(null);
 
     //Cloudinary
     const convertBase64 = (file) => {
@@ -48,7 +49,7 @@ export const AgregarIntercambio = () => {
             .post("http://localhost:8000/SubirImagen", { imaage: base64 })
             .then((res) => {
                 //console.log(res.data);
-                Post(res.data,usuario.data);
+                Post(res.data, user.data);
             })
             .catch(console.log);
     }
@@ -83,7 +84,7 @@ export const AgregarIntercambio = () => {
         uploadMultipleImages(base64s);
     };
 
-    async function Post(imgs,usuario) {
+    async function Post(imgs, usuario) {
         console.log(imgs);
         console.log(usuario);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
@@ -104,21 +105,21 @@ export const AgregarIntercambio = () => {
             })
         });
     }
-    async function GetUser(email){
+    async function GetUser(email) {
         let t = "http://localhost:8000/api/users/" + email;
         try {
-            const res =  await fetch(t, {});
+            const res = await fetch(t, {});
             const user = await res.json();
             console.log(user);
             return user;
-           // console.log(user.name);
+            // console.log(user.name);
         } catch (error) {
             console.error('Error:', error);
         }
 
 
     }
-    async function PostMultiple(imgs,user) {
+    async function PostMultiple(imgs, user) {
         console.log(imgs);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
@@ -134,7 +135,7 @@ export const AgregarIntercambio = () => {
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
                 idUsuario: localStorage.getItem("email"),
-                urlFotos: [imgs[0].secure_url,imgs[1].secure_url]
+                urlFotos: [imgs[0].secure_url, imgs[1].secure_url]
             })
         });
     }
@@ -220,9 +221,11 @@ export const AgregarIntercambio = () => {
             try {
                 await uploadImage(fotos);
                 setMensaje('¡Producto para intercambiar subido correctamente!');
-                refHorariosF.current.style.color = '#07f717';
+                refMensaje.current.style.color = '#07f717';
             } catch (error) {
                 console.error("Error:", error);
+                setMensaje('Hubo un error al cargar el producto.');
+                refMensaje.current.style.color = 'red';
             }
         }
     }
@@ -293,7 +296,7 @@ export const AgregarIntercambio = () => {
                     </div>
 
                     <button className="btn btn-info" onClick={publicarIntercambio}> Publicar intercambio</button>
-                    <p className='errorContainer'> {mensaje} </p>
+                    <p className='errorContainer' ref={refMensaje}> {mensaje} </p>
                     <p className="textoRedireccion" onClick={redirectGestion}> Volver a la gestión de intercambios</p>
                 </div>
                 : <Mantenimiento></Mantenimiento>}
