@@ -72,3 +72,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8000/api/buscarProdIntercambios?sucursal=664a2a4b7b736ead28436ab5 HTTP/1.1
+

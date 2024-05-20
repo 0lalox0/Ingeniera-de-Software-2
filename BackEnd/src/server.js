@@ -62,7 +62,12 @@ app.post("/SubirImagen", (req, res) => {
     .then((data) => res.send(data))
     .catch((err) => res.status(500).send(err));
 });
-
+app.post("/uploadMultipleImages", (req, res) => {
+  uploadImage
+    .uploadMultipleImages(req.body.images)
+    .then((data) => res.send(data))
+    .catch((err) => res.status(500).send(err));
+});
 app.get('/', (req, res) => {
   res.send('Hello');
 });

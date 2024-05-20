@@ -16,7 +16,7 @@ export const AgregarIntercambio =  () => {
     const [categoria, setCategoria] = useState('');
     const [horarioInicio, setHorarioInicio] = useState(null);
     const [horarioFin, setHorarioFin] = useState(null);
-    const [url, setUrl] = useState("");
+    const [imgs, setImgs] = useState(null);
     const refTitulo = useRef(null);
     const refDescripcion = useRef(null);
     const refFotos = useRef(null);
@@ -43,13 +43,14 @@ export const AgregarIntercambio =  () => {
       };
     
       function uploadSingleImage(base64) {
+        console.log("nazi")
         axios
-          .post("http://localhost:8000/SubirImagen", { image: base64 })
+          .post("http://localhost:8000/SubirImagen", { imaage: base64 })
           .then((res) => {
             console.log(res.data);
-            setUrl(res.data);
-            alert("Image uploaded Succesfully");
-            return res.data;
+            setImgs(res.data);
+            Post(res.data);
+            alert("Imagen subida exitosamente");
           })
           .catch(console.log);
       }
@@ -59,9 +60,9 @@ export const AgregarIntercambio =  () => {
           .post("http://localhost:8000/uploadMultipleImages", { images })
           .then((res) => {
             console.log(res.data)
-            //setUrl(res.data.secure_url);
+            setImgs(res.data);
+            PostMultiple(res.data)
             alert("Image uploaded Succesfully");
-            return res.data;
           })
           .catch(console.log);
       }
@@ -69,13 +70,13 @@ export const AgregarIntercambio =  () => {
         const uploadImage = async (f) => {
         const files = f;
         //console.log(f);
-        //console.log(files.length);
-    
-        if (files.length === 1) {
+        console.log(files.length);
+        if(files.length === 0){
+            Post("");
+        }else if (files.length === 1||files[1] === null) {
           const base64 = await convertBase64(files[0]);
-          let IMG = uploadSingleImage(base64);
-          console.log(IMG);
-          return IMG;
+          uploadSingleImage(base64);
+          return;
         }
     
         const base64s = [];
@@ -83,9 +84,48 @@ export const AgregarIntercambio =  () => {
           var base = await convertBase64(files[i]);
           base64s.push(base);
         }
-        return uploadMultipleImages(base64s);
+
+        uploadMultipleImages(base64s);
       };
 
+      async function Post (imgs){
+        console.log(imgs);
+        const res = await fetch("http://localhost:8000/api/prodIntercambios",{
+            method:"POST",
+            headers:{
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
+                titulo: titulo,
+                descripcion: descripcion,
+                fotos: imgs.public_id, 
+                categoria: categoria,
+                sucursal: sucursal._id,
+                inicioRango: horarioInicio,
+                finRango: horarioFin,
+                idUsuario: localStorage.getItem("email")
+            })
+           });
+      }
+      async function PostMultiple (imgs){
+        console.log(imgs);
+        const res = await fetch("http://localhost:8000/api/prodIntercambios",{
+            method:"POST",
+            headers:{
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
+                titulo: titulo,
+                descripcion: descripcion,
+                fotos: [imgs[0].public_id,imgs[1].public_id], 
+                categoria: categoria,
+                sucursal: sucursal._id,
+                inicioRango: horarioInicio,
+                finRango: horarioFin,
+                idUsuario: localStorage.getItem("email")
+            })
+           });
+      }
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
 
     useEffect(() => {
@@ -166,31 +206,8 @@ export const AgregarIntercambio =  () => {
         const publicarIntercambio = async () => {
         if (chequeo()) {
             try{
-           // console.log(sucursal);
-            let test = [fotos[0]];
-            let imagenes = await uploadImage(test);
-            //console.log(imagenes);
-           // let imgs = [{ url : imagenes.secure_url,   id : imagenes.public_id}];
-           setTimeout(async function(){
-            console.log(url);
-            const res = await fetch("http://localhost:8000/api/prodIntercambios",{
-                method:"POST",
-                headers:{
-                    "Content-Type" : "application/json"
-                },
-                body: JSON.stringify({
-                    titulo: titulo,
-                    descripcion: descripcion,
-                    fotos: url.public_id, 
-                    categoria: categoria,
-                    sucursal: sucursal._id,
-                    inicioRango: horarioInicio,
-                    finRango: horarioFin,
-                    idUsuario: localStorage.getItem("email")
-                })
-               });
-            }, 5000);
-            //console.log(res);
+            console.log(fotos);
+           await uploadImage(fotos);
             }catch (error) {
                 console.error("Error:", error);
             }
