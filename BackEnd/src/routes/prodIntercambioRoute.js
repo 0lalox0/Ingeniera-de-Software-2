@@ -3,7 +3,7 @@ import ProdInterSchema from '../../models/productoIntercambio.js'
 
 const router = Router()
 
-//crear sucursal
+//crear producto para intercambiar
 router.post('/prodIntercambios', (req, res) => {
     console.log(req.body)
     const prod = ProdInterSchema(req.body)
@@ -11,20 +11,20 @@ router.post('/prodIntercambios', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
-//obtener todas las sucursales
+//obtener todos los productos
 router.get('/prodIntercambios', (req, res) => {
     ProdInterSchema.find()
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
-//obtener una sucursal
+//obtener un producto para intercambiar
 router.get('/prodIntercambios/:id', (req, res) => {
     const { id } = req.params
     ProdInterSchema.findById(id)
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
-//actualizar una sucursal
+//actualizar un producto
 router.put('/prodIntercambios/:id', (req, res) => {
     const { id } = req.params
     const { titulo, descripcion, fotos, categoria, sucursal, inicioRango, finRango, idUsuario } = req.body
@@ -33,7 +33,7 @@ router.put('/prodIntercambios/:id', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
-//eliminar una sucursal
+//eliminar un producto
 router.delete('/prodIntercambios/:id', (req, res) => {
     const { id } = req.params
     ProdInterSchema.deleteOne( { _id: id })
@@ -41,7 +41,7 @@ router.delete('/prodIntercambios/:id', (req, res) => {
 })
 
 
-// Obtener items con filtros
+// Obtener productos con filtros
 router.get('/buscarProdIntercambios', (req, res) => {
    
     const { titulo, categoria, sucursal } = req.query;
