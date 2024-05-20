@@ -35,7 +35,11 @@ export const FormularioLogin = () => {
                 localStorage.setItem("email", email);
                 navigate('/productos');
             } catch (e) {
-                setError(e.message);
+                if (e.message.includes("auth/wrong-password")) {
+                    setError('Mail o contraseña incorrectos');
+                } else {
+                    setError("Error al iniciar sesión");
+                }
             }
         }
     }

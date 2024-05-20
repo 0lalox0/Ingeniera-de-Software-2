@@ -25,7 +25,18 @@ export const EditarPerfil = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            updateAccount();
+            if (isEditingName) {
+                validateAndSave(name, setIsEditingName);
+            } else if (isEditingSurname) {
+                validateAndSave(surname, setIsEditingSurname);
+            } else if (isEditingEmail) {
+                validateAndSave(email, setIsEditingEmail, true);
+            } else if (isEditingDate) {
+                if (validateDate(date)) {
+                    updateAccount();
+                    setIsEditingDate(false);
+                }
+            }
         }
     };
 
@@ -184,7 +195,7 @@ export const EditarPerfil = () => {
                                 <input className="form-control"
                                     style={{ backgroundColor: 'white', border: '1px solid black' }}
                                     type="text" id='nombreUsuario'
-                                    value={name} onChange={e => setName(e.target.value)}
+                                    value={name} onChange={e => { setName(e.target.value); setMessage(''); }}
                                     placeholder='Nombre' onKeyDown={handleKeyDown} />
                                 <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(name, setIsEditingName); }}>Guardar</button>
                             </>
@@ -194,7 +205,7 @@ export const EditarPerfil = () => {
                                     style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
                                     type="text" id='nombreUsuario'
                                     value={name} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingName(true)}>Modificar</button>
+                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingName(true); setMessage(''); }}>Modificar</button>
                             </>
                         )}
                     </div>
@@ -206,7 +217,7 @@ export const EditarPerfil = () => {
                                 <input className="form-control"
                                     style={{ backgroundColor: 'white', border: '1px solid black' }}
                                     type="text" id='apellidoUsuario'
-                                    value={surname} onChange={e => setSurname(e.target.value)}
+                                    value={surname} onChange={e => { setSurname(e.target.value); setMessage(''); }}
                                     placeholder='Apellido' onKeyDown={handleKeyDown} />
                                 <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(surname, setIsEditingSurname); }}>Guardar</button>
                             </>
@@ -216,7 +227,7 @@ export const EditarPerfil = () => {
                                     style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
                                     type="text" id='apellidoUsuario'
                                     value={surname} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingSurname(true)}>Modificar</button>
+                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingSurname(true); setMessage(''); }}>Modificar</button>
                             </>
                         )}
                     </div>
@@ -228,7 +239,7 @@ export const EditarPerfil = () => {
                                 <input className="form-control"
                                     style={{ backgroundColor: 'white', border: '1px solid black' }}
                                     type="email" id='emailUsuario'
-                                    value={email} onChange={e => setEmail(e.target.value)}
+                                    value={email} onChange={e => { setEmail(e.target.value); setMessage(''); }}
                                     placeholder='Email' onKeyDown={handleKeyDown} />
                                 <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
                             </>
@@ -238,7 +249,7 @@ export const EditarPerfil = () => {
                                     style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
                                     type="email" id='emailUsuario'
                                     value={email} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingEmail(true)}>Modificar</button>
+                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingEmail(true); setMessage(''); }}>Modificar</button>
                             </>
                         )}
                     </div>
@@ -250,7 +261,8 @@ export const EditarPerfil = () => {
                                 <input className="form-control"
                                     style={{ backgroundColor: 'white', border: '1px solid black' }}
                                     type="date" id='fechaNacimientoUsuario'
-                                    value={date} onChange={e => setDate(e.target.value)} />
+                                    value={date} onChange={e => { setDate(e.target.value); setMessage(''); }}
+                                    onKeyDown={handleKeyDown} />
                                 <button style={{ marginTop: '8px' }} onClick={() => { if (validateDate(date)) { updateAccount(); setIsEditingDate(false); } }}>Guardar</button>
                             </>
                         ) : (
@@ -259,12 +271,12 @@ export const EditarPerfil = () => {
                                     style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
                                     type="date" id='fechaNacimientoUsuario'
                                     value={date} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => setIsEditingDate(true)}>Modificar</button>
+                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingDate(true); setMessage(''); }}>Modificar</button>
                             </>
                         )}
                     </div>
 
-                    <p style={{ color: message === 'Email actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p style={{  color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
                     <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
                 </div>
                 : <Mantenimiento></Mantenimiento>}
