@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import axios from "axios";
+import user from '../../../BackEnd/models/user';
 
 export const AgregarIntercambio = () => {
     const navigate = useNavigate();
@@ -42,13 +43,12 @@ export const AgregarIntercambio = () => {
         });
     };
 
-    function uploadSingleImage(base64) {
+    async function uploadSingleImage(base64) {
         axios
             .post("http://localhost:8000/SubirImagen", { imaage: base64 })
             .then((res) => {
-                console.log(res.data);
-                setImgs(res.data);
-                Post(res.data);
+                //console.log(res.data);
+                Post(res.data,usuario.data);
             })
             .catch(console.log);
     }
@@ -57,10 +57,8 @@ export const AgregarIntercambio = () => {
         axios
             .post("http://localhost:8000/uploadMultipleImages", { images })
             .then((res) => {
-                console.log(res.data)
-                setImgs(res.data);
+                //console.log(res.data)
                 PostMultiple(res.data)
-                alert("Image uploaded Succesfully");
             })
             .catch(console.log);
     }
@@ -85,8 +83,9 @@ export const AgregarIntercambio = () => {
         uploadMultipleImages(base64s);
     };
 
-    async function Post(imgs) {
+    async function Post(imgs,usuario) {
         console.log(imgs);
+        console.log(usuario);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
             headers: {
@@ -100,11 +99,26 @@ export const AgregarIntercambio = () => {
                 sucursal: sucursal._id,
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
-                idUsuario: localStorage.getItem("email")
+                idUsuario: localStorage.getItem("email"),
+                urlFotos: imgs.secure_url
             })
         });
     }
-    async function PostMultiple(imgs) {
+    async function GetUser(email){
+        let t = "http://localhost:8000/api/users/" + email;
+        try {
+            const res =  await fetch(t, {});
+            const user = await res.json();
+            console.log(user);
+            return user;
+           // console.log(user.name);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+
+    }
+    async function PostMultiple(imgs,user) {
         console.log(imgs);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
@@ -119,7 +133,8 @@ export const AgregarIntercambio = () => {
                 sucursal: sucursal._id,
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
-                idUsuario: localStorage.getItem("email")
+                idUsuario: localStorage.getItem("email"),
+                urlFotos: [imgs[0].secure_url,imgs[1].secure_url]
             })
         });
     }

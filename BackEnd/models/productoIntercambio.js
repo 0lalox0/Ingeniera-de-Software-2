@@ -34,15 +34,13 @@ const ProdInterSchema = new Schema({
     }, 
     nombre: {
         type: String,
-        require: true
     },
     apellido: {
         type: String,
-        require: true
     },
     urlFotos: {
         type: [String],
-        require
+        require: true
     }
 })
 
