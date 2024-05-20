@@ -2,10 +2,10 @@ import { ObjectId } from 'mongodb'
 import { Schema, model } from 'mongoose'
 
 const IntercambioSchema = new Schema({
-    productoOfrecido: { type: Schema.Types.ObjectId, ref: 'Producto', required: true },
-    productoDeseado: { type: Schema.Types.ObjectId, ref: 'Producto', required: true },
-    usuarioOfrecido: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
-    usuarioDeseado: { type: Schema.Types.ObjectId, ref: 'Usuario', required: true },
+    productoOfrecido: { type: ObjectId, ref: 'ProductosParaIntercambiar', required: true },
+    productoDeseado: { type: ObjectId, ref: 'ProductosParaIntercambiar', required: true },
+    usuarioOfrecido: { type: ObjectId, ref: 'User', required: true },
+    usuarioDeseado: { type: ObjectId, ref: 'User', required: true },
     estado: { type: String, enum: ['disponible', 'pendiente', 'listo', 'aceptado'], default: 'disponible' },
     fecha: { type: Date, default: Date.now }
 })
