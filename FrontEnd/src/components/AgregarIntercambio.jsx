@@ -4,7 +4,7 @@ import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import axios from "axios";
 
-export const AgregarIntercambio =  () => {
+export const AgregarIntercambio = () => {
     const navigate = useNavigate();
     const { role } = useUser();
     const [sucursales, setSucursales] = useState([]);
@@ -25,107 +25,104 @@ export const AgregarIntercambio =  () => {
     const refHorariosI = useRef(null);
     const refHorariosF = useRef(null);
     const refHorariosP = useRef(null);
-    
+
     //Cloudinary
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-    
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-    
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
         });
-      };
-    
-      function uploadSingleImage(base64) {
-        console.log("nazi")
+    };
+
+    function uploadSingleImage(base64) {
         axios
-          .post("http://localhost:8000/SubirImagen", { imaage: base64 })
-          .then((res) => {
-            console.log(res.data);
-            setImgs(res.data);
-            Post(res.data);
-            alert("Imagen subida exitosamente");
-          })
-          .catch(console.log);
-      }
-    
-      function uploadMultipleImages(images) {
+            .post("http://localhost:8000/SubirImagen", { imaage: base64 })
+            .then((res) => {
+                console.log(res.data);
+                setImgs(res.data);
+                Post(res.data);
+            })
+            .catch(console.log);
+    }
+
+    function uploadMultipleImages(images) {
         axios
-          .post("http://localhost:8000/uploadMultipleImages", { images })
-          .then((res) => {
-            console.log(res.data)
-            setImgs(res.data);
-            PostMultiple(res.data)
-            alert("Image uploaded Succesfully");
-          })
-          .catch(console.log);
-      }
-    
-        const uploadImage = async (f) => {
+            .post("http://localhost:8000/uploadMultipleImages", { images })
+            .then((res) => {
+                console.log(res.data)
+                setImgs(res.data);
+                PostMultiple(res.data)
+                alert("Image uploaded Succesfully");
+            })
+            .catch(console.log);
+    }
+
+    const uploadImage = async (f) => {
         const files = f;
-        //console.log(f);
         console.log(files.length);
-        if(files.length === 0){
+        if (files.length === 0) {
             Post("");
-        }else if (files.length === 1||files[1] === null) {
-          const base64 = await convertBase64(files[0]);
-          uploadSingleImage(base64);
-          return;
+        } else if (files.length === 1 || files[1] === null) {
+            const base64 = await convertBase64(files[0]);
+            uploadSingleImage(base64);
+            return;
         }
-    
+
         const base64s = [];
         for (var i = 0; i < files.length; i++) {
-          var base = await convertBase64(files[i]);
-          base64s.push(base);
+            var base = await convertBase64(files[i]);
+            base64s.push(base);
         }
 
         uploadMultipleImages(base64s);
-      };
+    };
 
-      async function Post (imgs){
+    async function Post(imgs) {
         console.log(imgs);
-        const res = await fetch("http://localhost:8000/api/prodIntercambios",{
-            method:"POST",
-            headers:{
-                "Content-Type" : "application/json"
+        const res = await fetch("http://localhost:8000/api/prodIntercambios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 titulo: titulo,
                 descripcion: descripcion,
-                fotos: imgs.public_id, 
+                fotos: imgs.public_id,
                 categoria: categoria,
                 sucursal: sucursal._id,
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
                 idUsuario: localStorage.getItem("email")
             })
-           });
-      }
-      async function PostMultiple (imgs){
+        });
+    }
+    async function PostMultiple(imgs) {
         console.log(imgs);
-        const res = await fetch("http://localhost:8000/api/prodIntercambios",{
-            method:"POST",
-            headers:{
-                "Content-Type" : "application/json"
+        const res = await fetch("http://localhost:8000/api/prodIntercambios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 titulo: titulo,
                 descripcion: descripcion,
-                fotos: [imgs[0].public_id,imgs[1].public_id], 
+                fotos: [imgs[0].public_id, imgs[1].public_id],
                 categoria: categoria,
                 sucursal: sucursal._id,
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
                 idUsuario: localStorage.getItem("email")
             })
-           });
-      }
+        });
+    }
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
 
     useEffect(() => {
@@ -203,18 +200,16 @@ export const AgregarIntercambio =  () => {
         }
         return true;
     }
-        const publicarIntercambio = async () => {
+    const publicarIntercambio = async () => {
         if (chequeo()) {
-            try{
-            console.log(fotos);
-           await uploadImage(fotos);
-            }catch (error) {
+            try {
+                await uploadImage(fotos);
+                setMensaje('¡Producto para intercambiar subido correctamente!');
+                refHorariosF.current.style.color = '#07f717';
+            } catch (error) {
                 console.error("Error:", error);
             }
-
         }
-        
-    
     }
 
     return (
