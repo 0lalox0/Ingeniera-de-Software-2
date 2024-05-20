@@ -26,9 +26,39 @@ export const AgregarSucursal = () => {
   const chequeo = () => {
     if (!nombre) {
       setMessage('Por favor, ingrese un nombre.');
+      refMensaje.current.style.color = 'red';
       return false;
     }
-
+    if (!ciudad) {
+      setMessage('Por favor, ingrese una ciudad.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
+    if (!calle) {
+      setMessage('Por favor, ingrese una calle.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
+    if (!numero) {
+      setMessage('Por favor, ingrese un número.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
+    if (!horarioApertura) {
+      setMessage('Por favor, ingrese un horario de apertura.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
+    if (!horarioCierre) {
+      setMessage('Por favor, ingrese un horario de cierre.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
+    if (horarioApertura > horarioCierre) {
+      setMessage('Por favor, ingrese un horario válido.');
+      refMensaje.current.style.color = 'red';
+      return false;
+    }
     return true;
   }
 
@@ -53,9 +83,11 @@ export const AgregarSucursal = () => {
           body: JSON.stringify(mandarSucursal)
         });
         const data = await response.json();
-        setMessage("¡Sucursal agregada con éxito!"); // Establecer mensaje de éxito
+        setMessage("¡Sucursal agregada con éxito!");
+        refMensaje.current.style.color = '#07f717';
       } catch (error) {
-        setMessage("Hubo un error al agregar la sucursal."); // Establecer mensaje de error
+        setMessage("Hubo un error al agregar la sucursal.");
+        refMensaje.current.style.color = 'red';
       }
     }
   }
@@ -118,7 +150,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
-          <p style={{ color: message === 'Sucursal agregada con éxito!' ? '#07f717' : 'red' }} ref={refMensaje}> {message} </p>
+          <p ref={refMensaje}> {message} </p>
           <p className="textoRedireccion" onClick={redirectSucursales}> Volver a Gestión de Sucursales</p>
         </div>
         : <Mantenimiento> </Mantenimiento>
