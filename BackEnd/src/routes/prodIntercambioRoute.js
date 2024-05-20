@@ -42,13 +42,13 @@ router.delete('/prodIntercambios/:id', (req, res) => {
 
 
 // Obtener productos con filtros
-router.get('/buscarProdIntercambios', (req, res) => {
+router.get('/filtrarProdIntercambios', (req, res) => {
    
     const { titulo, categoria, sucursal } = req.query;
     const query = {};
   
     if (titulo) query.titulo = new RegExp(titulo, 'i'); // búsqueda insensible a mayúsculas/minúsculas
-    if (categoria) query.categoria = categoria;
+    if (categoria) query.categoria = new RegExp(categoria, 'i');
     if (sucursal) query.sucursal = sucursal;
   
     const items = ProdInterSchema.find(query)
@@ -63,11 +63,11 @@ router.use((req, res, next) => {  //todo esto
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
-  });
-  const errorHandler = (err, req, res, next) => {
+});
+const errorHandler = (err, req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
-  };
-  router.use(errorHandler);
+};
+router.use(errorHandler);
 
 export default router;
