@@ -48,8 +48,15 @@ export const AgregarIntercambio = () => {
         axios
             .post("http://localhost:8000/SubirImagen", { imaage: base64 })
             .then((res) => {
+                let email = localStorage.getItem("email")
+                fetch("http://localhost:8000/api/users/" + email)
+                .then((usuario)=> usuario.json())
+                .then((u)=> {
+                    console.log(u);
+                    Post(res.data, u);
+                })
                 //console.log(res.data);
-                Post(res.data, user.data);
+    
             })
             .catch(console.log);
     }
@@ -58,8 +65,14 @@ export const AgregarIntercambio = () => {
         axios
             .post("http://localhost:8000/uploadMultipleImages", { images })
             .then((res) => {
-                //console.log(res.data)
-                PostMultiple(res.data)
+                let email = localStorage.getItem("email")
+                fetch("http://localhost:8000/api/users/" + email)
+                .then((usuario)=> usuario.json())
+                .then((u)=> {
+                    console.log(u);
+                    PostMultiple(res.data, u);
+                })
+                //console.log(res.data);
             })
             .catch(console.log);
     }
@@ -101,6 +114,8 @@ export const AgregarIntercambio = () => {
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
                 idUsuario: localStorage.getItem("email"),
+                nombre: usuario.name,
+                apellido: usuario.lastname,
                 urlFotos: imgs.secure_url
             })
         });
@@ -119,7 +134,7 @@ export const AgregarIntercambio = () => {
 
 
     }
-    async function PostMultiple(imgs, user) {
+    async function PostMultiple(imgs, usuario) {
         console.log(imgs);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
@@ -135,6 +150,8 @@ export const AgregarIntercambio = () => {
                 inicioRango: horarioInicio,
                 finRango: horarioFin,
                 idUsuario: localStorage.getItem("email"),
+                nombre: usuario.name,
+                apellido: usuario.lastname,
                 urlFotos: [imgs[0].secure_url, imgs[1].secure_url]
             })
         });

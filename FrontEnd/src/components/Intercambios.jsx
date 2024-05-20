@@ -55,17 +55,27 @@ export const Intercambios = () => {
     }
 
     const usuarioParticular = async (email) => {
+        
+        fetch('http://localhost:8000/api/users/' + email)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            return data;
+        })
+        .catch(error => console.error('Error:', error));
+        
+        /*
         try {
             const response = await fetch('http://localhost:8000/api/users/' + email);
-            return response.json();
+            return response.json;
         } catch (error) {
             console.error('Error: ', error);
-        }
+        }*/
     }
 
-    if (loading) {
+   /* if (loading) {
         return <p>Cargando...</p>
-    }
+    }*/
 
     return (
         <div className='clase-intercambios'>
@@ -82,10 +92,10 @@ export const Intercambios = () => {
                 <div className="intercambios">
                     {intercambios.map((intercambio) => {
                         const usuario = usuarioParticular(intercambio.idUsuario);
-                        console.log(usuario.Object);
+                        console.log(usuario);
                         const linkFoto = intercambio.urlFotos[0];
                         const sucursal = sucursalParticular(intercambio.sucursal);
-                        console.log(sucursal.Object);
+                        console.log(sucursal);
                         return (
                             <div className="card mb-3"key= {intercambio._id} >
                                 <div className="row g-0">
