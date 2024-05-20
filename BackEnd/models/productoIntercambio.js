@@ -31,6 +31,18 @@ const ProdInterSchema = new Schema({
     idUsuario: {
         type: String,
         require: true
+    }, 
+    nombre: {
+        type: String,
+        require: true
+    },
+    apellido: {
+        type: String,
+        require: true
+    },
+    urlFotos: {
+        type: [String],
+        require
     }
 })
 

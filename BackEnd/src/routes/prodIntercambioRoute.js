@@ -41,6 +41,13 @@ router.delete('/prodIntercambios/:id', (req, res) => {
 })
 
 
+//eliminar todos los productos
+router.delete('/eliminarTodosLosProductos', (req, res) => {
+    ProdInterSchema.deleteMany()
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
+
 // Obtener productos con filtros
 router.get('/filtrarProdIntercambios', (req, res) => {
    
