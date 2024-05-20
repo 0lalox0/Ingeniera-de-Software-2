@@ -58,11 +58,13 @@ app.use('/api', sucursalRouter)
 app.use('/api', prodIntercambiosRouter)
 //Cloudinary
 app.post("/SubirImagen", (req, res) => {
-  uploadImage(req.body.image)
+  //onsole.log(req.body);
+  uploadImage(req.body.imaage)
     .then((data) => res.send(data))
     .catch((err) => res.status(500).send(err));
 });
 app.post("/uploadMultipleImages", (req, res) => {
+
   uploadImage
     .uploadMultipleImages(req.body.images)
     .then((data) => res.send(data))
