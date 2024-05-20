@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Mantenimiento } from './Mantenimiento';
 import useUser from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ export const EliminarSucursal = () => {
     const [sucursales, setSucursales] = useState([]);
     const [eliminar, setEliminar] = useState(false);
     const [mensajeEliminar, setMensajeEliminar] = useState('');
+    const refMensaje = useRef(null);
 
     const redirectSucursales = () => navigate('/admin/sucursales');
 
@@ -27,6 +28,7 @@ export const EliminarSucursal = () => {
     const botonEliminar = (sucursalId) => {
         setEliminar(sucursalId);
         setMensajeEliminar('¿Estás seguro de querer borrar esta sucursal?');
+        refMensaje.current.style.color = 'red';
     }
 
     const botonConfirmar = async (sucursalId) => {
@@ -49,11 +51,13 @@ export const EliminarSucursal = () => {
         }
         setSucursales(sucursales.filter(sucursal => sucursal._id !== sucursalId));
         setMensajeEliminar(`Se eliminó la sucursal con nombre ${sucursalEliminar.nombre}, ubicada en la calle ${sucursalEliminar.calle} número ${sucursalEliminar.numero} de la ciudad ${sucursalEliminar.ciudad}.`);
+        refMensaje.current.style.color = 'red';
     };
 
     const botonCancelar = () => {
         setEliminar(null);
-        setMensajeEliminar('');
+        setMensajeEliminar('No se ha borrado la sucursal.');
+        refMensaje.current.style.color = 'black';
     }
 
     return (
@@ -63,7 +67,7 @@ export const EliminarSucursal = () => {
                     <div className='eliminacion-sucursales'>
                         <h1 style={{ color: "#242465" }}> Eliminar sucursal de Ferreplus </h1>
                         <p className='textoRedireccion' onClick={redirectSucursales}> Volver a la gestión de sucursales</p>
-                        <p style={{ color: 'red' }}> {mensajeEliminar}</p>
+                        <p ref={refMensaje}> {mensajeEliminar}</p>
                     </div>
                     <div className='clase-sucursales'>
                         <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>
