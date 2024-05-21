@@ -24,6 +24,14 @@ router.get('/prodIntercambios/:id', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
+//obtener todos los productos de un usuario
+router.get('/prodIntercambiosPorUsuario/:id', (req, res) => {
+    const { id } = req.params
+    ProdInterSchema.find({idUsuario: id})
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
+
 //actualizar un producto
 router.put('/prodIntercambios/:id', (req, res) => {
     const { id } = req.params
