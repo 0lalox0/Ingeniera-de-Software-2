@@ -106,7 +106,7 @@ export const Intercambios = () => {
                                         <div className="card-body">
                                             <h5 className="card-title">{intercambio.titulo}</h5>
                                             <p className="card-text">Descripción del producto: {intercambio.descripcion}.
-                                                Sucursal del intercambio: {sucursal.nombre}
+                                                Sucursal del intercambio: {intercambio.nombreSucursal}
                                                 Rango horario: {intercambio.inicioRango} - {intercambio.finRango}</p>
                                             <p className="card-text"><small className="text-body-secondary">Publicado por: {intercambio.nombre} {intercambio.apellido} </small></p>
                                         </div>

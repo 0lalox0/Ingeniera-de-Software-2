@@ -82,8 +82,15 @@ export const AgregarIntercambio = () => {
         console.log(files.length);
         if (files.length === 0) {
             Post("");
-        } else if (files.length === 1 || files[1] === null) {
-            const base64 = await convertBase64(files[0]);
+        } else if (files.length === 1 || files[1] === null || files[0] === null) {
+            let base64;
+            if(files[1] === null){
+                base64 = await convertBase64(files[0]);
+            }
+            else{
+                console.log("aca");
+                base64 = await convertBase64(files[1]);
+            }
             uploadSingleImage(base64);
             return;
         }
@@ -116,7 +123,8 @@ export const AgregarIntercambio = () => {
                 idUsuario: localStorage.getItem("email"),
                 nombre: usuario.name,
                 apellido: usuario.lastname,
-                urlFotos: imgs.secure_url
+                urlFotos: imgs.secure_url,
+                nombreSucursal: sucursal.nombre
             })
         });
     }
@@ -152,7 +160,8 @@ export const AgregarIntercambio = () => {
                 idUsuario: localStorage.getItem("email"),
                 nombre: usuario.name,
                 apellido: usuario.lastname,
-                urlFotos: [imgs[0].secure_url, imgs[1].secure_url]
+                urlFotos: [imgs[0].secure_url, imgs[1].secure_url],
+                nombreSucursal: sucursal.nombre
             })
         });
     }
@@ -236,6 +245,7 @@ export const AgregarIntercambio = () => {
     const publicarIntercambio = async () => {
         if (chequeo()) {
             try {
+                console.log(fotos);
                 await uploadImage(fotos);
                 setMensaje('¡Producto para intercambiar subido correctamente!');
                 refMensaje.current.style.color = '#07f717';
