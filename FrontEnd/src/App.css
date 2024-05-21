@@ -475,3 +475,25 @@ td:hover {
   width: 30%;
   margin: 10px;
 }
+
+.ver-intercambio {
+  border: 2px solid #210c98;
+  top: 26%;
+  width: 90%;
+  height: 70%;
+  padding-top: 2.5vh;
+  padding-left: 4vh;
+  padding-right: 4vh;
+  box-shadow: 10px 10px 10px 10px #ebf1f8;
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  position: absolute;
+  left: 1%;
+}
+
+.carrousel {
+  display: flex;
+  align-items: start;
+}
