@@ -10,8 +10,10 @@ import { useNavigate } from 'react-router-dom';
 export const GestionIntercambios = () => {
   const { role } = useUser();
   const navigate = useNavigate();
+
   const redirectPerfil = () => navigate('/perfilusuario');
   const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
+  const redirectEliminar = () => navigate('/perfilusuario/eliminarintercambio');
 
   return (
     <>
@@ -29,7 +31,7 @@ export const GestionIntercambios = () => {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" onClick={redirectEliminar}>
               <img src={eliminar} />
               <div className="card-content">
                 <h3> Eliminar producto para intercambiar</h3>

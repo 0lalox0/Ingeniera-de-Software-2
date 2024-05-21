@@ -33,6 +33,7 @@ export const EliminarSucursal = () => {
 
     const botonConfirmar = async (sucursalId) => {
         setEliminar(null);
+        refMensaje.current.style.color = 'red';
         let sucursalEliminar = encontrarSucursal(sucursalId);
         try {
             const url = `http://localhost:8000/api/sucursales/${sucursalId}`;
@@ -42,16 +43,15 @@ export const EliminarSucursal = () => {
                     'Content-Type': 'application/json'
                 }
             }
-
             const response = await fetch(url, options);
-            if (!response.ok)
+            if (!response.ok) 
                 throw new Error('No se pudo eliminar la sucursal');
         } catch {
             setMensajeEliminar('Hubo un error al intentar eliminar la sucursal.');
+            return;
         }
         setSucursales(sucursales.filter(sucursal => sucursal._id !== sucursalId));
         setMensajeEliminar(`Se eliminó la sucursal con nombre ${sucursalEliminar.nombre}, ubicada en la calle ${sucursalEliminar.calle} número ${sucursalEliminar.numero} de la ciudad ${sucursalEliminar.ciudad}.`);
-        refMensaje.current.style.color = 'red';
     };
 
     const botonCancelar = () => {

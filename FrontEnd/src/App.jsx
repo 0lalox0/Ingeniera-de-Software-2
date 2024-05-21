@@ -18,6 +18,7 @@ import { EditarPerfil } from './components/EditarPerfil'
 import { EliminarSucursal } from './components/EliminarSucursal'
 import { GestionIntercambios } from './components/GestionIntercambios'
 import { AgregarIntercambio } from './components/AgregarIntercambio'
+import { EliminarIntercambio } from './components/EliminarIntercambio'
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
         <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
         <Route path='/perfilUsuario/intercambios' element={<GestionIntercambios />}></Route>
         <Route path='/perfilUsuario/agregarIntercambio' element={<AgregarIntercambio />}> </Route>
+        <Route path='/perfilUsuario/eliminarIntercambio' element={<EliminarIntercambio />}> </Route>
       </Routes>
     </>
   )

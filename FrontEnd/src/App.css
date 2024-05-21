@@ -47,8 +47,7 @@
 /* HEADER */
 
 header {
-  max-width: 150%;
-  width: 100%;
+  width: 100% !important;
   height: 22%;
   background-color: #ebf1f8;
   top: 0%;
