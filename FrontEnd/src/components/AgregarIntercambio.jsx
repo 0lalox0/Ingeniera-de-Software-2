@@ -116,7 +116,8 @@ export const AgregarIntercambio = () => {
                 idUsuario: localStorage.getItem("email"),
                 nombre: usuario.name,
                 apellido: usuario.lastname,
-                urlFotos: imgs.secure_url
+                urlFotos: imgs.secure_url,
+                nombreSucursal: sucursal.nombre
             })
         });
     }
@@ -152,7 +153,8 @@ export const AgregarIntercambio = () => {
                 idUsuario: localStorage.getItem("email"),
                 nombre: usuario.name,
                 apellido: usuario.lastname,
-                urlFotos: [imgs[0].secure_url, imgs[1].secure_url]
+                urlFotos: [imgs[0].secure_url, imgs[1].secure_url],
+                nombreSucursal: sucursal.nombre
             })
         });
     }

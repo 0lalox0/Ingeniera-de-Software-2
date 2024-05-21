@@ -41,6 +41,9 @@ const ProdInterSchema = new Schema({
     urlFotos: {
         type: [String],
         require: true
+    },
+    nombreSucursal: {
+        type: String
     }
 })
 
