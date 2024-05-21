@@ -10,7 +10,7 @@ const ProdInterSchema = new Schema({
         type: String,
     },
     fotos: {
-        type: String,
+        type: [String],
     },
     categoria: {
         type: String,
