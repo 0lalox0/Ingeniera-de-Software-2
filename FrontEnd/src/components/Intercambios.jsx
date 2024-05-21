@@ -6,9 +6,6 @@ export const Intercambios = () => {
     const { role } = useUser();
     const navigate = useNavigate();
     const [intercambios, setIntercambios] = useState([]);
-    const [sucursales, setSucursales] = useState({});
-    const [users, setUsers] = useState({});
-    const [loading, setLoading] = useState(true);
 
     const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
 
@@ -18,32 +15,6 @@ export const Intercambios = () => {
             .then(data => setIntercambios(data))
             .catch(error => console.error('Error:', error));
     }, []);
-
-    // useEffect(() => {
-    //     async () => {
-    //         await fetch('http://localhost:8000/api/sucursales')
-    //             .then(response => response.json())
-    //             .then(data => setSucursales(data))
-    //             .catch(error => console.error('Error:', error));
-    //     }
-    // }, []);
-
-    // useEffect(() => {
-    //     async () => {
-    //         await fetch('http://localhost:8000/api/users')
-    //             .then(response => response.json())
-    //             .then(data => setUsers(data))
-    //             .catch(error => console.error('Error:', error));
-    //     }
-    // }, []);
-
-    const buscarSucursal = (id) => {
-        return sucursales.find(s => s._id === id);
-    }
-
-    const buscarUsuario = (email) => {
-        return users.find(u => u.email === email);
-    }
 
     const sucursalParticular = async (id) => {
         try {
@@ -63,19 +34,7 @@ export const Intercambios = () => {
             return data;
         })
         .catch(error => console.error('Error:', error));
-        
-        /*
-        try {
-            const response = await fetch('http://localhost:8000/api/users/' + email);
-            return response.json;
-        } catch (error) {
-            console.error('Error: ', error);
-        }*/
     }
-
-   /* if (loading) {
-        return <p>Cargando...</p>
-    }*/
 
     return (
         <div className='clase-intercambios'>
@@ -91,11 +50,7 @@ export const Intercambios = () => {
                 </>
                 <div className="intercambios">
                     {intercambios.map((intercambio) => {
-                        const usuario = usuarioParticular(intercambio.idUsuario);
-                        console.log(usuario);
                         const linkFoto = intercambio.urlFotos[0];
-                        const sucursal = sucursalParticular(intercambio.sucursal);
-                        console.log(sucursal);
                         return (
                             <div className="card mb-3"key= {intercambio._id} >
                                 <div className="row g-0">

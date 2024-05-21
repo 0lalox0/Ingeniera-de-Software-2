@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import axios from "axios";
-import user from '../../../BackEnd/models/user';
 
 export const AgregarIntercambio = () => {
     const navigate = useNavigate();
@@ -28,6 +27,12 @@ export const AgregarIntercambio = () => {
     const refHorariosP = useRef(null);
     const refMensaje = useRef(null);
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            publicarIntercambio();
+        }
+    };
+
     //Cloudinary
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -50,13 +55,10 @@ export const AgregarIntercambio = () => {
             .then((res) => {
                 let email = localStorage.getItem("email")
                 fetch("http://localhost:8000/api/users/" + email)
-                .then((usuario)=> usuario.json())
-                .then((u)=> {
-                    console.log(u);
-                    Post(res.data, u);
-                })
-                //console.log(res.data);
-    
+                    .then((usuario) => usuario.json())
+                    .then((u) => {
+                        Post(res.data, u);
+                    })
             })
             .catch(console.log);
     }
@@ -67,28 +69,24 @@ export const AgregarIntercambio = () => {
             .then((res) => {
                 let email = localStorage.getItem("email")
                 fetch("http://localhost:8000/api/users/" + email)
-                .then((usuario)=> usuario.json())
-                .then((u)=> {
-                    console.log(u);
-                    PostMultiple(res.data, u);
-                })
-                //console.log(res.data);
+                    .then((usuario) => usuario.json())
+                    .then((u) => {
+                        PostMultiple(res.data, u);
+                    })
             })
             .catch(console.log);
     }
 
     const uploadImage = async (f) => {
         const files = f;
-        console.log(files.length);
         if (files.length === 0) {
             Post("");
         } else if (files.length === 1 || files[1] === null || files[0] === null) {
             let base64;
-            if(files[1] === null){
+            if (files[1] === null) {
                 base64 = await convertBase64(files[0]);
             }
-            else{
-                console.log("aca");
+            else {
                 base64 = await convertBase64(files[1]);
             }
             uploadSingleImage(base64);
@@ -105,8 +103,7 @@ export const AgregarIntercambio = () => {
     };
 
     async function Post(imgs, usuario) {
-        console.log(imgs);
-        console.log(usuario);
+        let nombre = sucursal.nombre + ' ';
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
             headers: {
@@ -124,26 +121,23 @@ export const AgregarIntercambio = () => {
                 nombre: usuario.name,
                 apellido: usuario.lastname,
                 urlFotos: imgs.secure_url,
-                nombreSucursal: sucursal.nombre
+                nombreSucursal: nombre
             })
         });
     }
+
     async function GetUser(email) {
         let t = "http://localhost:8000/api/users/" + email;
         try {
             const res = await fetch(t, {});
             const user = await res.json();
-            console.log(user);
             return user;
-            // console.log(user.name);
         } catch (error) {
             console.error('Error:', error);
         }
-
-
     }
+
     async function PostMultiple(imgs, usuario) {
-        console.log(imgs);
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
             headers: {
@@ -180,10 +174,31 @@ export const AgregarIntercambio = () => {
     }
 
     const seleccionarFotos = (index, e) => {
-        const newFiles = [...fotos];
-        newFiles[index] = e.target.files[0] || null;
-        setFotos(newFiles);
-    }
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    if (img.width > 800 || img.height > 600) {
+                        setMensaje('La imagen debe ser de tamaño máximo 800x600 píxeles.');
+                        refFotos.current.style.color = 'red';
+                        e.target.value = "";
+                    } else {
+                        const newFiles = [...fotos];
+                        newFiles[index] = file;
+                        setFotos(newFiles);
+                    }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const newFiles = [...fotos];
+            newFiles[index] = null;
+            setFotos(newFiles);
+        }
+    };
 
     const chequeo = () => {
         [refTitulo, refDescripcion, refFotos, refCategoria, refSucursal, refHorariosI, refHorariosF, refHorariosP].forEach(ref => ref.current.style.color = '');
@@ -245,7 +260,6 @@ export const AgregarIntercambio = () => {
     const publicarIntercambio = async () => {
         if (chequeo()) {
             try {
-                console.log(fotos);
                 await uploadImage(fotos);
                 setMensaje('¡Producto para intercambiar subido correctamente!');
                 refMensaje.current.style.color = '#07f717';
@@ -260,7 +274,7 @@ export const AgregarIntercambio = () => {
     return (
         <>
             {role === 'cliente' ?
-                <div className='formularioIntercambio'>
+                <div className='formularioIntercambio' onKeyDown={handleKeyDown}>
                     <h2 style={{ color: "#242465" }}> Agregar producto para intercambiar </h2>
                     <p> ¡Agregá un producto que ya no uses y esté juntando polvo en tu casa para intercambiar con otro que necesites!</p>
 
@@ -276,7 +290,7 @@ export const AgregarIntercambio = () => {
 
                     <div className="mb-3">
                         <label htmlFor="fotosIntercambio" ref={refFotos}> Fotos del producto: </label>
-                        <p> Podés agregar hasta 2 fotos.</p>
+                        <p> Podés agregar hasta 2 fotos de 800x600.</p>
                         <input type="file" className="form-control" id='fotosIntercambio' accept="image/*" onChange={(e) => seleccionarFotos(0, e)} />
                         <input type="file" className="form-control" accept="image/*" onChange={(e) => seleccionarFotos(1, e)} />
                     </div>
