@@ -116,6 +116,10 @@ export const AgregarSucursal = () => {
         const data = await response.json();
         refMensaje.current.style.color = '#07f717';
         setMessage("¡Sucursal agregada con éxito!");
+        fetch('http://localhost:8000/api/sucursales')
+          .then(response => response.json())
+          .then(data => setSucursales(data))
+          .catch(error => console.error('Error:', error));
       } catch (error) {
         setMessage("Hubo un error al agregar la sucursal.");
       }
