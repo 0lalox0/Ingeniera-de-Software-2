@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
@@ -13,7 +13,14 @@ export const AgregarSucursal = () => {
   const [horarioApertura, setHorarioApertura] = useState("");
   const [horarioCierre, setHorarioCierre] = useState("");
   const [message, setMessage] = useState("");
+  const [sucursales, setSucursales] = useState([]);
   const refMensaje = useRef(null);
+  const refNombre = useRef(null);
+  const refCiudad = useRef(null);
+  const refCalle = useRef(null);
+  const refNumero = useRef(null);
+  const refHA = useRef(null);
+  const refHC = useRef(null);
 
   const redirectSucursales = () => navigate('/admin/sucursales');
 
@@ -23,40 +30,65 @@ export const AgregarSucursal = () => {
     }
   };
 
+  useEffect(() => {
+    fetch('http://localhost:8000/api/sucursales')
+      .then(response => response.json())
+      .then(data => setSucursales(data))
+      .catch(error => console.error('Error:', error));
+  }, []);
+
+  const sucursalExiste = (calle, numero) => {
+    const sucuCalle = sucursales.find((sucursal) => sucursal.calle == calle && sucursal.numero == numero); // si no encuentra una sucursal, devuelve undefined
+    return !(sucuCalle === undefined);
+    // if (sucuCalle === undefined)
+    //   return false;
+    // else
+    //   return true;
+  }
+
   const chequeo = () => {
+    refMensaje.current.style.color = 'red';
+    [refNombre, refCiudad, refCalle, refNumero, refHA, refHC].forEach(ref => ref.current.style.color = '');
     if (!nombre) {
       setMessage('Por favor, ingrese un nombre.');
-      refMensaje.current.style.color = 'red';
+      refNombre.current.style.color = 'red';
       return false;
     }
     if (!ciudad) {
       setMessage('Por favor, ingrese una ciudad.');
-      refMensaje.current.style.color = 'red';
+      refCiudad.current.style.color = 'red';
       return false;
     }
     if (!calle) {
       setMessage('Por favor, ingrese una calle.');
-      refMensaje.current.style.color = 'red';
+      refCalle.current.style.color = 'red';
       return false;
     }
     if (!numero) {
       setMessage('Por favor, ingrese un número.');
-      refMensaje.current.style.color = 'red';
+      refNumero.current.style.color = 'red';
       return false;
     }
     if (!horarioApertura) {
       setMessage('Por favor, ingrese un horario de apertura.');
-      refMensaje.current.style.color = 'red';
+      refHA.current.style.color = 'red';
       return false;
     }
     if (!horarioCierre) {
       setMessage('Por favor, ingrese un horario de cierre.');
-      refMensaje.current.style.color = 'red';
+      refHC.current.style.color = 'red';
       return false;
     }
     if (horarioApertura > horarioCierre) {
       setMessage('Por favor, ingrese un horario válido.');
-      refMensaje.current.style.color = 'red';
+      refHA.current.style.color = 'red';
+      refHC.current.style.color = 'red';
+      return false;
+    }
+    if (sucursalExiste(calle, numero)) {
+      setMessage(`Ya existe una sucursal en la calle ${calle} con número ${numero}. Por favor, ingrese una dirección válida`);
+      refCalle.current.style.color = 'red';
+      refNumero.current.style.color = 'red';
       return false;
     }
     return true;
@@ -83,8 +115,8 @@ export const AgregarSucursal = () => {
           body: JSON.stringify(mandarSucursal)
         });
         const data = await response.json();
-        setMessage("¡Sucursal agregada con éxito!");
         refMensaje.current.style.color = '#07f717';
+        setMessage("¡Sucursal agregada con éxito!");
       } catch (error) {
         setMessage("Hubo un error al agregar la sucursal.");
         refMensaje.current.style.color = 'red';
@@ -99,7 +131,7 @@ export const AgregarSucursal = () => {
           <h2>Agregar sucursal: </h2>
 
           <div className="mb-3">
-            <label htmlFor="nombreSucursal"> Nombre </label>
+            <label htmlFor="nombreSucursal" ref={refNombre}> Nombre </label>
             <input className="form-control"
               type="text" id='nombreSucursal'
               value={nombre} onChange={e => setNombre(e.target.value)}
@@ -107,7 +139,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="ciudadSucursal"> Ciudad: </label>
+            <label htmlFor="ciudadSucursal" ref={refCiudad}> Ciudad: </label>
             <input className="form-control"
               type="text" id='ciudadSucursal'
               value={ciudad}
@@ -116,7 +148,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="calleSucursal">Calle: </label>
+            <label htmlFor="calleSucursal" ref={refCalle}>Calle: </label>
             <input className="form-control"
               type="text"
               id='calleSucursal'
@@ -126,7 +158,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="numeroSucursal"> Número: </label>
+            <label htmlFor="numeroSucursal" ref={refNumero}> Número: </label>
             <input className="form-control"
               type="number"
               id='numeroSucursal'
@@ -136,7 +168,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="horarioAperturaSucursal"> Horario de apertura: </label>
+            <label htmlFor="horarioAperturaSucursal" ref={refHA}> Horario de apertura: </label>
             <input className="form-control"
               type="time"
               id='horarioAperturaSucursal'
@@ -145,7 +177,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="horarioCierreSucursal">Horario de cierre: </label>
+            <label htmlFor="horarioCierreSucursal" ref={refHC}>Horario de cierre: </label>
             <input className="form-control" type="time" id='horarioCierreSucursal' value={horarioCierre} onChange={e => setHorarioCierre(e.target.value)} />
           </div>
 
