@@ -28,7 +28,6 @@ export const EliminarIntercambio = () => {
     const botonEliminar = (idIntercambio) => {
         setEliminar(idIntercambio);
         setMensajeEliminar('¿Estás seguro de querer borrar este producto para intercambiar?');
-        refMensaje.current.style.color = 'red';
     }
 
     const botonCancelar = () => {
@@ -39,7 +38,6 @@ export const EliminarIntercambio = () => {
 
     const botonConfirmar = async (idProducto) => {
         setEliminar(null);
-        refMensaje.current.style.color = 'red';
         let productoEliminar = buscarProducto(idProducto);
         try {
             const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
@@ -67,7 +65,7 @@ export const EliminarIntercambio = () => {
                     <div className='eliminacion-sucursales'>
                         <h1 style={{ color: "#242465" }}> Eliminar productos para intercambiar </h1>
                         <p className='textoRedireccion' onClick={redirectGestion}> Volver a la gestión de intercambios</p>
-                        <p ref={refMensaje}> {mensajeEliminar}</p>
+                        <p className='errorContainer' ref={refMensaje}> {mensajeEliminar}</p>
                     </div>
                     <div className='clase-sucursales'>
                         <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>

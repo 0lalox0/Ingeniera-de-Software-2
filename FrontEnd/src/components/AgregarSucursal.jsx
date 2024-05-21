@@ -47,7 +47,6 @@ export const AgregarSucursal = () => {
   }
 
   const chequeo = () => {
-    refMensaje.current.style.color = 'red';
     [refNombre, refCiudad, refCalle, refNumero, refHA, refHC].forEach(ref => ref.current.style.color = '');
     if (!nombre) {
       setMessage('Por favor, ingrese un nombre.');
@@ -119,7 +118,6 @@ export const AgregarSucursal = () => {
         setMessage("¡Sucursal agregada con éxito!");
       } catch (error) {
         setMessage("Hubo un error al agregar la sucursal.");
-        refMensaje.current.style.color = 'red';
       }
     }
   }
@@ -182,7 +180,7 @@ export const AgregarSucursal = () => {
           </div>
 
           <button className='search-button' onClick={agregarSucursal}> Agregar sucursal</button>
-          <p ref={refMensaje}> {message} </p>
+          <p className='errorContainer' ref={refMensaje}> {message} </p>
           <p className="textoRedireccion" onClick={redirectSucursales}> Volver a Gestión de Sucursales</p>
         </div>
         : <Mantenimiento> </Mantenimiento>
