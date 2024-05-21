@@ -26,6 +26,10 @@ const SucursalSchema = new Schema({
         type: Date,
         require: true
     },
+    dias: {
+        type: String,
+        require: true
+    }
 
 })
 

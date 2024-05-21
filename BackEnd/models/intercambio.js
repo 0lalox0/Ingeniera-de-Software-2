@@ -6,6 +6,7 @@ const IntercambioSchema = new Schema({
     productoDeseado: { type: ObjectId, ref: 'ProductosParaIntercambiar', required: true },
     usuarioOfrecido: { type: ObjectId, ref: 'User', required: true },
     usuarioDeseado: { type: ObjectId, ref: 'User', required: true },
+    dias: { type: String, require: true },
     estado: { type: String, enum: ['disponible', 'pendiente', 'listo', 'aceptado'], default: 'disponible' },
     fecha: { type: Date, default: Date.now }
 })
