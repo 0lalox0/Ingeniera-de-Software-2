@@ -312,7 +312,7 @@ export const AgregarIntercambio = () => {
                         <input type="time" className="form-control" id='horarioFinIntercambio' value={horarioFin} onChange={(e) => setHorarioFin(e.target.value)} />
                     </div>
 
-                    <button className="btn btn-info" onClick={publicarIntercambio}> Publicar intercambio</button>
+                    <button className="btn btn-success" onClick={publicarIntercambio}> Publicar intercambio</button>
                     <p className='errorContainer' ref={refMensaje}> {mensaje} </p>
                     <p className="textoRedireccion" onClick={redirectGestion}> Volver a la gestión de intercambios</p>
                 </div>
