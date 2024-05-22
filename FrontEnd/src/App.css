@@ -198,7 +198,8 @@ header {
 
 #botonMiPerfil,
 #botonAdministrar,
-#botonDropdownHeader {
+#botonDropdownHeader,
+#botonGestionar {
   background-color: #4545ae;
   color: white;
   border: 1px solid transparent;

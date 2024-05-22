@@ -56,9 +56,9 @@ export const ProductoIntercambio = () => {
                         }
                     </div>
                     <div className="intercambio-detalles">
-                        <p> Descripción del producto: {producto.descripcion} </p>
-                        <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}</p>
-                        <p> Publicado por: {producto.nombre} {producto.apellido}</p>
+                        <p> Descripción del producto: {producto.descripcion}. </p>
+                        <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}.</p>
+                        <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
                         {role === 'cliente' ? <>
                             <button id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
                         </> : <> </>}

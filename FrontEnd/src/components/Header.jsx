@@ -59,12 +59,14 @@ export const HeaderFerreplus = () => {
             <button className='botonesInicioSesion' id='botonAdministrar' onClick={redirectAdmin}> Administrar </button>
             <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
           </>
-            : <>
+            : role === 'empleado' ? <>
+              <button className='botonesInicioSesion' id='botonGestionar'> Gestionar </button>
+              <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
+            </> : <>
               <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
               <button className='botonesInicioSesion' id='botonRegistro' onClick={redirectRegistro}> Registrarse </button>
             </>
         }
-        {/* falta empleado */}
       </div>
 
       <div id='dropdown' style={{ display: 'none' }}>
@@ -85,11 +87,14 @@ export const HeaderFerreplus = () => {
                 <li><a className="dropdown-item" onClick={redirectPerfil}>Mi Perfil</a></li>
                 <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
               </>
-                : <>
-                  <li><a className="dropdown-item" onClick={redirectInicioSesion}>Iniciar sesión</a></li>
-                  <li><a className="dropdown-item" onClick={redirectRegistro}>Registrarse</a></li>
-                </>}
-            {/* falta empleado */}
+                : role === 'empleado' ? <>
+                  <li><a className="dropdown-item">Gestionar</a></li>
+                  <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
+                </> :
+                  <>
+                    <li><a className="dropdown-item" onClick={redirectInicioSesion}>Iniciar sesión</a></li>
+                    <li><a className="dropdown-item" onClick={redirectRegistro}>Registrarse</a></li>
+                  </>}
           </ul>
         </div>
       </div>

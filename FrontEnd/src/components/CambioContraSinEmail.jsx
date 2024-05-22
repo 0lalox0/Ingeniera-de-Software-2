@@ -67,13 +67,17 @@ export const CambioContraSinEmail = () => {
                 setCambiar(false);
             })
             .catch((error) => {
-                console.log(error.message); 
                 if (error.message.includes("(auth/weak-password)")) {
-                    setError("La contraseña debe tener al menos 6 caracteres");
-                } else {
-                    setError("Error al reautenticar");
+                    newPasswordRef.current.style.color = 'red';
+                    confirmPasswordRef.current.style.color = 'red';
+                    setError("Contraseña débil: La nueva contraseña debe tener al menos 6 caracteres.");
                 }
-                currentPasswordRef.current.style.color = 'red';
+                else if (error.message.includes('wrong-password')) {
+                    currentPasswordRef.current.style.color = 'red';
+                    setError('La contraseña actual ingresada no es correcta.');
+                }
+                else
+                    setError(error.message);
             });
     }
 

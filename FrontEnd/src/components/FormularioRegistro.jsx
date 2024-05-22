@@ -101,13 +101,13 @@ export const FormularioRegistro = () => {
             } catch (e) {
                 console.log(e.message);
                 if (e.message.includes("(auth/weak-password)")) {
-                    setError("Contraseña débil");
+                    setError("Contraseña débil.");
                 } else if (e.message.includes("(auth/email-already-in-use)")) {
-                    setError("El email ingresado ya se encuentra registrado");
+                    setError("El email ingresado ya se encuentra registrado.");
                 } else if (e.message.includes("(auth/invalid-email)")) {
-                    setError("Email inválido");
+                    setError("Email inválido.");
                 } else {
-                    setError("Error al crear la cuenta");
+                    setError("Error al crear la cuenta.");
                 }
             }
         }

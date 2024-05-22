@@ -36,9 +36,9 @@ export const FormularioLogin = () => {
                 navigate('/productos');
             } catch (e) {
                 if (e.message.includes("auth/wrong-password"))
-                    setError('Mail o contraseña incorrectos');
+                    setError('Mail o contraseña incorrectos.');
                 else
-                    setError("Error al iniciar sesión");
+                    setError("Error al iniciar sesión.");
             }
         }
     }
