@@ -33,6 +33,13 @@ export const AgregarIntercambio = () => {
         }
     };
 
+    useEffect(() => {
+        fetch('http://localhost:8000/api/sucursales')
+            .then(response => response.json())
+            .then(data => setSucursales(data))
+            .catch(error => console.error('Error:', error));
+    }, []);
+
     //Cloudinary
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -92,13 +99,11 @@ export const AgregarIntercambio = () => {
             uploadSingleImage(base64);
             return;
         }
-
         const base64s = [];
         for (var i = 0; i < files.length; i++) {
             var base = await convertBase64(files[i]);
             base64s.push(base);
         }
-
         uploadMultipleImages(base64s);
     };
 
@@ -126,17 +131,6 @@ export const AgregarIntercambio = () => {
         });
     }
 
-    async function GetUser(email) {
-        let t = "http://localhost:8000/api/users/" + email;
-        try {
-            const res = await fetch(t, {});
-            const user = await res.json();
-            return user;
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
     async function PostMultiple(imgs, usuario) {
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
@@ -160,13 +154,6 @@ export const AgregarIntercambio = () => {
         });
     }
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
-
-    useEffect(() => {
-        fetch('http://localhost:8000/api/sucursales')
-            .then(response => response.json())
-            .then(data => setSucursales(data))
-            .catch(error => console.error('Error:', error));
-    }, []);
 
     const seleccionarSucursal = (event) => {
         const idSeleccionada = event.target.value;

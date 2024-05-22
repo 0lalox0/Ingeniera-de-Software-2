@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { getAuth, updateEmail } from "firebase/auth";
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
 
 export const EditarPerfil = () => {
     const navigate = useNavigate();
@@ -61,12 +61,10 @@ export const EditarPerfil = () => {
             setMessage('El campo no puede estar vacío.');
             return;
         }
-
         if (isEmail && !validateEmail(field)) {
             setMessage('El correo electrónico no es válido.');
             return;
         }
-
         if (isEmail) {
             const wasSuccessful = await updateEmailInFirebase(field);
             if (wasSuccessful) {
@@ -87,10 +85,7 @@ export const EditarPerfil = () => {
         if (user) {
             try {
                 await updateEmail(user, newEmail);
-                console.log('Email actualizado con éxito en Firebase!');
-                localStorage.setItem("email", newEmail); // Actualizar el email en localStorage
-
-                // Actualizar el email en mongo
+                localStorage.setItem("email", newEmail);
                 const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
                     method: 'PUT',
                     headers: {
@@ -100,20 +95,15 @@ export const EditarPerfil = () => {
                         email: newEmail
                     })
                 });
-
-                if (!response.ok) {
+                if (!response.ok)
                     throw new Error('Error al actualizar el email en la base de datos');
-                }
-
                 setMessage('Email actualizado con éxito!');
                 return true;
             } catch (e) {
-                console.log(e.message);
-                if (e.message.includes("(auth/email-already-in-use)")) {
+                if (e.message.includes("(auth/email-already-in-use)"))
                     setMessage("El email ingresado ya se encuentra registrado");
-                } else {
+                else
                     setMessage("Error al actualizar el email");
-                }
                 return false;
             }
         }
@@ -125,24 +115,19 @@ export const EditarPerfil = () => {
             try {
                 const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`);
                 const data = await response.json();
-
                 setName(data.name);
                 setSurname(data.lastname);
                 setEmail(data.email);
-
-                //Convertir fecha
                 const dateObj = new Date(data.date);
                 const year = dateObj.getUTCFullYear();
                 const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
                 const day = String(dateObj.getUTCDate()).padStart(2, '0');
                 const formattedDate = `${year}-${month}-${day}`;
-
                 setDate(formattedDate);
             } catch (error) {
                 console.error("Error fetching user data: ", error);
             }
         }
-
         fetchUserData();
     }, []);
 
@@ -151,11 +136,9 @@ export const EditarPerfil = () => {
             setMessage('El campo fecha de nacimiento no puede estar vacío.');
             return false;
         }
-
         if (!validateDate(date)) {
             return false;
         }
-
         try {
             const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
                 method: 'PUT',
@@ -173,7 +156,6 @@ export const EditarPerfil = () => {
             if (!response.ok) {
                 throw new Error('Error al actualizar el usuario');
             }
-
             setMessage('Usuario actualizado con éxito!');
             return true;
         } catch (error) {
@@ -192,20 +174,17 @@ export const EditarPerfil = () => {
                         <label htmlFor="nombreUsuario" style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre </label>
                         {isEditingName ? (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
-                                    type="text" id='nombreUsuario'
-                                    value={name} onChange={e => { setName(e.target.value); setMessage(''); }}
-                                    placeholder='Nombre' onKeyDown={handleKeyDown} />
-                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(name, setIsEditingName); }}>Guardar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control modifyInput" type="text" id='nombreUsuario' value={name} onChange={e => { setName(e.target.value); setMessage(''); }} onKeyDown={handleKeyDown} />
+                                    <button className="btn btn-success" onClick={() => { validateAndSave(name, setIsEditingName); }}>Guardar</button>
+                                </div>
                             </>
                         ) : (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                                    type="text" id='nombreUsuario'
-                                    value={name} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingName(true); setMessage(''); }}>Modificar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control disabledInput" type="text" id='nombreUsuario' value={name} disabled />
+                                    <button className="btn btn-primary" onClick={() => { setIsEditingName(true); setMessage(''); }}> <FontAwesomeIcon icon={faPencil} /> </button>
+                                </div>
                             </>
                         )}
                     </div>
@@ -214,20 +193,17 @@ export const EditarPerfil = () => {
                         <label htmlFor="apellidoUsuario"> Apellido: </label>
                         {isEditingSurname ? (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
-                                    type="text" id='apellidoUsuario'
-                                    value={surname} onChange={e => { setSurname(e.target.value); setMessage(''); }}
-                                    placeholder='Apellido' onKeyDown={handleKeyDown} />
-                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(surname, setIsEditingSurname); }}>Guardar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control modifyInput" type="text" id='apellidoUsuario' value={surname} onChange={e => { setSurname(e.target.value); setMessage(''); }} onKeyDown={handleKeyDown} />
+                                    <button className="btn btn-success" onClick={() => { validateAndSave(surname, setIsEditingSurname); }}>Guardar</button>
+                                </div>
                             </>
                         ) : (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                                    type="text" id='apellidoUsuario'
-                                    value={surname} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingSurname(true); setMessage(''); }}>Modificar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control disabledInput" type="text" id='apellidoUsuario' value={surname} disabled />
+                                    <button className="btn btn-primary" onClick={() => { setIsEditingSurname(true); setMessage(''); }}><FontAwesomeIcon icon={faPencil} /></button>
+                                </div>
                             </>
                         )}
                     </div>
@@ -236,20 +212,17 @@ export const EditarPerfil = () => {
                         <label htmlFor="emailUsuario"> Email: </label>
                         {isEditingEmail ? (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
-                                    type="email" id='emailUsuario'
-                                    value={email} onChange={e => { setEmail(e.target.value); setMessage(''); }}
-                                    placeholder='Email' onKeyDown={handleKeyDown} />
-                                <button style={{ marginTop: '8px' }} onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control modifyInput" type="email" id='emailUsuario' value={email} onChange={e => { setEmail(e.target.value); setMessage(''); }} onKeyDown={handleKeyDown} />
+                                    <button className="btn btn-success" onClick={() => { validateAndSave(email, setIsEditingEmail, true); }}>Guardar</button>
+                                </div>
                             </>
                         ) : (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                                    type="email" id='emailUsuario'
-                                    value={email} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingEmail(true); setMessage(''); }}>Modificar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control disabledInput" type="email" id='emailUsuario' value={email} disabled />
+                                    <button className="btn btn-primary" onClick={() => { setIsEditingEmail(true); setMessage(''); }}><FontAwesomeIcon icon={faPencil} /></button>
+                                </div>
                             </>
                         )}
                     </div>
@@ -258,25 +231,22 @@ export const EditarPerfil = () => {
                         <label htmlFor="fechaNacimientoUsuario"> Fecha de nacimiento: </label>
                         {isEditingDate ? (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: 'white', border: '1px solid black' }}
-                                    type="date" id='fechaNacimientoUsuario'
-                                    value={date} onChange={e => { setDate(e.target.value); setMessage(''); }}
-                                    onKeyDown={handleKeyDown} />
-                                <button style={{ marginTop: '8px' }} onClick={() => { if (validateDate(date)) { updateAccount(); setIsEditingDate(false); } }}>Guardar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control modifyInput" type="date" id='fechaNacimientoUsuario' value={date} onChange={e => { setDate(e.target.value); setMessage(''); }} onKeyDown={handleKeyDown} />
+                                    <button className="btn btn-success" onClick={() => { if (validateDate(date)) { updateAccount(); setIsEditingDate(false); } }}>Guardar</button>
+                                </div>
                             </>
                         ) : (
                             <>
-                                <input className="form-control"
-                                    style={{ backgroundColor: '#b2b2b2', border: '1px solid black' }}
-                                    type="date" id='fechaNacimientoUsuario'
-                                    value={date} disabled />
-                                <button style={{ marginTop: '8px' }} onClick={() => { setIsEditingDate(true); setMessage(''); }}>Modificar</button>
+                                <div className="containerModificar">
+                                    <input className="form-control disabledInput" type="date" id='fechaNacimientoUsuario' value={date} disabled />
+                                    <button className="btn btn-primary" onClick={() => { setIsEditingDate(true); setMessage(''); }}><FontAwesomeIcon icon={faPencil} /></button>
+                                </div>
                             </>
                         )}
                     </div>
 
-                    <p style={{  color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p style={{ color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
                     <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
                 </div>
                 : <Mantenimiento></Mantenimiento>}

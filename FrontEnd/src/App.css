@@ -481,6 +481,8 @@ td:hover {
   background-color: white;
   top: 26%;
   width: 90%;
+  margin-top: 26vh;
+  margin-bottom: 3rem;
   height: auto;
   padding-top: 2.5vh;
   padding-left: 4vh;
@@ -490,7 +492,7 @@ td:hover {
   align-items: start;
   flex-wrap: wrap;
   flex-direction: column;
-  position: absolute;
+  position: relative;
   left: 1%;
   box-sizing: border-box;
   overflow: hidden;
@@ -538,4 +540,60 @@ td:hover {
   margin-right: 1rem;
   margin-left: 1rem;
   align-self: flex-end;
+}
+
+.carrusel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#fotoCarrusel {
+  width: 20rem;
+  height: 15rem;
+}
+
+.carrusel .buttonsCarrusel {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.buttonsCarrusel button {
+  background-color: #3789e1;
+  transition: background-color 0.5s ease;
+  padding: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.buttonsCarrusel button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* EDITAR PERFIL */
+.containerModificar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.containerModificar button {
+  margin: 10px;
+}
+
+.disabledInput {
+  background-color: #b2b2b2 !important;
+  border: 1px solid black !important;
+  width: auto !important;
+}
+
+.modifyInput {
+  background-color: white !important;
+  border: 1px solid black !important;
+  width: auto !important;
 }
