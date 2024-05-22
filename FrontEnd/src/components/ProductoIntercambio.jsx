@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import { useNavigate } from 'react-router-dom';
+import useUser from "../hooks/useUser";
 
 export const ProductoIntercambio = () => {
+    const { role } = useUser();
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const id = useParams().id;
@@ -26,36 +28,26 @@ export const ProductoIntercambio = () => {
             <div className="ver-intercambio">
                 <h2> {producto.titulo} </h2>
                 <p className="textoRedireccion" onClick={redirectIntercambios}> Volver a los productos para intercambiar</p>
-                {
-                    producto.urlFotos.length > 1 ?
-                     <div className='carrousel'>
-                        <div id="carouselExampleIndicators" class="carousel slide">
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            </div>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src={producto.urlFotos[0]} class="d-block w-100" width='10px' height='10px' />
-                                </div>
-                                <div class="carousel-item">
-                                    <img src={producto.urlFotos[1]} class="d-block w-100" width='10px' height='10px' />
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                     </div>
-                        : <img src={producto.urlFotos[0]} />
-                }
-                <p> {producto.descripcion} </p>
-                <p> {producto.sucursalNombre} </p>
+                <div className="intercambio-contenido">
+                    <div className="intercambio-fotos">
+                        {
+                            producto.urlFotos.length > 1 ?
+                                <>
+                                    <img src={producto.urlFotos[0]} />
+                                    <img src={producto.urlFotos[1]} />
+                                </>
+                                : <img src={producto.urlFotos[0]} />
+                        }
+                    </div>
+                    <div className="intercambio-detalles">
+                        <p> Descripción del producto: {producto.descripcion} </p>
+                        <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}</p>
+                        <p> Publicado por: {producto.nombre} {producto.apellido}</p>
+                        {role === 'cliente' ? <> 
+                            <button id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
+                        </> : <> </>}
+                    </div>
+                </div>
             </div>
         </>
     )
