@@ -74,9 +74,6 @@ Content-Type: application/json
 GET http://localhost:8000/api/filtrarProdIntercambios?sucursal=664a2a4b7b736ead28436ab5 HTTP/1.1
 
 ###
-DELETE http://localhost:8000/api/eliminarTodosLosProductos HTTP/1.1
-
-###
 GET http://localhost:8000/api/prodIntercambiosPorUsuario/juancruzdeu@gmail.com HTTP/1.1
 ###
 GET http://localhost:8000/api/prodintercambios/664ce82ece3fb652d2ef09b1 HTTP/1.1
