@@ -21,6 +21,7 @@ import { AgregarIntercambio } from './components/AgregarIntercambio'
 import { EliminarIntercambio } from './components/EliminarIntercambio'
 import { ProductoIntercambio } from './components/ProductoIntercambio'
 import { AgregarEmpleado } from './components/AgregarEmpleado'
+import { EliminarEmpleado } from './components/EliminarEmpleado'
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
         <Route path='/admin/agregarSucursal' element={<AgregarSucursal />}></Route>
         <Route path='/admin/empleados' element={<GestionEmpleados />}> </Route>
         <Route path='/admin/agregarEmpleado' element={<AgregarEmpleado />}> </Route>
+        <Route path='/admin/eliminarEmpleado' element={<EliminarEmpleado />}> </Route>
         <Route path='/SubirImagen' element={<SubirImagen />}> </Route>
         <Route path='/editarPerfil' element={<EditarPerfil />}> </Route>
         <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>

@@ -27,6 +27,10 @@ const EmpleadoSchema = new Schema({
     sucursal: {
         type: ObjectId,
         require: true
+    },
+    activo: { 
+        type: Boolean,
+        default: true
     }
 })
 

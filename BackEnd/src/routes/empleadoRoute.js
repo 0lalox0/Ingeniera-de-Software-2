@@ -24,9 +24,9 @@ router.get('/empleados/:id', (req, res) => {
 //update a empleado
 router.put('/empleados/:id', (req, res) => {
     const { id } = req.params
-    const { nombre, apellido, dni, email, telefono, sucursal } = req.body
+    const { nombre, apellido, dni, email, telefono, sucursal, activo } = req.body
     EmpleadoSchema.updateOne({ email: id }, 
-    {$set: { nombre, apellido, dni, email, telefono, sucursal }})
+    {$set: { nombre, apellido, dni, email, telefono, sucursal, activo }})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
@@ -34,6 +34,13 @@ router.put('/empleados/:id', (req, res) => {
 router.delete('/empleados/:id', (req, res) => {
     const { id } = req.params
     EmpleadoSchema.deleteOne( { email: id })
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
+//get empleados por sucursal
+router.get('/empleados/sucursal/:idSucursal', (req, res) => {
+    const { idSucursal } = req.params
+    EmpleadoSchema.find({sucursal: idSucursal})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 

@@ -11,6 +11,7 @@ export const GestionEmpleados = () => {
     const navigate = useNavigate();
     const redirectAdmin = () => navigate('/admin');
     const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
+    const redirectEliminarEmpleado = () => navigate('/admin/eliminarEmpleado');
 
     return (
         <>
@@ -19,8 +20,8 @@ export const GestionEmpleados = () => {
                     <h1 style={{ color: "#242465" }}> Administración de Empleados de Ferreplus Intercambios</h1>
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar a todos los empleados de Ferreplus Intercambios.</p>
 
-                    <div className='card-container' id='cardAdministrador' onClick={redirectAgregarEmpleado}>
-                        <div className="card">
+                    <div className='card-container' id='cardAdministrador' >
+                        <div className="card" onClick={redirectAgregarEmpleado}>
                             <img src={agregar} alt="" />
                             <div className="card-content">
                                 <h3> Agregar empleado</h3>
@@ -28,7 +29,7 @@ export const GestionEmpleados = () => {
                             </div>
                         </div>
 
-                        <div className="card">
+                        <div className="card" onClick={redirectEliminarEmpleado}>
                             <img src={eliminar} alt="" />
                             <div className="card-content">
                                 <h3> Eliminar empleado</h3>
@@ -39,7 +40,7 @@ export const GestionEmpleados = () => {
                         <div className="card">
                             <img src={mover} alt="" />
                             <div className="card-content">
-                                <h3> Asignar sucural </h3>
+                                <h3> Asignar sucursal </h3>
                                 <p> Acá vas a poder asignarle una sucursal a un empleado de Ferreplus.</p>
                             </div>
                         </div>
