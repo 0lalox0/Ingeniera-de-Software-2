@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import userRouter from './routes/userRoute.js'
 import sucursalRouter from './routes/sucursalRoute.js'
+import empleadoRouter from './routes/empleadoRoute.js'
 import cors from 'cors';
 import uploadImage from './uploadImage.cjs'
 import prodIntercambiosRouter from './routes/prodIntercambioRoute.js'
@@ -64,6 +65,7 @@ app.use(express.json())
 app.use('/api', userRouter)
 app.use('/api', sucursalRouter)
 app.use('/api', prodIntercambiosRouter)
+app.use('/api', empleadoRouter)
 //Cloudinary
 app.post("/SubirImagen", (req, res) => {
   //onsole.log(req.body);
