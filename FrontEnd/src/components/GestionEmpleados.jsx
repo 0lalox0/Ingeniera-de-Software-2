@@ -10,6 +10,7 @@ export const GestionEmpleados = () => {
     const { role } = useUser();
     const navigate = useNavigate();
     const redirectAdmin = () => navigate('/admin');
+    const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
 
     return (
         <>
@@ -18,7 +19,7 @@ export const GestionEmpleados = () => {
                     <h1 style={{ color: "#242465" }}> Administración de Empleados de Ferreplus Intercambios</h1>
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar a todos los empleados de Ferreplus Intercambios.</p>
 
-                    <div className='card-container' id='cardAdministrador'>
+                    <div className='card-container' id='cardAdministrador' onClick={redirectAgregarEmpleado}>
                         <div className="card">
                             <img src={agregar} alt="" />
                             <div className="card-content">
