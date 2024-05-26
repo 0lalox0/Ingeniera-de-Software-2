@@ -78,6 +78,7 @@ GET http://localhost:8000/api/prodIntercambiosPorUsuario/juancruzdeu@gmail.com H
 ###
 GET http://localhost:8000/api/prodintercambios/664ce82ece3fb652d2ef09b1 HTTP/1.1
 
+###
 POST http://localhost:8000/api/empleados HTTP/1.1
 Content-Type: application/json
 
@@ -90,4 +91,5 @@ Content-Type: application/json
     "sucursal": "6643a558f1519bd16b0a6dc2"
 }
 
+###
 GET http://localhost:8000/api/empleados HTTP/1.1

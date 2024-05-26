@@ -22,7 +22,6 @@ const EmpleadoSchema = new Schema({
     },
     telefono: {
         type: String,
-        unique: true,
         required: true
     },
     sucursal: {
