@@ -2,19 +2,21 @@ import { useState, useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth as getFirebaseAuth } from 'firebase/auth';
+import useUser from '../hooks/useUser';
+import { Mantenimiento } from './Mantenimiento';
 
 
 //Segunda app de Firebase para crear usuarios
 let secondaryApp;
 if (!getApps().length) {
-  secondaryApp = initializeApp({
-    apiKey: "AIzaSyCSvOY3OQxoKZ2F2R2hCvlwEYSM66oL8fw",
-    authDomain: "ing2-e821f.firebaseapp.com",
-    projectId: "ing2-e821f",
-    storageBucket: "ing2-e821f.appspot.com",
-    messagingSenderId: "132789045631",
-    appId: "1:132789045631:web:9a27776d872d9803c2324a"
-  }, "secondary");
+    secondaryApp = initializeApp({
+        apiKey: "AIzaSyCSvOY3OQxoKZ2F2R2hCvlwEYSM66oL8fw",
+        authDomain: "ing2-e821f.firebaseapp.com",
+        projectId: "ing2-e821f",
+        storageBucket: "ing2-e821f.appspot.com",
+        messagingSenderId: "132789045631",
+        appId: "1:132789045631:web:9a27776d872d9803c2324a"
+    }, "secondary");
 }
 
 export const AgregarEmpleado = () => {
@@ -31,6 +33,7 @@ export const AgregarEmpleado = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const authForCreatingUsers = getFirebaseAuth(secondaryApp);
+    const { role } = useUser();
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -150,65 +153,70 @@ export const AgregarEmpleado = () => {
     }
 
     return (
-        <div className='formularioRegistro' onKeyDown={handleKeyDown}>
-            <h3 style={{ color: "#242465" }}>
-                Registrar empleado:
-            </h3>
+        <>
+            {role === 'admin' ?
+                <div className='formularioRegistro' onKeyDown={handleKeyDown}>
+                    <h3 style={{ color: "#242465" }}>
+                        Registrar empleado:
+                    </h3>
 
-            <div className="mb-3">
-                <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre: </label>
-                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre: </label>
+                        <input className="form-control" type="text" placeholder='Juan' id='nombre' value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={apellido} onChange={e => setApellido(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
+                        <input className="form-control" type="text" placeholder='Perez' id='apellido' value={apellido} onChange={e => setApellido(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="dni" className="form-label" style={{ color: error === 'Se debe ingresar el número dni.' ? 'red' : 'black' }}>DNI:</label>
-                <input type="text" className="form-control" placeholder='33.333.333' id="dni" value={dni} onChange={e => setDni(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="dni" className="form-label" style={{ color: error === 'Se debe ingresar el número dni.' ? 'red' : 'black' }}>DNI:</label>
+                        <input type="text" className="form-control" placeholder='33.333.333' id="dni" value={dni} onChange={e => setDni(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un email.' || error === 'El email debe ser de Ferreplus.' ? 'red' : 'black' }}> Email: </label>
-                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='ejemplo123@ferreplus.com' value={email} onChange={e => setEmail(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un email.' || error === 'El email debe ser de Ferreplus.' ? 'red' : 'black' }}> Email: </label>
+                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='ejemplo123@ferreplus.com' value={email} onChange={e => setEmail(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="telefono" className="form-label" style={{ color: error === 'Se debe ingresar un telefono.' ? 'red' : 'black' }}>Teléfono:</label>
-                <input type="text" className="form-control" placeholder='221-5678758' id="telefono" value={telefono} onChange={e => setTelefono(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="telefono" className="form-label" style={{ color: error === 'Se debe ingresar un telefono.' ? 'red' : 'black' }}>Teléfono:</label>
+                        <input type="text" className="form-control" placeholder='221-5678758' id="telefono" value={telefono} onChange={e => setTelefono(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="sucursal" className="form-label">Sucursal:</label>
-                <select className="form-control" id="sucursal" value={sucursal} onChange={e => setSucursal(e.target.value)}>
-                    <option value="">Seleccione una sucursal</option>
-                    {sucursales.map((sucursal, index) => (
-                        <option key={sucursal._id} value={sucursal._id}>{sucursal.nombre}</option>
-                    ))}
-                </select>
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="sucursal" className="form-label">Sucursal:</label>
+                        <select className="form-control" id="sucursal" value={sucursal} onChange={e => setSucursal(e.target.value)}>
+                            <option value="">Seleccione una sucursal</option>
+                            {sucursales.map((sucursal, index) => (
+                                <option key={sucursal._id} value={sucursal._id}>{sucursal.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
-                    {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
-                    Contraseña:</label>
-                <input className="form-control" id="exampleInputPassword1" type="password" placeholder='Contraseña' value={password} onChange={e => setPassword(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
+                            {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                            Contraseña:</label>
+                        <input className="form-control" id="exampleInputPassword1" type="password" placeholder='Contraseña' value={password} onChange={e => setPassword(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
-                    {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
-                    Confirmar contraseña:</label>
-                <input className="form-control" id="exampleInputPassword2" type="password" placeholder='Repetir contraseña' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
+                            {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                            Confirmar contraseña:</label>
+                        <input className="form-control" id="exampleInputPassword2" type="password" placeholder='Repetir contraseña' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} onKeyDown={handleKeyDown} />
+                    </div>
 
-            <button className="btn btn-primary" onClick={registrarEmpleado}>Crear cuenta</button>
+                    <button className="btn btn-primary" onClick={registrarEmpleado}>Crear cuenta</button>
 
-            <p style={{ color: message === 'Empleado agregado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p style={{ color: message === 'Empleado agregado con éxito!' ? 'green' : 'red' }}> {message} </p>
 
-            {error && <p className='errorContainer'>{error}</p>}
-        </div>
-    );
+                    {error && <p className='errorContainer'>{error}</p>}
+                </div>
+                : <Mantenimiento> </Mantenimiento>
+            }
+        </>
+    )
 }
