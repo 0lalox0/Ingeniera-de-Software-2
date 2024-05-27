@@ -13,6 +13,7 @@ export const GestionEmpleados = () => {
     const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
     const redirectEliminarEmpleado = () => navigate('/admin/eliminarEmpleado');
     const redirectAsignarSucursal = () => navigate('/admin/asignarSucursal');
+    const redirectListarEmpleados = () => navigate('/admin/listarEmpleados');
 
     return (
         <>
@@ -38,11 +39,19 @@ export const GestionEmpleados = () => {
                             </div>
                         </div>
 
-                        <div className="card"onClick={redirectAsignarSucursal}>
+                        <div className="card" onClick={redirectAsignarSucursal}>
                             <img src={mover} alt="" />
                             <div className="card-content">
                                 <h3> Asignar sucursal </h3>
                                 <p> Acá vas a poder asignarle una sucursal a un empleado de Ferreplus.</p>
+                            </div>
+                        </div>
+
+                        <div className="card" onClick={redirectListarEmpleados}>
+                            <img src={mover} alt="" />
+                            <div className="card-content">
+                                <h3> Listar empleados </h3>
+                                <p> Acá vas a poder ver el listado de los empleados de Ferreplus.</p>
                             </div>
                         </div>
 
