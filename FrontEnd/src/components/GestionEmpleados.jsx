@@ -12,6 +12,7 @@ export const GestionEmpleados = () => {
     const redirectAdmin = () => navigate('/admin');
     const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
     const redirectEliminarEmpleado = () => navigate('/admin/eliminarEmpleado');
+    const redirectAsignarSucursal = () => navigate('/admin/asignarSucursal');
 
     return (
         <>
@@ -37,7 +38,7 @@ export const GestionEmpleados = () => {
                             </div>
                         </div>
 
-                        <div className="card">
+                        <div className="card"onClick={redirectAsignarSucursal}>
                             <img src={mover} alt="" />
                             <div className="card-content">
                                 <h3> Asignar sucursal </h3>
