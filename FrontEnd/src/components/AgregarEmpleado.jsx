@@ -209,7 +209,7 @@ export const AgregarEmpleado = () => {
                         <input className="form-control" id="exampleInputPassword2" type="password" placeholder='Repetir contraseña' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
-                    <button className="btn btn-primary" onClick={registrarEmpleado}>Crear cuenta</button>
+                    <button className="btn btn-primary" onClick={registrarEmpleado}>Agregar Empleado</button>
 
                     <p style={{ color: message === 'Empleado agregado con éxito!' ? 'green' : 'red' }}> {message} </p>
 
