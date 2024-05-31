@@ -7,7 +7,7 @@ const IntercambioSchema = new Schema({
     usuarioOfrecido: { type: ObjectId, ref: 'User', required: true },
     usuarioDeseado: { type: ObjectId, ref: 'User', required: true },
     nombreSucursal: { type: String, required: true},
-    dias: { type: String, require: true },
+    dia: { type: String, require: true },
     estado: { type: String, enum: ['pendiente', 'aceptado', 'rechazado'], default: 'pendiente' },
     fecha: { type: Date, require: true }
 })

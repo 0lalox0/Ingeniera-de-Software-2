@@ -44,6 +44,10 @@ const ProdInterSchema = new Schema({
     },
     nombreSucursal: {
         type: String
+    },
+    dia: {
+        type: String,
+        require: true
     }
 })
 
