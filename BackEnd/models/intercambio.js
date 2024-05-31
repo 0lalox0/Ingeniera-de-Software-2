@@ -8,8 +8,8 @@ const IntercambioSchema = new Schema({
     usuarioDeseado: { type: ObjectId, ref: 'User', required: true },
     nombreSucursal: { type: String, required: true},
     dias: { type: String, require: true },
-    estado: { type: String, enum: ['disponible', 'pendiente', 'listo', 'aceptado'], default: 'disponible' },
-    fecha: { type: Date, default: Date.now }
+    estado: { type: String, enum: ['pendiente', 'aceptado', 'rechazado'], default: 'pendiente' },
+    fecha: { type: Date, require: true }
 })
 
 export default model("PropuestaDeIntercambio", IntercambioSchema)
