@@ -9,6 +9,7 @@ import empleadoRouter from './routes/empleadoRoute.js'
 import cors from 'cors';
 import uploadImage from './uploadImage.cjs'
 import prodIntercambiosRouter from './routes/prodIntercambioRoute.js'
+import intercambioRouter from './routes/intercambioRoute.js'
 //Couldinary
 import {v2 as cloudinary} from 'cloudinary';
 
@@ -66,6 +67,7 @@ app.use('/api', userRouter)
 app.use('/api', sucursalRouter)
 app.use('/api', prodIntercambiosRouter)
 app.use('/api', empleadoRouter)
+app.use('/api', intercambioRouter)
 //Cloudinary
 app.post("/SubirImagen", (req, res) => {
   //onsole.log(req.body);

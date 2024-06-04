@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useUser from '../hooks/useUser';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -11,6 +12,7 @@ export const ElegirProducto = () => {
     const [mensajeEliminar, setMensajeEliminar] = useState('');
     const [eliminar, setEliminar] = useState(false);
     const refMensaje = useRef(null);
+    const idDeseado = useParams().id;
 
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
@@ -25,9 +27,9 @@ export const ElegirProducto = () => {
         return intercambios.find((intercambio) => intercambio._id == idProducto);
     }
 
-    const botonEliminar = (idIntercambio) => {
+    const botonElegir = (idIntercambio) => {
         setEliminar(idIntercambio);
-        setMensajeEliminar('¿Estás seguro de querer borrar este producto para intercambiar?');
+        setMensajeEliminar('¿Estás seguro de querer elegir este producto para intercambiar?');
     }
 
     const botonCancelar = () => {
@@ -35,30 +37,65 @@ export const ElegirProducto = () => {
         setMensajeEliminar('No se ha borrado el producto para intercambiar.');
         refMensaje.current.style.color = 'black';
     }
-    const botonConfirmar = async (idProducto ) =>{
-        console.log("Test");
-    }
-   /* const botonConfirmar = async (idProducto) => {
-        setEliminar(null);
-        let productoEliminar = buscarProducto(idProducto);
+    const botonConfirmar = async (idProducto) => {
+        //alert("test");
+        //etEliminar(null);
+        console.log(eliminar);
+        console.log(idDeseado);
         try {
-            const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
+            const response = await fetch("http://localhost:8000/api/propuestaIntercambio", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productoOfercido: eliminar,
+                    productoDeseado: idDeseado
+                })
+            });
+           /* const url = `http://localhost:8000/api/propuestaIntercambio`;
             const options = {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    productoOfercido: eliminar,
+                    productoDeseado: idDeseado
+                })
             };
-            const response = await fetch(url, options);
+            const response = await fetch(url, options);*/
             if (!response.ok)
                 throw new Error('Error al eliminar el producto.');
         } catch (error) {
+            console.log(error);
             setMensajeEliminar('Hubo un error al eliminar el producto.');
             return;
         }
-        setMensajeEliminar(`Se ha eliminado el producto con título ${productoEliminar.titulo} de la categoría ${productoEliminar.categoria}`);
-        setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
-    }*/
+       // setMensajeEliminar(`Se ha Enviado la Propuesta`);
+        // setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
+    }
+    /* const botonConfirmar = async (idProducto) => {
+         setEliminar(null);
+         let productoEliminar = buscarProducto(idProducto);
+         try {
+             const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
+             const options = {
+                 method: 'DELETE',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             };
+             const response = await fetch(url, options);
+             if (!response.ok)
+                 throw new Error('Error al eliminar el producto.');
+         } catch (error) {
+             setMensajeEliminar('Hubo un error al eliminar el producto.');
+             return;
+         }
+         setMensajeEliminar(`Se ha eliminado el producto con título ${productoEliminar.titulo} de la categoría ${productoEliminar.categoria}`);
+         setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
+     }*/
 
     return (
         <>
@@ -101,7 +138,7 @@ export const ElegirProducto = () => {
                                                         <button onClick={botonCancelar}>Cancelar</button>
                                                     </>
                                                 ) : (
-                                                    <button onClick={() => botonEliminar(intercambio._id)} className='botonEliminar'>Elegir</button>
+                                                    <button onClick={() => botonElegir(intercambio._id)} className='botonEliminar'>Elegir</button>
                                                 )}
                                             </td>
                                         </tr>
