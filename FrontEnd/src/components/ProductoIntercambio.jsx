@@ -15,7 +15,7 @@ export const ProductoIntercambio = () => {
     const navigate = useNavigate();
 
     const redirectIntercambios = () => navigate('/intercambios');
-
+    const redirectProponer = (idProducto) => navigate(`/ElegiProducto/${id}`);
     useEffect(() => {
         fetch(`http://localhost:8000/api/prodintercambios/${id}`)
             .then(response => response.json())
@@ -59,8 +59,8 @@ export const ProductoIntercambio = () => {
                         <p> Descripción del producto: {producto.descripcion}. </p>
                         <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}.</p>
                         <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
-                        {role === 'cliente' ? <>
-                            <button id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
+                        {role === 'cliente'  ? <>
+                            <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
                         </> : <> </>}
                     </div>
                 </div>
