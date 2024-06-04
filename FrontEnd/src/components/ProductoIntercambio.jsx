@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from "../hooks/useUser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightLong, faLeftLong } from '@fortawesome/free-solid-svg-icons'
+import user from '../../../BackEnd/models/user';
 
 export const ProductoIntercambio = () => {
     const { role } = useUser();
@@ -67,7 +68,7 @@ export const ProductoIntercambio = () => {
                         <p> Descripción del producto: {producto.descripcion}. </p>
                         <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}.</p>
                         <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
-                        {role === 'cliente' || producto.idUsuario !== usuario._id ? <>
+                        {role === 'cliente' && producto.idUsuario !== localStorage.getItem("email")? <>
                             <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
                         </> : <> </>}
                     </div>
