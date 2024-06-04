@@ -8,6 +8,7 @@ import { faRightLong, faLeftLong } from '@fortawesome/free-solid-svg-icons'
 
 export const ProductoIntercambio = () => {
     const { role } = useUser();
+    const [usuario, setUsuario] = useState(null);
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,6 +21,13 @@ export const ProductoIntercambio = () => {
         fetch(`http://localhost:8000/api/prodintercambios/${id}`)
             .then(response => response.json())
             .then(data => { setProducto(data); setLoading(false) })
+            .catch(error => console.error('Error:', error));
+    }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/users/user')
+            .then(response => response.json())
+            .then(data => setUser(data))
             .catch(error => console.error('Error:', error));
     }, []);
 
@@ -59,7 +67,7 @@ export const ProductoIntercambio = () => {
                         <p> Descripción del producto: {producto.descripcion}. </p>
                         <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}.</p>
                         <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
-                        {role === 'cliente'  ? <>
+                        {role === 'cliente' || producto.idUsuario !== usuario._id ? <>
                             <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
                         </> : <> </>}
                     </div>
