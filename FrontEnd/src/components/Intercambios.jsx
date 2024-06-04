@@ -30,6 +30,9 @@ export const Intercambios = () => {
                         : <>
                         </>}
                 </>
+                <>
+                    <button onClick> Filtrar </button>
+                </>
                 <div className="intercambios">
                     {intercambios.map((intercambio) => {
                         return (
