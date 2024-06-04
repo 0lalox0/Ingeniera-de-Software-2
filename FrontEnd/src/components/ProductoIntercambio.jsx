@@ -27,7 +27,7 @@ export const ProductoIntercambio = () => {
     useEffect(() => {
         fetch('http://localhost:8000/api/users/user')
             .then(response => response.json())
-            .then(data => setUser(data))
+            .then(data => setUsuario(data))
             .catch(error => console.error('Error:', error));
     }, []);
 
