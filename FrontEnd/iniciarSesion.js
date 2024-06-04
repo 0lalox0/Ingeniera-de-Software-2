@@ -20,19 +20,21 @@ document.getElementById("buton").addEventListener("click",async () =>{
     const res = await fetch("http://localhost:8000/api/propuestaIntercambio");
     const data = await res.json();
     console.log(data);
-       const response = await fetch("http://localhost:8000/api/propuestaIntercambio", {
+    const response = await fetch("http://localhost:8000/api/propuestaIntercambio", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    productoOfercido: "6656127e42daa5de01204e57",
+                    productoOfrecido: "6656127e42daa5de01204e57",
                     productoDeseado: "664e071c47ac005b382963a2"
                 })
               });
             }catch (error) {
                 console.error('Error:', error);
               }
+    const que = await res;
+    console.log(que);
  //console.log(response);
   /* console.log("hola");
     let email = localStorage.getItem("email");

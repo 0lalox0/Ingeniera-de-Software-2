@@ -49,7 +49,7 @@ export const ElegirProducto = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    productoOfercido: eliminar,
+                    productoOfrecido: eliminar,
                     productoDeseado: idDeseado
                 })
             });
