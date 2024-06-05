@@ -25,6 +25,7 @@ import { EliminarEmpleado } from './components/EliminarEmpleado'
 import { AsignarSucursal } from './components/AsignarSucursal'
 import { ListarEmpleados } from './components/ListarEmpleados'
 import { ElegirProducto } from './components/ElegirProducto'
+import { ListarPropuestas } from './components/ListarPropuestas'
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
         <Route path='/perfilUsuario/intercambios' element={<GestionIntercambios />}></Route>
         <Route path='/perfilUsuario/agregarIntercambio' element={<AgregarIntercambio />}> </Route>
         <Route path='/perfilUsuario/eliminarIntercambio' element={<EliminarIntercambio />}> </Route>
+        <Route path='/perfilUsuario/propuestas' element={<ListarPropuestas />}></Route>
         <Route path='/intercambios/:id' element={<ProductoIntercambio />}></Route>
         <Route path='/ElegiProducto/:id' element={<ElegirProducto />}></Route>
       </Routes>

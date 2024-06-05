@@ -14,6 +14,7 @@ export const GestionIntercambios = () => {
   const redirectPerfil = () => navigate('/perfilusuario');
   const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
   const redirectEliminar = () => navigate('/perfilusuario/eliminarintercambio');
+  const redirectPropuestas = () => navigate('/perfilusuario/propuestas');
 
   return (
     <>
@@ -39,7 +40,7 @@ export const GestionIntercambios = () => {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" onClick={redirectPropuestas}>
               <img src={propuestas} />
               <div className="card-content">
                 <h3> Ver propuestas</h3>
