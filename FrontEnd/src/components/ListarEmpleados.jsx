@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
+import { useNavigate } from 'react-router-dom';
 
 export const ListarEmpleados = () => {
-    const [empleados, setEmpleados] = useState([]);
     const { role } = useUser();
+    const navigate = useNavigate();
+    const [empleados, setEmpleados] = useState([]);
+
+    const redirectEmpleados = () => navigate('/admin/empleados');
 
     useEffect(() => {
         fetch('http://localhost:8000/api/empleados')
@@ -28,17 +32,18 @@ export const ListarEmpleados = () => {
                 <div className='clase-empleados'>
                     <div className='titulo-empleados'>
                         <h1 style={{ color: "#242465" }}>Empleados de Ferreplus</h1>
+                        <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>
                     </div>
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th style={{ color: "#242465" }} scope="col">Nombre</th>
-                                <th style={{ color: "#242465" }} scope="col">Apellido</th>
-                                <th style={{ color: "#242465" }} scope="col">DNI</th>
-                                <th style={{ color: "#242465" }} scope="col">Email</th>
-                                <th style={{ color: "#242465" }} scope="col">Teléfono</th>
-                                <th style={{ color: "#242465" }} scope="col">Sucursal asignada</th>
-                                <th style={{ color: "#242465" }} scope="col">Activo</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">DNI</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Sucursal asignada</th>
+                                <th scope="col">Activo</th>
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">

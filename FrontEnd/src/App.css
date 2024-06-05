@@ -103,6 +103,10 @@ header {
     display: none;
   }
 
+  .clase-sucursales .table, .clase-eleccion .table {
+    margin-top: 1.7rem;
+  }
+
   #logoFerreplus {
     width: 40%;
   }
@@ -283,11 +287,17 @@ header {
 
 /* SUCURSALES */
 .titulo-sucursales,
-.titulo-productos {
+.titulo-productos,
+.titulo-empleados {
   display: flex;
   position: absolute;
   left: 1%;
   top: 25%;
+}
+
+.titulo-sucursales {
+  width: 98%;
+  text-align: left;
 }
 
 .titulo-sucursales h1,
@@ -296,10 +306,14 @@ header {
   font-size: calc(1.5rem + 1.5vw);
 }
 
-.titulo-sucursales p {
+.titulo-sucursales p,
+.titulo-empleados p {
   position: absolute;
   display: flex;
   top: 100%;
+}
+
+.titulo-sucursales p {
   font-weight: 600;
   font-size: large;
 }
@@ -309,12 +323,20 @@ header {
   color: #242465;
 }
 
-.clase-sucursales table {
+.clase-sucursales table,
+.clase-empleados table, 
+.clase-eleccion {
   position: absolute;
   top: 36%;
   left: 1%;
   width: 95%;
   margin-top: 1.2%;
+}
+
+.clase-sucursales th,
+.clase-empleados th, 
+.clase-eleccion {
+  color: #242465;
 }
 
 th,
@@ -323,7 +345,7 @@ td:hover {
 }
 
 @media (max-height: 582px) {
-  .clase-sucursales table {
+  .clase-sucursales table, .clase-eleccion {
     top: 45%;
   }
 
@@ -352,7 +374,7 @@ td:hover {
   border-color: rgb(215, 32, 22);
 }
 
-.eliminacion-sucursales {
+.eliminacion-sucursales, .eleccion-productos {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -363,7 +385,7 @@ td:hover {
   width: 100%;
 }
 
-.eliminacion-sucursales h1 {
+.eliminacion-sucursales h1, .eleccion-productos h1 {
   font-size: calc(1.5rem + 1.5vw);
 }
 
@@ -472,6 +494,20 @@ td:hover {
   flex-wrap: wrap;
 }
 
+#filtroCategoria,
+#filtroSucursal {
+  width: auto;
+}
+
+#eliminarFiltros {
+  margin: 5px;
+}
+
+.filtradoCategorias button,
+.filtradoSucursales button {
+  margin-left: 5px;
+}
+
 .intercambios .card {
   width: 30%;
   margin: 10px;
@@ -573,6 +609,11 @@ td:hover {
 .buttonsCarrusel button:hover {
   background-color: #0056b3;
   border-color: #0056b3;
+}
+
+#eleccionCancelar {
+  margin-left: 5px;
+  padding: 0.375rem 0.75rem;
 }
 
 /* EDITAR PERFIL */

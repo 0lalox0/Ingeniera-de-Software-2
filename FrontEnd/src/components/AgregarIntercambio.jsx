@@ -16,7 +16,6 @@ export const AgregarIntercambio = () => {
     const [categoria, setCategoria] = useState('');
     const [horarioInicio, setHorarioInicio] = useState(null);
     const [horarioFin, setHorarioFin] = useState(null);
-    const [imgs, setImgs] = useState(null);
     const refTitulo = useRef(null);
     const refDescripcion = useRef(null);
     const refFotos = useRef(null);
@@ -132,6 +131,7 @@ export const AgregarIntercambio = () => {
     }
 
     async function PostMultiple(imgs, usuario) {
+        let nombre = sucursal.nombre + ' ';
         const res = await fetch("http://localhost:8000/api/prodIntercambios", {
             method: "POST",
             headers: {
@@ -149,7 +149,7 @@ export const AgregarIntercambio = () => {
                 nombre: usuario.name,
                 apellido: usuario.lastname,
                 urlFotos: [imgs[0].secure_url, imgs[1].secure_url],
-                nombreSucursal: sucursal.nombre
+                nombreSucursal: nombre
             })
         });
     }

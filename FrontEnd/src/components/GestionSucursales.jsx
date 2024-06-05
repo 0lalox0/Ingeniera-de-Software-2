@@ -11,6 +11,7 @@ export const GestionSucursales = () => {
     const navigate = useNavigate();
     const redirectAgregarSucursal = () => navigate('/admin/agregarSucursal');
     const redirectEliminarSucursal = () => navigate('/admin/eliminarSucursal');
+    const redirectAsignarSucursal = () => navigate('/admin/asignarSucursal');
     const redirectAdmin = () => navigate('/admin');
 
     return (
@@ -37,10 +38,10 @@ export const GestionSucursales = () => {
                             </div>
                         </div>
 
-                        <div className="card">
+                        <div className="card" onClick={redirectAsignarSucursal}>
                             <img src={mover} />
                             <div className="card-content">
-                                <h3> Asignar sucural </h3>
+                                <h3> Asignar sucursal </h3>
                                 <p> Acá vas a poder asignarle una sucursal a un empleado de Ferreplus.</p>
                             </div>
                         </div>

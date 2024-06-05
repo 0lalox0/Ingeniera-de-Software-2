@@ -1,9 +1,11 @@
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AsignarSucursal = () => {
     const { role } = useUser();
+    const navigate = useNavigate();
     const [sucursales, setSucursales] = useState([]);
     const [sucursal, setSucursal] = useState('');
     const [sucursalSeleccionada, setSucursalSeleccionada] = useState('');
@@ -12,7 +14,8 @@ export const AsignarSucursal = () => {
     const [message, setMessage] = useState('');
     const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState('');
 
-
+    const redirectEmpleados = () => navigate('/admin/empleados');
+    const redirectSucursales = () => navigate('/admin/sucursales');
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -51,7 +54,7 @@ export const AsignarSucursal = () => {
             ...empleado,
             sucursal: sucursalSeleccionada
         };
-    
+
         try {
             const response = await fetch(`http://localhost:8000/api/empleados/${empleado.email}`, {
                 method: 'PUT',
@@ -60,9 +63,9 @@ export const AsignarSucursal = () => {
                 },
                 body: JSON.stringify(empleadoActualizado)
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok) {
                 setMessage('Empleado asignado a la sucrusal con éxito!');
                 setError('');
@@ -121,6 +124,8 @@ export const AsignarSucursal = () => {
                     <p style={{ color: message === 'Empleado asignado a la sucrusal con éxito!' ? 'green' : 'red' }}> {message} </p>
 
                     {error && <p className='errorContainer'>{error}</p>}
+                    <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>
+                    <p className='textoRedireccion' onClick={redirectSucursales}> Volver a la gestión de sucursales </p>
                 </div>
                 : <Mantenimiento> </Mantenimiento>
             }

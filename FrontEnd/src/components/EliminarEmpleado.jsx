@@ -1,15 +1,19 @@
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const EliminarEmpleado = () => {
     const { role } = useUser();
+    const navigate = useNavigate();
     const [sucursales, setSucursales] = useState([]);
     const [sucursal, setSucursal] = useState('');
     const [empleados, setEmpleados] = useState([]);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState('');
+
+    const redirectEmpleados = () => navigate('/admin/empleados');
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -104,6 +108,7 @@ export const EliminarEmpleado = () => {
                     <p style={{ color: message === 'Empleado dado de baja con éxito!' ? 'green' : 'red' }}> {message} </p>
 
                     {error && <p className='errorContainer'>{error}</p>}
+                    <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>
                 </div>
                 : <Mantenimiento> </Mantenimiento>
             }

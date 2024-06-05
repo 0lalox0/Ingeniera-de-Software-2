@@ -69,6 +69,8 @@ Content-Type: application/json
     "finRango": "18:00",
     "idUsuario":"663d83bc15eaeb6d61fe62e2"
 }
+###
+DELETE http://localhost:8000/api/prodintercambios/664e084e47ac005b382963a9 HTTP/1.1
 
 ###
 GET http://localhost:8000/api/filtrarProdIntercambios?sucursal=664a2a4b7b736ead28436ab5 HTTP/1.1

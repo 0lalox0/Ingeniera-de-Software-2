@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth as getFirebaseAuth } from 'firebase/auth';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
-
+import { useNavigate } from 'react-router-dom';
 
 //Segunda app de Firebase para crear usuarios
 let secondaryApp;
@@ -20,7 +20,8 @@ if (!getApps().length) {
 }
 
 export const AgregarEmpleado = () => {
-
+    const { role } = useUser();
+    const navigate = useNavigate();
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [dni, setDni] = useState('');
@@ -33,7 +34,8 @@ export const AgregarEmpleado = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const authForCreatingUsers = getFirebaseAuth(secondaryApp);
-    const { role } = useUser();
+
+    const redirectEmpleados = () => navigate('/admin/empleados');
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -214,6 +216,7 @@ export const AgregarEmpleado = () => {
                     <p style={{ color: message === 'Empleado agregado con éxito!' ? 'green' : 'red' }}> {message} </p>
 
                     {error && <p className='errorContainer'>{error}</p>}
+                    <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>
                 </div>
                 : <Mantenimiento> </Mantenimiento>
             }

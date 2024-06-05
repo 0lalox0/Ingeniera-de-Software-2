@@ -34,7 +34,7 @@ export const ElegirProducto = () => {
 
     const botonCancelar = () => {
         setEliminar(null);
-        setMensajeEliminar('No se ha borrado el producto para intercambiar.');
+        setMensajeEliminar('No se ha elegido el producto para intercambiar.');
         refMensaje.current.style.color = 'black';
     }
     const botonConfirmar = async (idProducto) => {
@@ -53,18 +53,18 @@ export const ElegirProducto = () => {
                     productoDeseado: idDeseado
                 })
             });
-           /* const url = `http://localhost:8000/api/propuestaIntercambio`;
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    productoOfercido: eliminar,
-                    productoDeseado: idDeseado
-                })
-            };
-            const response = await fetch(url, options);*/
+            /* const url = `http://localhost:8000/api/propuestaIntercambio`;
+             const options = {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({
+                     productoOfercido: eliminar,
+                     productoDeseado: idDeseado
+                 })
+             };
+             const response = await fetch(url, options);*/
             if (!response.ok)
                 throw new Error('Error al eliminar el producto.');
         } catch (error) {
@@ -72,7 +72,7 @@ export const ElegirProducto = () => {
             setMensajeEliminar('Hubo un error al eliminar el producto.');
             return;
         }
-       // setMensajeEliminar(`Se ha Enviado la Propuesta`);
+        // setMensajeEliminar(`Se ha Enviado la Propuesta`);
         // setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
     }
     /* const botonConfirmar = async (idProducto) => {
@@ -101,22 +101,21 @@ export const ElegirProducto = () => {
         <>
             {role === 'cliente' ?
                 <>
-                    <div className='eliminacion-sucursales'>
-                        <h1 style={{ color: "#242465" }}> Eliminar productos para intercambiar </h1>
-                        <p className='textoRedireccion' onClick={redirectGestion}> Volver a la gestión de intercambios</p>
+                    <div className='eleccion-productos'>
+                        <h1 style={{ color: "#242465" }}> Elegir productos para intercambiar </h1>
                         <p className='errorContainer' ref={refMensaje}> {mensajeEliminar}</p>
                     </div>
-                    <div className='clase-sucursales'>
+                    <div className='clase-eleccion'>
                         <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>
                             <thead>
                                 <tr>
-                                    <th style={{ color: "#242465" }} scope="col"> Título </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Descripción </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Categoría </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Sucursal </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Rango horario </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Foto </th>
-                                    <th style={{ color: "#242465" }} scope="col"> Gestionar </th>
+                                    <th scope="col"> Título </th>
+                                    <th scope="col"> Descripción </th>
+                                    <th scope="col"> Categoría </th>
+                                    <th scope="col"> Sucursal </th>
+                                    <th scope="col"> Rango horario </th>
+                                    <th scope="col"> Foto </th>
+                                    <th scope="col"> Elegir </th>
                                 </tr>
                             </thead>
                             <tbody className="table-group-divider">
@@ -134,11 +133,11 @@ export const ElegirProducto = () => {
                                             <td>
                                                 {eliminar === intercambio._id ? (
                                                     <>
-                                                        <button onClick={() => botonConfirmar(intercambio._id)} className='botonEliminar'> Confirmar </button>
-                                                        <button onClick={botonCancelar}>Cancelar</button>
+                                                        <button onClick={() => botonConfirmar(intercambio._id)} className='btn btn-success'> Confirmar </button>
+                                                        <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
                                                     </>
                                                 ) : (
-                                                    <button onClick={() => botonElegir(intercambio._id)} className='botonEliminar'>Elegir</button>
+                                                    <button onClick={() => botonElegir(intercambio._id)} className='btn btn-success'>Elegir</button>
                                                 )}
                                             </td>
                                         </tr>

@@ -14,17 +14,17 @@ export const Sucursales = () => {
         <div className='clase-sucursales'>
             <div className='titulo-sucursales'>
                 <h1 style={{ color: "#242465" }}>Sucursales de Ferreplus</h1>
-                <p style={{ color: "#242465" }}> ¡Conocé las sucursales de Ferreplus!</p>
+                <p style={{ color: "#242465" }}> ¡Conocé las sucursales de Ferreplus! Todas nuestras sucursales están abiertas de lunes a viernes en sus horarios correspondientes.</p>
             </div>
             <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th style={{ color: "#242465" }} scope="col">Nombre</th>
-                        <th style={{ color: "#242465" }} scope="col">Ciudad</th>
-                        <th style={{ color: "#242465" }} scope="col">Número</th>
-                        <th style={{ color: "#242465" }} scope="col">Calle</th>
-                        <th style={{ color: "#242465" }} scope="col">Horario de Apertura</th>
-                        <th style={{ color: "#242465" }} scope="col">Horario de Cierre</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col">Número</th>
+                        <th scope="col">Calle</th>
+                        <th scope="col">Horario de Apertura</th>
+                        <th scope="col">Horario de Cierre</th>
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">

@@ -3,7 +3,7 @@ import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import sucursales from '../assets/sucursales.png';
 import estadisticas from '../assets/estadisticas.png';
-import empleados from '../assets/empleados.png';
+import empleados from '../assets/gestionar-empleados.png';
 import { useNavigate } from 'react-router-dom';
 
 export const Admin = () => {

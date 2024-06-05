@@ -58,7 +58,7 @@ function App() {
         <Route path='/perfilUsuario/eliminarIntercambio' element={<EliminarIntercambio />}> </Route>
         <Route path='/perfilUsuario/propuestas' element={<ListarPropuestas />}></Route>
         <Route path='/intercambios/:id' element={<ProductoIntercambio />}></Route>
-        <Route path='/ElegiProducto/:id' element={<ElegirProducto />}></Route>
+        <Route path='/elegiProducto/:id' element={<ElegirProducto />}></Route>
       </Routes>
     </>
   )
