@@ -111,10 +111,9 @@ export const Intercambios = () => {
                                 <div className="col-md-8">
                                     <div className="card-body">
                                         <h5 className="card-title">{intercambio.titulo}</h5>
-                                        <p className="card-text">Descripción del producto: {intercambio.descripcion}.
-                                            Sucursal del intercambio: {intercambio.nombreSucursal}
-                                            Rango horario: {intercambio.inicioRango} - {intercambio.finRango}.
-                                            Categoría: {intercambio.categoria}. </p>
+                                        <p className="card-text"> Sucursal del intercambio: {intercambio.nombreSucursal}</p>
+                                        <p className="card-text"> Categoría: {intercambio.categoria}.</p>
+                                        <p style={{ color: '#439ac8' }}> Hacé click para obtener más información.</p>
                                         <p className="card-text"><small className="text-body-secondary">Publicado por: {intercambio.nombre} {intercambio.apellido} </small></p>
                                     </div>
                                 </div>

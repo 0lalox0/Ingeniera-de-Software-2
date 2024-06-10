@@ -103,7 +103,8 @@ header {
     display: none;
   }
 
-  .clase-sucursales .table, .clase-eleccion .table {
+  .clase-sucursales .table,
+  .clase-eleccion .table {
     margin-top: 1.7rem;
   }
 
@@ -324,7 +325,7 @@ header {
 }
 
 .clase-sucursales table,
-.clase-empleados table, 
+.clase-empleados table,
 .clase-eleccion {
   position: absolute;
   top: 36%;
@@ -334,7 +335,7 @@ header {
 }
 
 .clase-sucursales th,
-.clase-empleados th, 
+.clase-empleados th,
 .clase-eleccion {
   color: #242465;
 }
@@ -345,7 +346,9 @@ td:hover {
 }
 
 @media (max-height: 582px) {
-  .clase-sucursales table, .clase-eleccion {
+
+  .clase-sucursales table,
+  .clase-eleccion {
     top: 45%;
   }
 
@@ -374,7 +377,8 @@ td:hover {
   border-color: rgb(215, 32, 22);
 }
 
-.eliminacion-sucursales, .eleccion-productos {
+.eliminacion-sucursales,
+.eleccion-productos {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -385,7 +389,8 @@ td:hover {
   width: 100%;
 }
 
-.eliminacion-sucursales h1, .eleccion-productos h1 {
+.eliminacion-sucursales h1,
+.eleccion-productos h1 {
   font-size: calc(1.5rem + 1.5vw);
 }
 
@@ -513,6 +518,18 @@ td:hover {
   margin: 10px;
 }
 
+.form-check-label {
+  margin-right: 0.5rem;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+
+#avisoSemana {
+  margin: 0 !important;
+}
+
 .ver-intercambio {
   border: 2px solid #210c98;
   background-color: white;
@@ -571,7 +588,12 @@ td:hover {
   max-height: 100%;
 }
 
-#botonProponer {
+.ver-intercambio button {
+  display: flex;
+}
+
+#botonProponer,
+#botonFecha {
   margin-top: auto;
   margin-bottom: 2rem;
   margin-right: 1rem;

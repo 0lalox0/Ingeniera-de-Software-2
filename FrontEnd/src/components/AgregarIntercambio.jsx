@@ -16,6 +16,7 @@ export const AgregarIntercambio = () => {
     const [categoria, setCategoria] = useState('');
     const [horarioInicio, setHorarioInicio] = useState(null);
     const [horarioFin, setHorarioFin] = useState(null);
+    const [diaSemana, setDiaSemana] = useState('');
     const refTitulo = useRef(null);
     const refDescripcion = useRef(null);
     const refFotos = useRef(null);
@@ -25,6 +26,7 @@ export const AgregarIntercambio = () => {
     const refHorariosF = useRef(null);
     const refHorariosP = useRef(null);
     const refMensaje = useRef(null);
+    const refDiaSemana = useRef(null);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -125,7 +127,8 @@ export const AgregarIntercambio = () => {
                 nombre: usuario.name,
                 apellido: usuario.lastname,
                 urlFotos: imgs.secure_url,
-                nombreSucursal: nombre
+                nombreSucursal: nombre,
+                dia: diaSemana
             })
         });
     }
@@ -149,7 +152,8 @@ export const AgregarIntercambio = () => {
                 nombre: usuario.name,
                 apellido: usuario.lastname,
                 urlFotos: [imgs[0].secure_url, imgs[1].secure_url],
-                nombreSucursal: nombre
+                nombreSucursal: nombre,
+                dia: diaSemana
             })
         });
     }
@@ -188,7 +192,7 @@ export const AgregarIntercambio = () => {
     };
 
     const chequeo = () => {
-        [refTitulo, refDescripcion, refFotos, refCategoria, refSucursal, refHorariosI, refHorariosF, refHorariosP].forEach(ref => ref.current.style.color = '');
+        [refTitulo, refDescripcion, refFotos, refCategoria, refSucursal, refHorariosI, refHorariosF, refHorariosP, refDiaSemana].forEach(ref => ref.current.style.color = '');
         setMensaje('');
         if (!titulo) {
             setMensaje('Por favor, ingrese un título.');
@@ -208,6 +212,11 @@ export const AgregarIntercambio = () => {
         if (!categoria) {
             setMensaje('Por favor, selecciona una categoría.');
             refCategoria.current.style.color = 'red';
+            return false;
+        }
+        if (!diaSemana) {
+            setMensaje('Por favor, seleccione un día.');
+            refDiaSemana.current.style.color = 'red';
             return false;
         }
         if (!sucursal) {
@@ -285,7 +294,7 @@ export const AgregarIntercambio = () => {
                     <div className="mb-3">
                         <label htmlFor="categoria" ref={refCategoria}> Categoría del producto: </label>
                         <select className="form-select" id="categoria" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                            <option value="" disabled selected> Seleccione categoría...</option>
+                            <option value="" disabled defaultValue={''}> Seleccione categoría...</option>
                             <option key="categoria1" value="Construcción"> Construcción </option>
                             <option key="categoria2" value="Madera"> Madera </option>
                             <option key="categoria3" value="Electricidad"> Electricidad </option>
@@ -299,6 +308,30 @@ export const AgregarIntercambio = () => {
                             <option key="categoria11" value="Mobiliario"> Mobiliario </option>
                             <option key="categoria12" value="Climatización"> Climatización </option>
                         </select>
+                    </div>
+
+                    <p id='avisoSemana' ref={refDiaSemana}> Día de la semana a realizar el intercambio: </p>
+                    <div className="mb-3">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value='lunes' onChange={e => setDiaSemana(e.target.value)} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault1">
+                            Lunes
+                        </label>
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value='martes' onChange={e => setDiaSemana(e.target.value)} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault2">
+                            Martes
+                        </label>
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value='miércoles' onChange={e => setDiaSemana(e.target.value)} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault3">
+                            Miércoles
+                        </label>
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" value='jueves' onChange={e => setDiaSemana(e.target.value)} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault4">
+                            Jueves
+                        </label>
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" value='viernes' onChange={e => setDiaSemana(e.target.value)} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault5">
+                            Viernes
+                        </label>
                     </div>
 
                     <div className="mb-3">

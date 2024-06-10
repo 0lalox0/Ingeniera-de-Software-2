@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import { useNavigate } from 'react-router-dom';
@@ -9,15 +9,17 @@ import user from '../../../BackEnd/models/user';
 
 export const ProductoIntercambio = () => {
     const { role } = useUser();
+    const navigate = useNavigate();
     const [usuario, setUsuario] = useState(null);
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [mensaje, setMensaje] = useState(null);
     const id = useParams().id;
-    const navigate = useNavigate();
+    const refFecha = useRef(null);
 
     const redirectIntercambios = () => navigate('/intercambios');
-    const redirectProponer = (idProducto) => navigate(`/elegiProducto/${id}`);
+    const redirectProponer = () => navigate(`/elegiProducto/${id}`);
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/prodintercambios/${id}`)
@@ -32,6 +34,11 @@ export const ProductoIntercambio = () => {
             .then(data => setUsuario(data))
             .catch(error => console.error('Error:', error));
     }, []);
+
+    const elegirFecha = () => {
+        refFecha.current.style.display = 'flex';
+        setMensaje('Fecha mal elegida.');
+    }
 
     const siguiente = () => {
         currentIndex == 0 ? setCurrentIndex(1) : setCurrentIndex(0);
@@ -67,13 +74,22 @@ export const ProductoIntercambio = () => {
                     </div>
                     <div className="intercambio-detalles">
                         <p> Descripción del producto: {producto.descripcion}. </p>
-                        <p> Sucursal donde se realizará el intercambio: {producto.nombreSucursal} en el rango horario desde las {producto.inicioRango} hasta las {producto.finRango}.</p>
+                        <p> Intercambio a realizar en la {producto.nombreSucursal} desde las {producto.inicioRango} hasta las {producto.finRango}, los días {producto.dia}.</p>
                         <p> Categoría del producto: {producto.categoria}.</p>
                         <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
                         {role === 'cliente' && producto.idUsuario !== localStorage.getItem("email") ? <>
                             <p style={{ color: '#439ac8' }}> ¿Te interesa este producto? ¡Proponele a {producto.nombre} de intercambiarlo por un producto tuyo!</p>
-                            <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Proponer intercambio </button>
+                            <button onClick={elegirFecha} id='botonFecha' className="btn btn-success"> Elegir fecha </button>
                         </> : <> </>}
+
+                        <div className='seleccionFecha' ref={refFecha} style={{ display: 'none' }}>
+                            <div style={{ display: 'block' }}>
+                                <label htmlFor="fechaIntercambiar"> Elegí un día para intercambiar</label>
+                                <input type="date" id='fechaIntercambiar' />
+                                <p className='errorContainer'> {mensaje} </p>
+                            </div>
+                            <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Enviar propuesta </button>
+                        </div>
                     </div>
                 </div>
             </div>
