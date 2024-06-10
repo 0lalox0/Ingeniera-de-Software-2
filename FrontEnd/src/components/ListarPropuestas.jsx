@@ -20,7 +20,8 @@ export const ListarPropuestas = () => {
                 const data = await response.json();
                 return data;
             }));
-            setProductos(products);
+            let e = localStorage.getItem("email");
+            setProductos(products.filter(o => o.idUsuario === e));
         }
         fetchProductos();
     }, [propuestas]);
