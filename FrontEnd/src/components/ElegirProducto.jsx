@@ -13,7 +13,7 @@ export const ElegirProducto = () => {
     const [eliminar, setEliminar] = useState(false);
     const refMensaje = useRef(null);
     const idDeseado = useParams().id;
-
+    const [idOfrecido, setIdOfrecido] = useState(false);
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
             .then(response => response.json())
@@ -27,8 +27,9 @@ export const ElegirProducto = () => {
         return intercambios.find((intercambio) => intercambio._id == idProducto);
     }
 
-    const botonElegir = (idIntercambio) => {
+    const botonElegir = (idIntercambio,idUsuario) => {
         setEliminar(idIntercambio);
+        setIdOfrecido(idUsuario);
         setMensajeEliminar('¿Estás seguro de querer elegir este producto para intercambiar?');
     }
 
@@ -40,9 +41,45 @@ export const ElegirProducto = () => {
     const botonConfirmar = async (idProducto) => {
         //alert("test");
         //etEliminar(null);
-        console.log(eliminar);
+        /*console.log(eliminar);
         console.log(idDeseado);
-        try {
+        console.log(idOfrecido);*/
+        fetch("http://localhost:8000/api/prodIntercambios/" + idDeseado,{})
+        .then(res =>{
+            return res.json();
+        })
+        .then(data =>{
+            //console.log(data);
+            console.log(eliminar,idDeseado,idOfrecido,data.idUsuario,data.nombreSucursal);
+            fetch("http://localhost:8000/api/propuestaIntercambio", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productoOfrecido: eliminar,
+                    productoDeseado: idDeseado,
+                    usuarioOfrecido: idOfrecido,
+                    usuarioDeseado: data.idUsuario,
+                    nombreSucursal: data.nombreSucursal,
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el producto.');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.log(error);
+                setMensajeEliminar('Hubo un error al eliminar el producto.');
+            });
+        })
+        .catch(error => {
+            console.error('Hubo un problema con la solicitud:', error);
+        });
+        
+        /*try {
             const response = await fetch("http://localhost:8000/api/propuestaIntercambio", {
                 method: "POST",
                 headers: {
@@ -53,25 +90,13 @@ export const ElegirProducto = () => {
                     productoDeseado: idDeseado
                 })
             });
-            /* const url = `http://localhost:8000/api/propuestaIntercambio`;
-             const options = {
-                 method: 'POST',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 },
-                 body: JSON.stringify({
-                     productoOfercido: eliminar,
-                     productoDeseado: idDeseado
-                 })
-             };
-             const response = await fetch(url, options);*/
             if (!response.ok)
                 throw new Error('Error al eliminar el producto.');
         } catch (error) {
             console.log(error);
             setMensajeEliminar('Hubo un error al eliminar el producto.');
             return;
-        }
+        }*/
         // setMensajeEliminar(`Se ha Enviado la Propuesta`);
         // setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
     }
@@ -137,7 +162,7 @@ export const ElegirProducto = () => {
                                                         <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
                                                     </>
                                                 ) : (
-                                                    <button onClick={() => botonElegir(intercambio._id)} className='btn btn-success'>Elegir</button>
+                                                    <button onClick={() => botonElegir(intercambio._id,intercambio.idUsuario)} className='btn btn-success'>Elegir</button>
                                                 )}
                                             </td>
                                         </tr>

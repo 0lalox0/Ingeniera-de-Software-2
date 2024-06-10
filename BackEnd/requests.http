@@ -109,5 +109,8 @@ Content-Type: application/json
 
 {
     "productoOfrecido": "6656127e42daa5de01204e57",
-    "productoDeseado": "664e071c47ac005b382963a2"
+    "productoDeseado": "664e071c47ac005b382963a2",
+    "usuarioOfrecido": "ladislao",
+    "usuarioDeseado": "franco",
+    "nombreSucursal": "hrnos"
 }
