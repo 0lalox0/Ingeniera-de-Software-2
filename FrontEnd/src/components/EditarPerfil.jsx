@@ -67,9 +67,9 @@ export const EditarPerfil = () => {
         }
         if (isEmail) {
             const wasSuccessful = await updateEmailInFirebase(field);
-            if (wasSuccessful) {
+            localStorage.setItem('email', field);
+            if (wasSuccessful)
                 setIsEditing(false);
-            }
         } else {
             const wasSuccessful = await updateAccount();
             if (wasSuccessful) {

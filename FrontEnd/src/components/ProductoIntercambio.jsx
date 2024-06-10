@@ -15,6 +15,7 @@ export const ProductoIntercambio = () => {
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [mensaje, setMensaje] = useState(null);
+    const [fechaSeleccionada, setFechaSeleccionada] = useState(undefined);
     const id = useParams().id;
     const refFecha = useRef(null);
 
@@ -35,9 +36,40 @@ export const ProductoIntercambio = () => {
             .catch(error => console.error('Error:', error));
     }, []);
 
-    const elegirFecha = () => {
-        refFecha.current.style.display = 'flex';
-        setMensaje('Fecha mal elegida.');
+    const getDias = (nombreDia) => {
+        const dias = {
+            'lunes': 1,
+            'martes': 2,
+            'miércoles': 3,
+            'jueves': 4,
+            'viernes': 5
+        };
+        return dias[nombreDia];
+    }
+
+    const chequearFecha = () => {
+        if (!fechaSeleccionada) {
+            setMensaje('Se debe elegir una fecha.');
+            return false;
+        }
+        if (fechaSeleccionada < new Date()) {
+            setMensaje('Se debe elegir una fecha a futuro.');
+            return false;
+        }
+        if (getDias(producto.dia) !== fechaSeleccionada.getUTCDay()) {
+            setMensaje('Se debe elegir una fecha del día ' + producto.dia + '.');
+            return false;
+        }
+        return true;
+    }
+
+    const cambiarFecha = (e) => setFechaSeleccionada(new Date(e.target.value));
+
+    const elegirFecha = () => refFecha.current.style.display = 'flex';
+
+    const enviarPropuesta = () => {
+        if (chequearFecha())
+            redirectProponer();
     }
 
     const siguiente = () => {
@@ -85,10 +117,10 @@ export const ProductoIntercambio = () => {
                         <div className='seleccionFecha' ref={refFecha} style={{ display: 'none' }}>
                             <div style={{ display: 'block' }}>
                                 <label htmlFor="fechaIntercambiar"> Elegí un día para intercambiar</label>
-                                <input type="date" id='fechaIntercambiar' />
+                                <input type="date" id='fechaIntercambiar' onChange={cambiarFecha} />
                                 <p className='errorContainer'> {mensaje} </p>
                             </div>
-                            <button onClick={redirectProponer} id='botonProponer' className="btn btn-success"> Enviar propuesta </button>
+                            <button onClick={enviarPropuesta} id='botonProponer' className="btn btn-success"> Enviar propuesta </button>
                         </div>
                     </div>
                 </div>
