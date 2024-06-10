@@ -20,7 +20,10 @@ export const ProductoIntercambio = () => {
     const refFecha = useRef(null);
 
     const redirectIntercambios = () => navigate('/intercambios');
-    const redirectProponer = () => navigate(`/elegiProducto/${id}`);
+    const redirectProponer = () => {
+        localStorage.setItem("date", fechaSeleccionada);
+        navigate(`/elegiProducto/${id}`);
+    }
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/prodintercambios/${id}`)

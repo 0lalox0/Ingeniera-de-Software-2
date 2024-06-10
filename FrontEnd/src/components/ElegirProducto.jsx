@@ -50,6 +50,7 @@ export const ElegirProducto = () => {
         })
         .then(data =>{
             //console.log(data);
+            let f = localStorage.getItem("date");
             console.log(eliminar,idDeseado,idOfrecido,data.idUsuario,data.nombreSucursal);
             fetch("http://localhost:8000/api/propuestaIntercambio", {
                 method: "POST",
@@ -62,6 +63,7 @@ export const ElegirProducto = () => {
                     usuarioOfrecido: idOfrecido,
                     usuarioDeseado: data.idUsuario,
                     nombreSucursal: data.nombreSucursal,
+                    fecha: f
                 })
             })
             .then(response => {
