@@ -71,8 +71,10 @@ export const ProductoIntercambio = () => {
     const elegirFecha = () => refFecha.current.style.display = 'flex';
 
     const enviarPropuesta = () => {
-        if (chequearFecha())
+        if (chequearFecha()) {
+            localStorage.setItem('categoria', producto.categoria);
             redirectProponer();
+        }
     }
 
     const siguiente = () => {

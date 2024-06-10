@@ -9,11 +9,13 @@ export const ElegirProducto = () => {
     const email = localStorage.getItem('email');
     const navigate = useNavigate();
     const [intercambios, setIntercambios] = useState([]);
-    const [mensajeEliminar, setMensajeEliminar] = useState('');
-    const [eliminar, setEliminar] = useState(false);
+    const [mensajeEleccion, setMensajeEleccion] = useState('');
+    const [eleccion, setEleccion] = useState(false);
     const refMensaje = useRef(null);
     const idDeseado = useParams().id;
     const [idOfrecido, setIdOfrecido] = useState(false);
+    const categoriaDeseado = localStorage.getItem('categoria');
+
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
             .then(response => response.json())
@@ -21,108 +23,66 @@ export const ElegirProducto = () => {
             .catch(error => console.error('Error:', error));
     }, []);
 
-    const redirectGestion = () => navigate('/perfilUsuario/intercambios');
+    const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
 
-    const buscarProducto = (idProducto) => {
-        return intercambios.find((intercambio) => intercambio._id == idProducto);
-    }
-
-    const botonElegir = (idIntercambio,idUsuario) => {
-        setEliminar(idIntercambio);
+    const botonElegir = (idIntercambio, idUsuario) => {
+        setEleccion(idIntercambio);
         setIdOfrecido(idUsuario);
-        setMensajeEliminar('¿Estás seguro de querer elegir este producto para intercambiar?');
+        setMensajeEleccion('¿Estás seguro de querer elegir este producto para intercambiar?');
+        refMensaje.current.style.color = 'black';
     }
 
     const botonCancelar = () => {
-        setEliminar(null);
-        setMensajeEliminar('No se ha elegido el producto para intercambiar.');
-        refMensaje.current.style.color = 'black';
+        setEleccion(null);
+        setMensajeEleccion('No se ha elegido el producto para intercambiar.');
+        refMensaje.current.style.color = 'red';
     }
-    const botonConfirmar = async (idProducto) => {
-        //alert("test");
-        //etEliminar(null);
-        /*console.log(eliminar);
-        console.log(idDeseado);
-        console.log(idOfrecido);*/
-        fetch("http://localhost:8000/api/prodIntercambios/" + idDeseado,{})
-        .then(res =>{
-            return res.json();
-        })
-        .then(data =>{
-            //console.log(data);
-            let f = localStorage.getItem("date");
-            console.log(eliminar,idDeseado,idOfrecido,data.idUsuario,data.nombreSucursal);
-            fetch("http://localhost:8000/api/propuestaIntercambio", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    productoOfrecido: eliminar,
-                    productoDeseado: idDeseado,
-                    usuarioOfrecido: idOfrecido,
-                    usuarioDeseado: data.idUsuario,
-                    nombreSucursal: data.nombreSucursal,
-                    fecha: f
-                })
+
+    const botonConfirmar = async (id, categoria) => {
+        console.log(categoriaDeseado);
+        if (categoriaDeseado !== categoria) {
+            setMensajeEleccion('El producto que selecciones debe ser de la misma categoría del producto deseado.');
+            setEleccion(null);
+            refMensaje.current.style.color = 'red';
+            return;
+        }
+
+        fetch("http://localhost:8000/api/prodIntercambios/" + idDeseado, {})
+            .then(res => {
+                return res.json();
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al eliminar el producto.');
-                }
-                return response.json();
+            .then(data => {
+                let f = localStorage.getItem("date");
+                fetch("http://localhost:8000/api/propuestaIntercambio", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        productoOfrecido: eleccion,
+                        productoDeseado: idDeseado,
+                        usuarioOfrecido: idOfrecido,
+                        usuarioDeseado: data.idUsuario,
+                        nombreSucursal: data.nombreSucursal,
+                        fecha: f
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok)
+                            throw new Error('Error al elegir el producto.');
+                        setMensajeEleccion('Propuesta enviada con éxito.');
+                        refMensaje.current.style.color = '#07f717';
+                        setEleccion(null);
+                        return response.json();
+                    })
+                    .catch(error => {
+                        setMensajeEleccion('Hubo un error al elegir el producto.');
+                    });
             })
             .catch(error => {
-                console.log(error);
-                setMensajeEliminar('Hubo un error al eliminar el producto.');
+                console.error('Hubo un problema con la solicitud:', error);
             });
-        })
-        .catch(error => {
-            console.error('Hubo un problema con la solicitud:', error);
-        });
-        
-        /*try {
-            const response = await fetch("http://localhost:8000/api/propuestaIntercambio", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    productoOfrecido: eliminar,
-                    productoDeseado: idDeseado
-                })
-            });
-            if (!response.ok)
-                throw new Error('Error al eliminar el producto.');
-        } catch (error) {
-            console.log(error);
-            setMensajeEliminar('Hubo un error al eliminar el producto.');
-            return;
-        }*/
-        // setMensajeEliminar(`Se ha Enviado la Propuesta`);
-        // setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
     }
-    /* const botonConfirmar = async (idProducto) => {
-         setEliminar(null);
-         let productoEliminar = buscarProducto(idProducto);
-         try {
-             const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
-             const options = {
-                 method: 'DELETE',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             };
-             const response = await fetch(url, options);
-             if (!response.ok)
-                 throw new Error('Error al eliminar el producto.');
-         } catch (error) {
-             setMensajeEliminar('Hubo un error al eliminar el producto.');
-             return;
-         }
-         setMensajeEliminar(`Se ha eliminado el producto con título ${productoEliminar.titulo} de la categoría ${productoEliminar.categoria}`);
-         setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
-     }*/
 
     return (
         <>
@@ -130,49 +90,54 @@ export const ElegirProducto = () => {
                 <>
                     <div className='eleccion-productos'>
                         <h1 style={{ color: "#242465" }}> Elegir productos para intercambiar </h1>
-                        <p className='errorContainer' ref={refMensaje}> {mensajeEliminar}</p>
+                        <p ref={refMensaje}> {mensajeEleccion}</p>
                     </div>
-                    <div className='clase-eleccion'>
-                        <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>
-                            <thead>
-                                <tr>
-                                    <th scope="col"> Título </th>
-                                    <th scope="col"> Descripción </th>
-                                    <th scope="col"> Categoría </th>
-                                    <th scope="col"> Sucursal </th>
-                                    <th scope="col"> Rango horario </th>
-                                    <th scope="col"> Foto </th>
-                                    <th scope="col"> Elegir </th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-group-divider">
-                                {intercambios.map((intercambio) => {
-                                    return (
-                                        <tr key={intercambio._id}>
-                                            <td>{intercambio.titulo}</td>
-                                            <td>{intercambio.descripcion}</td>
-                                            <td>{intercambio.categoria}</td>
-                                            <td>{intercambio.nombreSucursal}</td>
-                                            <td>{intercambio.inicioRango} - {intercambio.finRango}</td>
-                                            <td>
-                                                <img src={intercambio.urlFotos[0]} width='80px' height='60px' />
-                                            </td>
-                                            <td>
-                                                {eliminar === intercambio._id ? (
-                                                    <>
-                                                        <button onClick={() => botonConfirmar(intercambio._id)} className='btn btn-success'> Confirmar </button>
-                                                        <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
-                                                    </>
-                                                ) : (
-                                                    <button onClick={() => botonElegir(intercambio._id,intercambio.idUsuario)} className='btn btn-success'>Elegir</button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                    {intercambios.length > 0 ?
+                        <div className='clase-eleccion'>
+                            <table className="table table-hover align-middle ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"> Título </th>
+                                        <th scope="col"> Descripción </th>
+                                        <th scope="col"> Categoría </th>
+                                        <th scope="col"> Sucursal </th>
+                                        <th scope="col"> Rango horario </th>
+                                        <th scope="col"> Foto </th>
+                                        <th scope="col"> Elegir </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="table-group-divider">
+                                    {intercambios.map((intercambio) => {
+                                        return (
+                                            <tr key={intercambio._id}>
+                                                <td>{intercambio.titulo}</td>
+                                                <td>{intercambio.descripcion}</td>
+                                                <td>{intercambio.categoria}</td>
+                                                <td>{intercambio.nombreSucursal}</td>
+                                                <td>{intercambio.inicioRango} - {intercambio.finRango}</td>
+                                                <td>
+                                                    <img src={intercambio.urlFotos[0]} width='80px' height='60px' />
+                                                </td>
+                                                <td>
+                                                    {eleccion === intercambio._id ? (
+                                                        <>
+                                                            <button onClick={() => botonConfirmar(intercambio._id, intercambio.categoria)} className='btn btn-success'> Confirmar </button>
+                                                            <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
+                                                        </>
+                                                    ) : (
+                                                        <button onClick={() => botonElegir(intercambio._id, intercambio.idUsuario)} className='btn btn-success'>Elegir</button>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                        : <>
+                            <p> No has publicado ningún producto para intercambiar.</p>
+                            <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button>
+                        </>}
                 </>
                 :
                 <>
