@@ -106,7 +106,7 @@ export const ListarPropuestas = () => {
                         <tbody className="table-group-divider">
                             {productos.map((producto, index) => {
                                 const fecha = new Date(propuestas[index].fecha);
-                                const fechaString = fecha.toISOString();
+                                const fechaString = fecha.toLocaleDateString();
                                 const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
