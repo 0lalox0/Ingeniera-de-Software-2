@@ -121,8 +121,10 @@ export const ElegirProducto = () => {
                                                 <td>
                                                     {eleccion === intercambio._id ? (
                                                         <>
-                                                            <button onClick={() => botonConfirmar(intercambio._id, intercambio.categoria)} className='btn btn-success'> Confirmar </button>
-                                                            <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
+                                                            <div style={{ display: 'flex',textAlign: 'center', justifyContent: 'center' }}>
+                                                                <button onClick={() => botonConfirmar(intercambio._id, intercambio.categoria)} className='btn btn-success'> Confirmar </button>
+                                                                <button onClick={botonCancelar} id='eleccionCancelar'>Cancelar</button>
+                                                            </div>
                                                         </>
                                                     ) : (
                                                         <button onClick={() => botonElegir(intercambio._id, intercambio.idUsuario)} className='btn btn-success'>Elegir</button>

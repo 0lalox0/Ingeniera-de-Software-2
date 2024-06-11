@@ -44,7 +44,7 @@ export const GestionIntercambios = () => {
               <img src={propuestas} />
               <div className="card-content">
                 <h3> Ver propuestas</h3>
-                <p> Acá vas a poder ver las propuestas de otros usuarios que quieren intercambiar con vos.</p>
+                <p> Acá vas a poder ver las propuestas que enviaste y de otros usuarios que quieren intercambiar con vos.</p>
               </div>
             </div>
 

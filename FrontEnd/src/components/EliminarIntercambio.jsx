@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import useUser from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 
-
 export const EliminarIntercambio = () => {
     const { role } = useUser();
     const email = localStorage.getItem('email');

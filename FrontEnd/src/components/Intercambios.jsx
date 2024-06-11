@@ -54,14 +54,13 @@ export const Intercambios = () => {
         <div className='clase-intercambios'>
 
             <div className='titulo-intercambios'>
-                <h1 style={{ color: "#242465" }}>Productos para intercambiar</h1>
+                <h1>Productos para intercambiar</h1>
                 <>
                     {role === 'cliente' ?
                         <>
                             <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button>
                         </>
-                        : <>
-                        </>}
+                        : <> </>}
                 </>
 
                 <h3 style={{ color: "#242465" }}>Filtrado por categoría: </h3>

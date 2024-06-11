@@ -12,8 +12,8 @@ export const Productos = () => {
 
     return (
         <div>
-            <div className="titulo-productos">
-                <h1 style={{ color: "#242465" }} >Productos de Ferreplus</h1>
+            <div className="titulos titulo-productos">
+                <h1>Productos de Ferreplus</h1>
             </div>
             <div className="productos-compra">
                 <ul>

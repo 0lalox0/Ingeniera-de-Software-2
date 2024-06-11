@@ -30,8 +30,8 @@ export const ListarEmpleados = () => {
         <>
             {role === 'admin' ?
                 <div className='clase-empleados'>
-                    <div className='titulo-empleados'>
-                        <h1 style={{ color: "#242465" }}>Empleados de Ferreplus</h1>
+                    <div className='titulos titulo-empleados'>
+                        <h1> Empleados de Ferreplus </h1>
                         <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>
                     </div>
                     <table className="table table-hover">

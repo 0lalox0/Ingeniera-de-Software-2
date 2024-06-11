@@ -287,9 +287,7 @@ header {
 }
 
 /* SUCURSALES */
-.titulo-sucursales,
-.titulo-productos,
-.titulo-empleados {
+.titulos {
   display: flex;
   position: absolute;
   left: 1%;
@@ -301,14 +299,15 @@ header {
   text-align: left;
 }
 
-.titulo-sucursales h1,
-.titulo-intercambios h1,
-.titulo-productos h1 {
+.titulos h1,
+.titulo-intercambios h1 {
   font-size: calc(1.5rem + 1.5vw);
+  color: #242465;
 }
 
 .titulo-sucursales p,
-.titulo-empleados p {
+.titulo-empleados p,
+.titulo-propuestas p {
   position: absolute;
   display: flex;
   top: 100%;
@@ -326,7 +325,8 @@ header {
 
 .clase-sucursales table,
 .clase-empleados table,
-.clase-eleccion {
+.clase-eleccion,
+.clase-propuestas table {
   position: absolute;
   top: 36%;
   left: 1%;
@@ -336,7 +336,8 @@ header {
 
 .clase-sucursales th,
 .clase-empleados th,
-.clase-eleccion {
+.clase-eleccion,
+.clase-propuestas th {
   color: #242465;
 }
 

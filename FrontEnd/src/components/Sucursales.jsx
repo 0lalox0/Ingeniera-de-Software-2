@@ -12,8 +12,8 @@ export const Sucursales = () => {
 
     return (
         <div className='clase-sucursales'>
-            <div className='titulo-sucursales'>
-                <h1 style={{ color: "#242465" }}>Sucursales de Ferreplus</h1>
+            <div className='titulos titulo-sucursales'>
+                <h1> Sucursales de Ferreplus</h1>
                 <p style={{ color: "#242465" }}> ¡Conocé las sucursales de Ferreplus! Todas nuestras sucursales están abiertas de lunes a viernes en sus horarios correspondientes.</p>
             </div>
             <table className="table table-hover">

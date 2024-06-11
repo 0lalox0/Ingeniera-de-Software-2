@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import useUser from "../hooks/useUser";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightLong, faLeftLong } from '@fortawesome/free-solid-svg-icons'
-import user from '../../../BackEnd/models/user';
 
 export const ProductoIntercambio = () => {
     const { role } = useUser();
