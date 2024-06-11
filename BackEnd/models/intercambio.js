@@ -9,7 +9,7 @@ const IntercambioSchema = new Schema({
     nombreSucursal: { type: String},
     dia: { type: String},
     estado: { type: String, enum: ['pendiente', 'aceptado', 'rechazado'], default: 'pendiente' },
-    fecha: { type: Date}
+    fecha: { type: Date }
 })
 
 export default model("PropuestaDeIntercambio", IntercambioSchema)

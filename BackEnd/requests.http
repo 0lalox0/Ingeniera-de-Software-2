@@ -71,7 +71,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/api/prodintercambios/664e084e47ac005b382963a9 HTTP/1.1
+DELETE http://localhost:8000/api/eliminarTodosLosProductos HTTP/1.1
 
 ###
 GET http://localhost:8000/api/filtrarProdIntercambios?sucursal=664a2a4b7b736ead28436ab5 HTTP/1.1
@@ -114,3 +114,6 @@ Content-Type: application/json
     "usuarioDeseado": "franco",
     "nombreSucursal": "hrnos"
 }
+
+###
+DELETE http://localhost:8000/api/eliminarTodosLosIntercambios HTTP/1.1

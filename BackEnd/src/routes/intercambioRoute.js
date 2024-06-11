@@ -33,6 +33,12 @@ router.delete('/propuestaIntercambio/:id', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
+//eliminar todos los intercambios
+router.delete('/eliminarTodosLosIntercambios', (req, res) => {
+    IntercambioSchema.deleteMany()
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
 // Obtener intercambios con filtros
 router.get('/filtrarPropuestaIntercambios', (req, res) => {
    
