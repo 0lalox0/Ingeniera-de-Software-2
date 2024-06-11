@@ -15,6 +15,7 @@ export const ElegirProducto = () => {
     const idDeseado = useParams().id;
     const [idOfrecido, setIdOfrecido] = useState(false);
     const categoriaDeseado = localStorage.getItem('categoria');
+    let fecha = localStorage.getItem("date");
 
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
@@ -39,7 +40,6 @@ export const ElegirProducto = () => {
     }
 
     const botonConfirmar = async (id, categoria) => {
-        console.log(categoriaDeseado);
         if (categoriaDeseado !== categoria) {
             setMensajeEleccion('El producto que selecciones debe ser de la misma categoría del producto deseado.');
             setEleccion(null);
@@ -52,7 +52,6 @@ export const ElegirProducto = () => {
                 return res.json();
             })
             .then(data => {
-                let f = localStorage.getItem("date");
                 fetch("http://localhost:8000/api/propuestaIntercambio", {
                     method: "POST",
                     headers: {
@@ -64,7 +63,7 @@ export const ElegirProducto = () => {
                         usuarioOfrecido: idOfrecido,
                         usuarioDeseado: data.idUsuario,
                         nombreSucursal: data.nombreSucursal,
-                        fecha: f
+                        fecha: fecha
                     })
                 })
                     .then(response => {
@@ -90,7 +89,7 @@ export const ElegirProducto = () => {
                 <>
                     <div className='eleccion-productos'>
                         <h1 style={{ color: "#242465" }}> Elegir productos para intercambiar </h1>
-                        <p ref={refMensaje}> {mensajeEleccion}</p>
+                        <p ref={refMensaje}> {mensajeEleccion} </p>
                     </div>
                     {intercambios.length > 0 ?
                         <div className='clase-eleccion'>

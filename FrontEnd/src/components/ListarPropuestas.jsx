@@ -106,7 +106,8 @@ export const ListarPropuestas = () => {
                         <tbody className="table-group-divider">
                             {productos.map((producto, index) => {
                                 const fecha = new Date(propuestas[index].fecha);
-                                const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
+                                const fechaString = fecha.toISOString();
+                                const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
                                     <tr key={propuestas[index]._id}>
@@ -117,7 +118,7 @@ export const ListarPropuestas = () => {
                                         <td> {producto.ofrecido.categoria} </td>
                                         <td> {sucursales[index]?.nombre} </td>
                                         <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
-                                        <td> {fechaFormateada} </td>
+                                        <td> {fechaString} </td>
                                         <td> {rango} </td>
                                         {producto.deseado.idUsuario == localStorage.getItem("email") ? <>
                                             <td> <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
@@ -126,7 +127,19 @@ export const ListarPropuestas = () => {
                                             </td>
                                         </> :
                                             <>
-                                                <td> <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p></td>
+                                                <td> <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
+                                                    {propuestas[index].estado == 'aceptado' ?
+                                                        <p style={{ color: '#07f717'}}> ¡Han aceptado este intercambio!</p>
+                                                        : <>
+                                                            {propuestas[index].estado == 'rechazado' ?
+                                                            <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
+                                                            : <> 
+                                                                <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
+                                                            </>
+                                                        }
+                                                        </>
+                                                    }
+                                                </td>
                                             </>}
                                     </tr>
                                 );

@@ -19,6 +19,7 @@ export const ProductoIntercambio = () => {
     const refFecha = useRef(null);
 
     const redirectIntercambios = () => navigate('/intercambios');
+
     const redirectProponer = () => {
         localStorage.setItem("date", fechaSeleccionada);
         navigate(`/elegiProducto/${id}`);
@@ -65,7 +66,11 @@ export const ProductoIntercambio = () => {
         return true;
     }
 
-    const cambiarFecha = (e) => setFechaSeleccionada(new Date(e.target.value));
+    const cambiarFecha = (e) => {
+        const [year, month, day] = e.target.value.split('-');
+        const fechaSeleccionada = new Date(year, month - 1, day);
+        setFechaSeleccionada(fechaSeleccionada);
+    }
 
     const elegirFecha = () => refFecha.current.style.display = 'flex';
 

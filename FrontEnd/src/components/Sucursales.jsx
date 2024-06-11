@@ -37,8 +37,8 @@ export const Sucursales = () => {
                                 <td>{sucursal.ciudad}</td>
                                 <td>{sucursal.numero}</td>
                                 <td>{sucursal.calle}</td>
-                                <td>{isNaN(horarioApertura) ? 'Invalid date' : horarioApertura.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                                <td>{isNaN(horarioCierre) ? 'Invalid date' : horarioCierre.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                                <td>{horarioApertura.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                                <td>{horarioCierre.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                             </tr>
                         )
                     })}
