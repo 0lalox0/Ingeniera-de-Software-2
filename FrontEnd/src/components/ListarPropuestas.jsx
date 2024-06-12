@@ -90,8 +90,9 @@ export const ListarPropuestas = () => {
     useEffect(() => {
         const fetchProductos = async () => {
             const products = await Promise.all(propuestas.map(async (propuesta) => {
-                const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
 
+                if((propuesta.estado != 'aceptado')&&(propuesta.estado != 'realizado')){
+                const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
                 let ofrecido = await response.json();
                 const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
                 let deseado = await res.json();
@@ -100,9 +101,22 @@ export const ListarPropuestas = () => {
                     ofrecido: ofrecido,
                     deseado: deseado
                 };
+                }else{
+                const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
+                let ofrecido = await response.json();
+                const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
+                let deseado = await res.json();
+                ofrecido.estado = 'libre';
+                deseado.estado = 'libre';
+                setContador(contador + 1);
+                return {
+                    ofrecido: ofrecido,
+                    deseado: deseado
+                };
+                }
             }));
-            let e = localStorage.getItem("email");
-                console.log(products[0].ofrecido.estado);
+                let e = localStorage.getItem("email");
+                console.log(products);
                 setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e)&&
                  (o.ofrecido.estado == 'libre')&&(o.deseado.estado == 'libre')));
         }

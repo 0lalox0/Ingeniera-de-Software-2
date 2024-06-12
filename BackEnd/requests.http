@@ -70,7 +70,7 @@ Content-Type: application/json
     "idUsuario":"663d83bc15eaeb6d61fe62e2"
 }
 ###
-PUT http://localhost:8000/api/prodIntercambios/6667519e97d9e26c8fc2aaeb HTTP/1.1
+PUT http://localhost:8000/api/prodIntercambios/666871494a7c4961c35dab02 HTTP/1.1
 Content-Type: application/json
 
 {

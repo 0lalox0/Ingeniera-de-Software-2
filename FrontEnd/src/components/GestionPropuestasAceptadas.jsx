@@ -98,13 +98,32 @@ export const GestionPropuestasAceptadas = () => {
                 estado: nuevoEstado,
             }),
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const propuestaActualizada = await response.json();
-
+        if(nuevoEstado == 'norealizado'){
+        const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({   
+                estado: 'libre'
+            }),
+        });
+        
+        const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({   
+                estado: 'libre'
+            }),
+        });
+        }
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
     }
