@@ -20,10 +20,10 @@ const UserSchema = new Schema(
             required: true
         },
         puntos: {
-            type: Number
+            type: Number, default: 0
         },
         cantidadVotos: {
-            type: Number
+            type: Number, default: 0
         }
     }
 )
