@@ -31,36 +31,55 @@ export const ListarPropuestas = () => {
     };
 
     //ACTUALIZAR PUNTOS DE USUARIO
-    const sumarPuntos = async (puntaje, idUsuario) => {
+    const sumarPuntos = async (puntaje, idUsuario, tipoUsuario, idPropuesta) => {
         setModalIsOpen(false);
-      
+
         const response = await fetch(`http://localhost:8000/api/users/${idUsuario}`);
         let data = await response.json();
-      
+
         if (data.puntos === null) {
-          data.puntos = puntaje;
+            data.puntos = puntaje;
         } else {
             data.puntos = parseFloat(data.puntos) + parseFloat(puntaje);
         }
-      
+
         if (data.cantidadVotos === null) {
-          data.cantidadVotos = 1;
+            data.cantidadVotos = 1;
         } else {
-          data.cantidadVotos++;
+            data.cantidadVotos++;
         }
-      
+
         await updateData(data, idUsuario);
-      };
-      
-      const updateData = async (data, idUsuario) => {
+        await updatePropuestaIntercambio(tipoUsuario, idPropuesta);
+    };
+
+    const updateData = async (data, idUsuario) => {
         await fetch(`http://localhost:8000/api/users/${idUsuario}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
         });
-      };
+    };
+
+    const updatePropuestaIntercambio = async (tipoUsuario, idPropuesta) => {
+        let data = {};
+
+        if (tipoUsuario === 'Deseado') {
+            data = { calificoDeseado: true, estado: "pendiente" };
+        } else if (tipoUsuario === 'Ofrecido') {
+            data = { calificoOfrecido: true, estado: "pendiente" };
+        }
+
+        await fetch(`http://localhost:8000/api/propuestaIntercambio/${idPropuesta}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+    };
 
     useEffect(() => {
 
@@ -91,34 +110,34 @@ export const ListarPropuestas = () => {
         const fetchProductos = async () => {
             const products = await Promise.all(propuestas.map(async (propuesta) => {
 
-                if((propuesta.estado != 'aceptado')&&(propuesta.estado != 'realizado')){
-                const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
-                let ofrecido = await response.json();
-                const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
-                let deseado = await res.json();
-                setContador(contador + 1);
-                return {
-                    ofrecido: ofrecido,
-                    deseado: deseado
-                };
-                }else{
-                const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
-                let ofrecido = await response.json();
-                const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
-                let deseado = await res.json();
-                ofrecido.estado = 'libre';
-                deseado.estado = 'libre';
-                setContador(contador + 1);
-                return {
-                    ofrecido: ofrecido,
-                    deseado: deseado
-                };
+                if ((propuesta.estado != 'aceptado') && (propuesta.estado != 'realizado')) {
+                    const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
+                    let ofrecido = await response.json();
+                    const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
+                    let deseado = await res.json();
+                    setContador(contador + 1);
+                    return {
+                        ofrecido: ofrecido,
+                        deseado: deseado
+                    };
+                } else {
+                    const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
+                    let ofrecido = await response.json();
+                    const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
+                    let deseado = await res.json();
+                    ofrecido.estado = 'libre';
+                    deseado.estado = 'libre';
+                    setContador(contador + 1);
+                    return {
+                        ofrecido: ofrecido,
+                        deseado: deseado
+                    };
                 }
             }));
-                let e = localStorage.getItem("email");
-                console.log(products);
-                setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e)&&
-                 (o.ofrecido.estado == 'libre')&&(o.deseado.estado == 'libre')));
+            let e = localStorage.getItem("email");
+            console.log(products);
+            setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
+                (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
         }
         fetchProductos();
     }, [propuestas]);
@@ -167,27 +186,27 @@ export const ListarPropuestas = () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const propuestaActualizada = await response.json();
-        if(nuevoEstado == 'aceptado'){
-        console.log(propuesta);
-        const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({   
-                estado: 'ocupado'
-            }),
-        });
-        
-        const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({   
-                estado: 'ocupado'
-            }),
-        });
+        if (nuevoEstado == 'aceptado') {
+            console.log(propuesta);
+            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'ocupado'
+                }),
+            });
+
+            const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'ocupado'
+                }),
+            });
         }
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
@@ -195,7 +214,7 @@ export const ListarPropuestas = () => {
 
     const aceptarIntercambio = async (propuesta) => {
         await actualizarEstadoIntercambio(propuesta, 'aceptado');
-       // window.location.reload(); // Refrescar la página
+        // window.location.reload(); // Refrescar la página
     }
 
     const rechazarIntercambio = async (propuesta) => {
@@ -272,7 +291,9 @@ export const ListarPropuestas = () => {
                                                                             {propuestas[index].estado == 'realizado' ?
                                                                                 <>
                                                                                     <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                                    <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                    {propuestas[index].calificoOfrecido === false && (
+                                                                                        <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                    )}
                                                                                     <Modal
                                                                                         isOpen={modalIsOpen}
                                                                                         onRequestClose={closeModal}
@@ -305,7 +326,7 @@ export const ListarPropuestas = () => {
                                                                                                 </div>
                                                                                             ))}
                                                                                         </form>
-                                                                                        <button onClick={(event) => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario)}>Guardar</button>
+                                                                                        <button onClick={(event) => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario, 'Ofrecido', propuestas[index]._id)}>Guardar</button>
                                                                                     </Modal>
                                                                                 </>
                                                                                 :
@@ -338,7 +359,10 @@ export const ListarPropuestas = () => {
                                                                     {propuestas[index].estado == 'realizado' ?
                                                                         <>
                                                                             <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                            <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+
+                                                                            {propuestas[index].calificoDeseado === false && (
+                                                                                <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                            )}
                                                                             <Modal
                                                                                 isOpen={modalIsOpen}
                                                                                 onRequestClose={closeModal}
@@ -371,8 +395,9 @@ export const ListarPropuestas = () => {
                                                                                         </div>
                                                                                     ))}
                                                                                 </form>
-                                                                                <button onClick={(event) => sumarPuntos(puntajeElegido, producto.deseado.idUsuario)}>Guardar</button>
+                                                                                <button onClick={(event) => (puntajeElegido, producto.deseado.idUsuario, 'Deseado', propuestas[index]._id)}>Guardar</button>
                                                                             </Modal>
+
                                                                         </>
                                                                         :
                                                                         <>
