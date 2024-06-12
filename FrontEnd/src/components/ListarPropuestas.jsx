@@ -179,7 +179,24 @@ export const ListarPropuestas = () => {
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Has rechazado esta propuesta de intercambio.</p>
                                                                 :
-                                                                null
+                                                                <>
+                                                                    {propuestas[index].estado == 'realizado' ?
+
+                                                                        <td> <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
+                                                                            <p style={{ color: '#439ac8' }}> Valorar usuario.</p>
+                                                                        </td>
+                                                                        :
+                                                                        <>
+                                                                            {propuestas[index].estado == 'norealizado' ?
+                                                                                <p style={{ color: 'red' }}> Intercambio cancelado.</p>
+                                                                                :
+                                                                                null
+
+                                                                            }
+                                                                        </>
+
+                                                                    }
+                                                                </>
 
                                                             }
                                                         </>
