@@ -100,22 +100,22 @@ export const ListarPropuestas = () => {
                 estado: nuevoEstado,
             }),
         });
-    
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+
         const propuestaActualizada = await response.json();
-    
+
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
     }
-    
+
     const aceptarIntercambio = async (propuesta) => {
         await actualizarEstadoIntercambio(propuesta, 'aceptado');
         window.location.reload(); // Refrescar la página
     }
-    
+
     const rechazarIntercambio = async (propuesta) => {
         await actualizarEstadoIntercambio(propuesta, 'rechazado');
         window.location.reload(); // Refrescar la página
@@ -167,10 +167,27 @@ export const ListarPropuestas = () => {
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
                                         {producto.deseado.idUsuario == localStorage.getItem("email") ? <>
-                                            <td> <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
-                                                <button onClick={() => aceptarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-success"> Aceptar Intercambio</button>
-                                                <button onClick={() => rechazarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-danger"> Rechazar Intercambio</button>
-                                            </td>
+                                            {propuestas[index].estado == 'pendiente' ?
+                                                <td> <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
+                                                    .              <button onClick={() => aceptarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-success"> Aceptar Intercambio</button>
+                                                    <button onClick={() => rechazarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-danger"> Rechazar Intercambio</button>
+                                                </td>
+                                                : <>
+                                                    {propuestas[index].estado == 'aceptado' ?
+                                                        <p style={{ color: '#07f717' }}> ¡Has aceptado este intercambio!</p>
+                                                        : <>
+                                                            {propuestas[index].estado == 'rechazado' ?
+                                                                <p style={{ color: 'red' }}> Has rechazado esta propuesta de intercambio.</p>
+                                                                :
+                                                                null
+
+                                                            }
+                                                        </>
+                                                    }
+                                                </>
+                                            }
+
+
                                         </> :
                                             <>
                                                 <td> <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
