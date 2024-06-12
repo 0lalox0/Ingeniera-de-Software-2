@@ -30,11 +30,37 @@ export const ListarPropuestas = () => {
         setModalIsOpen(false);
     };
 
+    //ACTUALIZAR PUNTOS DE USUARIO
     const sumarPuntos = async (puntaje, idUsuario) => {
         setModalIsOpen(false);
-        console.log(puntaje);
-        console.log(idUsuario);
-    };
+      
+        const response = await fetch(`http://localhost:8000/api/users/${idUsuario}`);
+        let data = await response.json();
+      
+        if (data.puntos === null) {
+          data.puntos = puntaje;
+        } else {
+            data.puntos = parseFloat(data.puntos) + parseFloat(puntaje);
+        }
+      
+        if (data.cantidadVotos === null) {
+          data.cantidadVotos = 1;
+        } else {
+          data.cantidadVotos++;
+        }
+      
+        await updateData(data, idUsuario);
+      };
+      
+      const updateData = async (data, idUsuario) => {
+        await fetch(`http://localhost:8000/api/users/${idUsuario}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+      };
 
     useEffect(() => {
 

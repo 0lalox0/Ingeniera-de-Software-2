@@ -254,7 +254,7 @@ export const EditarPerfil = () => {
                         <label htmlFor="Puntaje "> Reputación: </label>
                         <>
                             <div className="containerModificar">
-                                <p className='texto'> Puntaje: {puntaje || 0} </p>
+                                <p className='texto'> Puntaje: {puntaje/votos || 0} </p>
                             </div>
                         </>
                     </div>
