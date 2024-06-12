@@ -12,11 +12,32 @@ export const ListarPropuestas = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [contador, setContador] = useState(0);
 
+    const [userId, setUserId] = useState(null);
+    const emailLocal = localStorage.getItem("email");
+
     useEffect(() => {
-        fetch('http://localhost:8000/api/propuestaIntercambio')
-            .then(response => response.json())
-            .then(data => { setPropuestas(data), setContador(contador + 1) })
-            .catch(error => console.error('Error:', error));
+
+        const fetchPropuestas = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
+                const data = await response.json();
+                const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
+                    const responseDeseado = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`);
+                    const productoDeseado = await responseDeseado.json();
+                    const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
+                    const productoOfrecido = await responseOfrecido.json();
+                    if (productoDeseado.idUsuario === emailLocal || productoOfrecido.idUsuario === emailLocal) {
+                        return propuesta;
+                    }
+                }));
+                setPropuestas(propuestasFiltradas.filter(Boolean));
+                setContador(contador + 1);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchPropuestas();
     }, []);
 
     useEffect(() => {
@@ -34,7 +55,7 @@ export const ListarPropuestas = () => {
                 };
             }));
             let e = localStorage.getItem("email");
-            setProductos(products.filter(o => o.ofrecido.idUsuario === e || o.deseado.idUsuario === e));
+            setProductos(products.filter(o => o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e));
         }
         fetchProductos();
     }, [propuestas]);
@@ -68,13 +89,36 @@ export const ListarPropuestas = () => {
 
     const redirectGestion = () => navigate('/perfilUsuario/intercambios');
 
-    const aceptarIntercambio = (propuesta) => {
-        console.log(propuesta);
-        // post
+    const actualizarEstadoIntercambio = async (propuesta, nuevoEstado) => {
+        const response = await fetch(`http://localhost:8000/api/propuestaIntercambio/${propuesta._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...propuesta,
+                estado: nuevoEstado,
+            }),
+        });
+    
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        const propuestaActualizada = await response.json();
+    
+        // Actualizar el estado de la propuesta en el estado local
+        setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
     }
-    const rechazarIntercambio = (propuesta) => {
-        console.log(propuesta);
-        // post
+    
+    const aceptarIntercambio = async (propuesta) => {
+        await actualizarEstadoIntercambio(propuesta, 'aceptado');
+        window.location.reload(); // Refrescar la página
+    }
+    
+    const rechazarIntercambio = async (propuesta) => {
+        await actualizarEstadoIntercambio(propuesta, 'rechazado');
+        window.location.reload(); // Refrescar la página
     }
 
     if (contador < 2)
@@ -91,6 +135,7 @@ export const ListarPropuestas = () => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
+                                <th scope="col">Estado</th>
                                 <th scope="col">Producto ofrecido</th>
                                 <th scope="col">Foto</th>
                                 <th scope="col">Producto deseado</th>
@@ -111,6 +156,7 @@ export const ListarPropuestas = () => {
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
                                     <tr key={propuestas[index]._id}>
+                                        <td> {propuestas[index].estado} </td>
                                         <td> {producto.ofrecido.titulo} </td>
                                         <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
                                         <td> {producto.deseado.titulo} </td>
@@ -129,14 +175,14 @@ export const ListarPropuestas = () => {
                                             <>
                                                 <td> <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
                                                     {propuestas[index].estado == 'aceptado' ?
-                                                        <p style={{ color: '#07f717'}}> ¡Han aceptado este intercambio!</p>
+                                                        <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
                                                         : <>
                                                             {propuestas[index].estado == 'rechazado' ?
-                                                            <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
-                                                            : <> 
-                                                                <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
-                                                            </>
-                                                        }
+                                                                <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
+                                                                : <>
+                                                                    <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
+                                                                </>
+                                                            }
                                                         </>
                                                     }
                                                 </td>
