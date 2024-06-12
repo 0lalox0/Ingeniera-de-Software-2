@@ -35,9 +35,9 @@ router.get('/prodIntercambiosPorUsuario/:id', (req, res) => {
 //actualizar un producto
 router.put('/prodIntercambios/:id', (req, res) => {
     const { id } = req.params
-    const { titulo, descripcion, fotos, categoria, sucursal, inicioRango, finRango, idUsuario } = req.body
+    const { titulo, descripcion, fotos, categoria, sucursal, inicioRango, finRango, idUsuario, estado} = req.body
     ProdInterSchema.updateOne({ _id: id }, 
-    {$set: { titulo, descripcion, fotos, categoria, sucursal, inicioRango, finRango, idUsuario }})
+    {$set: { titulo, descripcion, fotos, categoria, sucursal, inicioRango, finRango, idUsuario, estado }})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 

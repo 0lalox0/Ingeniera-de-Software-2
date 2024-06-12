@@ -102,7 +102,9 @@ export const ListarPropuestas = () => {
                 };
             }));
             let e = localStorage.getItem("email");
-            setProductos(products.filter(o => o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e));
+                console.log(products[0].ofrecido.estado);
+                setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e)&&
+                 (o.ofrecido.estado == 'libre')&&(o.deseado.estado == 'libre')));
         }
         fetchProductos();
     }, [propuestas]);
@@ -147,20 +149,39 @@ export const ListarPropuestas = () => {
                 estado: nuevoEstado,
             }),
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const propuestaActualizada = await response.json();
-
+        if(nuevoEstado == 'aceptado'){
+        console.log(propuesta);
+        const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({   
+                estado: 'ocupado'
+            }),
+        });
+        
+        const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({   
+                estado: 'ocupado'
+            }),
+        });
+        }
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
     }
 
     const aceptarIntercambio = async (propuesta) => {
         await actualizarEstadoIntercambio(propuesta, 'aceptado');
-        window.location.reload(); // Refrescar la página
+       // window.location.reload(); // Refrescar la página
     }
 
     const rechazarIntercambio = async (propuesta) => {

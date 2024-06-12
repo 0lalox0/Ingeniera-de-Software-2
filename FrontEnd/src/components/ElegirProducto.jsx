@@ -107,6 +107,9 @@ export const ElegirProducto = () => {
                                 </thead>
                                 <tbody className="table-group-divider">
                                     {intercambios.map((intercambio) => {
+                                        if (intercambio.estado !== 'libre') {
+                                            return null;
+                                        }
                                         return (
                                             <tr key={intercambio._id}>
                                                 <td>{intercambio.titulo}</td>

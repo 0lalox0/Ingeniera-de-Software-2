@@ -50,7 +50,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/sucursales HTTP/1.1
 
 ###
-DELETE http://localhost:8000/api/sucursales/663d83d115eaeb6d61fe62e4 HTTP/1.1
+DELETE http://localhost:8000/api/sucursales/666a11de728893f3336ff539 HTTP/1.1
 
 ###
 GET http://localhost:8000/api/prodIntercambios HTTP/1.1
@@ -69,7 +69,16 @@ Content-Type: application/json
     "finRango": "18:00",
     "idUsuario":"663d83bc15eaeb6d61fe62e2"
 }
+###
+PUT http://localhost:8000/api/prodIntercambios/6667519e97d9e26c8fc2aaeb HTTP/1.1
+Content-Type: application/json
 
+{
+    "estado": "libre"
+}
+
+###
+DELETE http://localhost:8000/api/prodIntercambios/666a11de728893f3336ff539 HTTP/1.1
 ###
 DELETE http://localhost:8000/api/eliminarTodosLosProductos HTTP/1.1
 

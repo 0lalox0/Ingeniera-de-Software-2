@@ -101,6 +101,9 @@ export const Intercambios = () => {
 
             <div className="intercambios">
                 {intercambios.map((intercambio) => {
+                    if (intercambio.estado !== 'libre') {
+                        return null;
+                    }
                     return (
                         <div className="card mb-3" key={intercambio._id} onClick={() => redirectProducto(intercambio._id)}>
                             <div className="row g-0">

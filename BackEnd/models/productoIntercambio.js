@@ -48,7 +48,8 @@ const ProdInterSchema = new Schema({
     dia: {
         type: String,
         require: true
-    }
+    },
+    estado: { type: String, enum: ['libre', 'ocupado','eliminado'], default: 'libre' },
 })
 
 export default model("ProductosParaIntercambiar", ProdInterSchema)
