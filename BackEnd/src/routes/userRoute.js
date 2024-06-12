@@ -23,11 +23,11 @@ router.get('/users/:id', (req, res) => {
 
 //update a user
 router.put('/users/:id', (req, res) => {
-    const { id } = req.params
-    const { name, lastname, email, date } = req.body
-    UserSchema.updateOne({ email: id }, {$set: { name, lastname, email, date }})
-    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
-})
+    const { id } = req.params;
+    const { name, lastname, email, date, puntos, cantidadVotos } = req.body;
+    UserSchema.updateOne({ email: id }, {$set: { name, lastname, email, date, puntos, cantidadVotos }})
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}));
+});
 
 //delete a user
 router.delete('/users/:id', (req, res) => {

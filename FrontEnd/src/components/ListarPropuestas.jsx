@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 export const ListarPropuestas = () => {
     const navigate = useNavigate();
@@ -14,6 +16,25 @@ export const ListarPropuestas = () => {
 
     const [userId, setUserId] = useState(null);
     const emailLocal = localStorage.getItem("email");
+    const [puntajeElegido, setPuntajeElegido] = useState("");
+
+    //POP UP MODAL
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [rating, setRating] = useState('');
+
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const sumarPuntos = async (puntaje, idUsuario) => {
+        setModalIsOpen(false);
+        console.log(puntaje);
+        console.log(idUsuario);
+    };
 
     useEffect(() => {
 
@@ -124,6 +145,8 @@ export const ListarPropuestas = () => {
     if (contador < 2)
         return <img src={cargando} width='10%' height='10%' />
 
+    Modal.setAppElement('#root');
+
     return (
         <>
             {role === 'cliente' ?
@@ -166,59 +189,130 @@ export const ListarPropuestas = () => {
                                         <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
-                                        {producto.deseado.idUsuario == localStorage.getItem("email") ? <>
-                                            {propuestas[index].estado == 'pendiente' ?
-                                                <td> <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
-                                                    .              <button onClick={() => aceptarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-success"> Aceptar Intercambio</button>
-                                                    <button onClick={() => rechazarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-danger"> Rechazar Intercambio</button>
-                                                </td>
-                                                : <>
-                                                    {propuestas[index].estado == 'aceptado' ?
-                                                        <p style={{ color: '#07f717' }}> ¡Has aceptado este intercambio!</p>
-                                                        : <>
-                                                            {propuestas[index].estado == 'rechazado' ?
-                                                                <p style={{ color: 'red' }}> Has rechazado esta propuesta de intercambio.</p>
+                                        <td>
+                                            {producto.deseado.idUsuario == localStorage.getItem("email") ?
+                                                <>
+                                                    {propuestas[index].estado == 'pendiente' ?
+                                                        <>
+                                                            <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
+                                                            <button onClick={() => aceptarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-success"> Aceptar Intercambio</button>
+                                                            <button onClick={() => rechazarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-danger"> Rechazar Intercambio</button>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            {propuestas[index].estado == 'aceptado' ?
+                                                                <p style={{ color: '#07f717' }}> ¡Has aceptado este intercambio!</p>
                                                                 :
                                                                 <>
-                                                                    {propuestas[index].estado == 'realizado' ?
-
-                                                                        <td> <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                            <p style={{ color: '#439ac8' }}> Valorar usuario.</p>
-                                                                        </td>
+                                                                    {propuestas[index].estado == 'rechazado' ?
+                                                                        <p style={{ color: 'red' }}> Has rechazado esta propuesta de intercambio.</p>
                                                                         :
                                                                         <>
-                                                                            {propuestas[index].estado == 'norealizado' ?
-                                                                                <p style={{ color: 'red' }}> Intercambio cancelado.</p>
+                                                                            {propuestas[index].estado == 'realizado' ?
+                                                                                <>
+                                                                                    <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
+                                                                                    <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                    <Modal
+                                                                                        isOpen={modalIsOpen}
+                                                                                        onRequestClose={closeModal}
+                                                                                        contentLabel="Valorar usuario"
+                                                                                        style={{
+                                                                                            content: {
+                                                                                                width: '150px',
+                                                                                                height: '200px',
+                                                                                                margin: 'auto',
+                                                                                                overflow: 'hidden',
+                                                                                                position: 'fixed',
+                                                                                                top: '50%',
+                                                                                                left: '50%',
+                                                                                                transform: 'translate(30%, -120%)'
+                                                                                            },
+                                                                                        }}
+                                                                                    >
+                                                                                        <form>
+                                                                                            {['1', '2', '3', '4', '5'].map((value) => (
+                                                                                                <div key={value}>
+                                                                                                    <input
+                                                                                                        type="radio"
+                                                                                                        id={`rating-${value}`}
+                                                                                                        name="rating"
+                                                                                                        value={value}
+                                                                                                        checked={rating === value}
+                                                                                                        onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
+                                                                                                    />
+                                                                                                    <label htmlFor={`rating-${value}`}>{value}</label>
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </form>
+                                                                                        <button onClick={(event) => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario)}>Guardar</button>
+                                                                                    </Modal>
+                                                                                </>
                                                                                 :
-                                                                                null
-
+                                                                                <>
+                                                                                    {propuestas[index].estado == 'norealizado' ?
+                                                                                        <p style={{ color: 'red' }}> Intercambio cancelado.</p>
+                                                                                        :
+                                                                                        null
+                                                                                    }
+                                                                                </>
                                                                             }
                                                                         </>
-
                                                                     }
                                                                 </>
-
                                                             }
                                                         </>
                                                     }
                                                 </>
-                                            }
-
-
-                                        </> :
-                                            <>
-                                                <td> <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
+                                                :
+                                                <>
+                                                    <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
                                                     {propuestas[index].estado == 'aceptado' ?
                                                         <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
-                                                        : <>
+                                                        :
+                                                        <>
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
-                                                                : <>
+                                                                :
+                                                                <>
                                                                     {propuestas[index].estado == 'realizado' ?
-
-                                                                        <td> <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                            <p style={{ color: '#439ac8' }}> Valorar usuario.</p>
-                                                                        </td>
+                                                                        <>
+                                                                            <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
+                                                                            <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                            <Modal
+                                                                                isOpen={modalIsOpen}
+                                                                                onRequestClose={closeModal}
+                                                                                contentLabel="Valorar usuario"
+                                                                                style={{
+                                                                                    content: {
+                                                                                        width: '150px',
+                                                                                        height: '200px',
+                                                                                        margin: 'auto',
+                                                                                        overflow: 'hidden',
+                                                                                        position: 'fixed',
+                                                                                        top: '50%',
+                                                                                        left: '50%',
+                                                                                        transform: 'translate(30%, -120%)'
+                                                                                    },
+                                                                                }}
+                                                                            >
+                                                                                <form>
+                                                                                    {['1', '2', '3', '4', '5'].map((value) => (
+                                                                                        <div key={value}>
+                                                                                            <input
+                                                                                                type="radio"
+                                                                                                id={`rating-${value}`}
+                                                                                                name="rating"
+                                                                                                value={value}
+                                                                                                checked={rating === value}
+                                                                                                onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
+                                                                                            />
+                                                                                            <label htmlFor={`rating-${value}`}>{value}</label>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </form>
+                                                                                <button onClick={(event) => sumarPuntos(puntajeElegido, producto.deseado.idUsuario)}>Guardar</button>
+                                                                            </Modal>
+                                                                        </>
                                                                         :
                                                                         <>
                                                                             {propuestas[index].estado == 'norealizado' ?
@@ -227,24 +321,25 @@ export const ListarPropuestas = () => {
                                                                                 <>
                                                                                     <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
                                                                                 </>
-
                                                                             }
                                                                         </>
-
                                                                     }
                                                                 </>
                                                             }
                                                         </>
                                                     }
-                                                </td>
-                                            </>}
+                                                </>
+                                            }
+                                        </td>
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
                 </div>
-                : <> </>}
+                :
+                <> </>
+            }
         </>
     )
 }
