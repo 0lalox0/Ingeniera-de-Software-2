@@ -20,9 +20,9 @@ router.get('/propuestaIntercambio', (req, res) => {
 //actualizar un intercambio
 router.put('/propuestaIntercambio/:id', (req, res) => {
     const { id } = req.params
-    const { productoOfrecido, productoDeseado, usuarioOfrecido, usuarioDeseado, estado, fecha } = req.body
+    const { productoOfrecido, productoDeseado, usuarioOfrecido, usuarioDeseado, estado, fecha, calificoOfrecido, calificoDeseado } = req.body
     IntercambioSchema.updateOne({ _id: id }, 
-    {$set: { productoOfrecido, productoDeseado, usuarioOfrecido, usuarioDeseado, estado, fecha }})
+    {$set: { productoOfrecido, productoDeseado, usuarioOfrecido, usuarioDeseado, estado, fecha, calificoOfrecido, calificoDeseado }})
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
