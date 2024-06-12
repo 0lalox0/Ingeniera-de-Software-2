@@ -18,6 +18,12 @@ const UserSchema = new Schema(
         date: {
             type: Date,
             required: true
+        },
+        puntos: {
+            type: Number
+        },
+        cantidadVotos: {
+            type: Number
         }
     }
 )
