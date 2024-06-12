@@ -24,6 +24,8 @@ export const HeaderFerreplus = () => {
 
   const redirectAdmin = () => navigate('/admin');
 
+  const redirectEmpleado = () => navigate('/perfilEmpleado');
+
   const isActive = (path) => {
     return location.pathname === path;
   }
@@ -60,7 +62,7 @@ export const HeaderFerreplus = () => {
             <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
           </>
             : role === 'empleado' ? <>
-              <button className='botonesInicioSesion' id='botonGestionar'> Gestionar </button>
+              <button className='botonesInicioSesion' id='botonGestionar' onClick={redirectEmpleado}> Gestionar </button>
               <button className='botonesInicioSesion' onClick={() => { signOut(getAuth()); location.reload() }}> Cerrar sesión </button>
             </> : <>
               <button className='botonesInicioSesion' onClick={redirectInicioSesion}> Iniciar sesión </button>
