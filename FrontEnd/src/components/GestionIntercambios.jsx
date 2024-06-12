@@ -32,14 +32,6 @@ export const GestionIntercambios = () => {
               </div>
             </div>
 
-            <div className="card" onClick={redirectEliminar}>
-              <img src={eliminar} />
-              <div className="card-content">
-                <h3> Eliminar producto para intercambiar</h3>
-                <p> Acá vas a poder eliminar un producto para intercambiar que hayas publicado.</p>
-              </div>
-            </div>
-
             <div className="card" onClick={redirectPropuestas}>
               <img src={propuestas} />
               <div className="card-content">
@@ -48,7 +40,7 @@ export const GestionIntercambios = () => {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" onClick={redirectEliminar}>
               <img src={ver} />
               <div className="card-content">
                 <h3> Ver productos para intercambiar publicados</h3>
