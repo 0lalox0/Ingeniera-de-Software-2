@@ -214,7 +214,24 @@ export const ListarPropuestas = () => {
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
                                                                 : <>
-                                                                    <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
+                                                                    {propuestas[index].estado == 'realizado' ?
+
+                                                                        <td> <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
+                                                                            <p style={{ color: '#439ac8' }}> Valorar usuario.</p>
+                                                                        </td>
+                                                                        :
+                                                                        <>
+                                                                            {propuestas[index].estado == 'norealizado' ?
+                                                                                <p style={{ color: 'red' }}> Intercambio cancelado.</p>
+                                                                                :
+                                                                                <>
+                                                                                    <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
+                                                                                </>
+
+                                                                            }
+                                                                        </>
+
+                                                                    }
                                                                 </>
                                                             }
                                                         </>
