@@ -12,6 +12,8 @@ export const EditarPerfil = () => {
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [date, setDate] = useState('');
+    const [puntaje, setPuntaje] = useState('');
+    const [votos, setVotos] = useState('');
     const [message, setMessage] = useState("");
     const [isEditingEmail, setIsEditingEmail] = useState(false);
     const [isEditingDate, setIsEditingDate] = useState(false);
@@ -118,6 +120,8 @@ export const EditarPerfil = () => {
                 setName(data.name);
                 setSurname(data.lastname);
                 setEmail(data.email);
+                setPuntaje(data.puntos);
+                setVotos(data.cantidadVotos);
                 const dateObj = new Date(data.date);
                 const year = dateObj.getUTCFullYear();
                 const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
@@ -168,7 +172,7 @@ export const EditarPerfil = () => {
         <>
             {role === 'cliente' ?
                 <div className='formularioSucursal' onKeyDown={handleKeyDown}>
-                    <h2>Editar perfil </h2>
+                    <h2>Ver/Editar perfil </h2>
 
                     <div className="mb-3">
                         <label htmlFor="nombreUsuario" style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre </label>
@@ -244,6 +248,26 @@ export const EditarPerfil = () => {
                                 </div>
                             </>
                         )}
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="Puntaje "> Reputación: </label>
+                        <>
+                            <div className="containerModificar">
+                                <p className='texto'> Puntaje: {puntaje || 0} </p>
+                            </div>
+                        </>
+                    </div>
+                    <div className="mb-3">
+                        <>
+                            <div className="containerModificar">
+                                {votos ? <p className='texto'> Intercambios: {votos} </p> :
+                                    <>
+                                        <p className='texto'> Intercambios:</p>
+                                        <p className='texto'> Todavía no tiene intercambios </p>
+                                    </>}
+                            </div>
+                        </>
                     </div>
 
                     <p style={{ color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
