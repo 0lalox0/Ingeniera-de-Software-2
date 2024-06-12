@@ -27,6 +27,7 @@ import { ListarEmpleados } from './components/ListarEmpleados'
 import { ElegirProducto } from './components/ElegirProducto'
 import { ListarPropuestas } from './components/ListarPropuestas'
 import { PerfilEmpleado } from './components/PerfilEmpleado'
+import { GestionPropuestasAceptadas } from './components/GestionPropuestasAceptadas'
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
         <Route path='/intercambios/:id' element={<ProductoIntercambio />}></Route>
         <Route path='/elegiProducto/:id' element={<ElegirProducto />}></Route>
         <Route path='/perfilEmpleado' element={<PerfilEmpleado />}> </Route>
+        <Route path='/perfilEmpleado/propuestas' element={<GestionPropuestasAceptadas />}> </Route>
       </Routes>
     </>
   )

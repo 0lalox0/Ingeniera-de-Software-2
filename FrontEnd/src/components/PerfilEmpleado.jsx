@@ -2,6 +2,7 @@ import useUser from '../hooks/useUser';
 import React, { useEffect, useState } from 'react'
 import intercambio from '../assets/intercambio.png'
 import { Mantenimiento } from './Mantenimiento';
+import { useNavigate } from 'react-router-dom';
 
 export const PerfilEmpleado = () => {
     const { role } = useUser();
@@ -20,7 +21,10 @@ export const PerfilEmpleado = () => {
             setUserInfo(data);
         })
     }
-    console.log(userInfo.nombre);
+
+    const navigate = useNavigate();
+    const redirectGestionPropuestas = () => navigate('/perfilEmpleado/propuestas');
+
     return (
         <>
             {role === 'empleado' ?
@@ -29,7 +33,7 @@ export const PerfilEmpleado = () => {
                     <h1 style={{ color: "#242465" }}> Bienvenido {userInfo.nombre}</h1>
                     <div className='card-container'>
 
-                        <div className="card">
+                        <div className="card" onClick={redirectGestionPropuestas}>
                             <img src={intercambio} />
                             <div className="card-content">
                                 <h3> Intercambios agendados</h3>
