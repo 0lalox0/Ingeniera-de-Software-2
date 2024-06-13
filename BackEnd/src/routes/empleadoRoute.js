@@ -21,6 +21,13 @@ router.get('/empleados/:id', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
+//get empleado por dni
+router.get('/empleadosDNI/:id', (req, res) => {
+    const { dni } = req.params
+    EmpleadoSchema.findOne({dni: dni})
+    .then((data) => res.json(data)).catch(() => null)
+})
+
 //update a empleado
 router.put('/empleados/:id', (req, res) => {
     const { id } = req.params
