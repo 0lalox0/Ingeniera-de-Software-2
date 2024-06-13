@@ -130,24 +130,21 @@ export const GestionPropuestasAceptadas = () => {
     }
 
     const chequearFecha = (fechaIntercambio) => {
-        const hoy = new Date();
-        if (fechaIntercambio > hoy)
-            return false;
-        return true;
+        return fechaIntercambio > new Date() ? false : true;
     }
 
     const aceptarIntercambio = async (propuesta, fecha) => {
-        if (chequearFecha(fecha)) {
+        //if (chequearFecha(fecha)) {
             await actualizarEstadoIntercambio(propuesta, 'realizado');
             window.location.reload();
-        }
+        //}
     }
 
     const rechazarIntercambio = async (propuesta, fecha) => {
-        if (chequearFecha(fecha)) {
+        //if (chequearFecha(fecha)) {
             await actualizarEstadoIntercambio(propuesta, 'norealizado');
             window.location.reload();
-        }
+       //}
     }
 
     if (contador < 2)

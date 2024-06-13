@@ -654,11 +654,9 @@ td:hover {
 .disabledInput {
   background-color: #b2b2b2 !important;
   border: 1px solid black !important;
-  width: auto !important;
 }
 
 .modifyInput {
   background-color: white !important;
   border: 1px solid black !important;
-  width: auto !important;
 }
