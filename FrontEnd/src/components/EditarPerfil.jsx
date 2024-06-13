@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getAuth, updateEmail } from "firebase/auth";
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
@@ -22,6 +22,7 @@ export const EditarPerfil = () => {
     const emailLocal = localStorage.getItem("email");
     const [error, setError] = useState('');
     const { role } = useUser();
+    const refMensaje = useRef(null);
 
     const redirectMiPerfil = () => navigate('/perfilusuario');
 
@@ -53,6 +54,7 @@ export const EditarPerfil = () => {
         const eighteenYearsAgo = new Date(currentDate.getFullYear() - 18, currentDate.getMonth(), currentDate.getDate());
         if (birthDate > eighteenYearsAgo) {
             setMessage('Debes tener al menos 18 años.');
+            refMensaje.current.style.color = 'red';
             return false;
         }
         return true;
@@ -61,17 +63,20 @@ export const EditarPerfil = () => {
     const validateAndSave = async (field, setIsEditing, isEmail = false) => {
         if (!field.trim()) {
             setMessage('El campo no puede estar vacío.');
+            refMensaje.current.style.color = 'red';
             return;
         }
         if (isEmail && !validateEmail(field)) {
             setMessage('El correo electrónico no es válido.');
+            refMensaje.current.style.color = 'red';
             return;
         }
         if (isEmail) {
             const wasSuccessful = await updateEmailInFirebase(field);
-            localStorage.setItem('email', field);
-            if (wasSuccessful)
+            if (wasSuccessful) {
                 setIsEditing(false);
+                localStorage.setItem('email', field);
+            }
         } else {
             const wasSuccessful = await updateAccount();
             if (wasSuccessful) {
@@ -83,7 +88,6 @@ export const EditarPerfil = () => {
     const updateEmailInFirebase = async (newEmail) => {
         const auth = getAuth();
         const user = auth.currentUser;
-
         if (user) {
             try {
                 await updateEmail(user, newEmail);
@@ -100,12 +104,18 @@ export const EditarPerfil = () => {
                 if (!response.ok)
                     throw new Error('Error al actualizar el email en la base de datos');
                 setMessage('Email actualizado con éxito!');
+                refMensaje.current.style.color = '#07f717';
                 return true;
             } catch (e) {
-                if (e.message.includes("(auth/email-already-in-use)"))
+                if (e.message.includes("email-already-in-use")) {
                     setMessage("El email ingresado ya se encuentra registrado");
-                else
+                    refMensaje.current.style.color = 'red';
+                    return false;
+                }
+                else {
                     setMessage("Error al actualizar el email");
+                    refMensaje.current.style.color = 'red';
+                }
                 return false;
             }
         }
@@ -138,11 +148,11 @@ export const EditarPerfil = () => {
     const updateAccount = async () => {
         if (!date) {
             setMessage('El campo fecha de nacimiento no puede estar vacío.');
+            refMensaje.current.style.color = 'red';
             return false;
         }
-        if (!validateDate(date)) {
+        if (!validateDate(date))
             return false;
-        }
         try {
             const response = await fetch(`http://localhost:8000/api/users/${emailLocal}`, {
                 method: 'PUT',
@@ -161,9 +171,11 @@ export const EditarPerfil = () => {
                 throw new Error('Error al actualizar el usuario');
             }
             setMessage('¡Usuario actualizado con éxito!');
+            refMensaje.current.style.color = '#07f717';
             return true;
         } catch (error) {
             setMessage('Error al actualizar el usuario');
+            refMensaje.current.style.color = 'red';
             return false;
         }
     };
@@ -251,11 +263,11 @@ export const EditarPerfil = () => {
                     </div>
 
                     <div className="mb-3">
-                            <p> Valoración: {(puntaje / votos).toFixed(2)}</p>
-                            <p> Cantidad de intercambios realizados: {votos}</p>
+                        <p> Valoración: {(puntaje / votos).toFixed(2)}</p>
+                        <p> Cantidad de intercambios realizados: {votos}</p>
                     </div>
 
-                    <p style={{ color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? '#07f717' : 'red' }}> {message} </p>
+                    <p ref={refMensaje}> {message} </p>
                     <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
                 </div>
                 : <Mantenimiento></Mantenimiento>}
