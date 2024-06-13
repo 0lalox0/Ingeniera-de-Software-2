@@ -22,7 +22,6 @@ export const ListarPropuestas = () => {
     //POP UP MODAL
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [rating, setRating] = useState('');
-
     const openModal = () => {
         setModalIsOpen(true);
     };
@@ -140,8 +139,23 @@ export const ListarPropuestas = () => {
             let e = localStorage.getItem("email");
             setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
-        }
-        fetchProductos();
+
+            let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
+                (o.ofrecido.estado == 'ocupado') && (o.deseado.estado == 'ocupado'));
+
+            let propuestasPendientes = propuestas.filter(p => p.estado === 'pendiente');
+            
+            let propuestasFiltradas = propuestasPendientes.filter(p => {
+                let productoOfrecidoOcupado = productosOcupados.some(po => po.ofrecido.id === p.ofrecido.id);
+                let productoDeseadoOcupado = productosOcupados.some(po => po.deseado.id === p.deseado.id);
+                return !productoOfrecidoOcupado && !productoDeseadoOcupado;
+            });
+            let propuestasActualizadas = propuestas.filter(o => !propuestasFiltradas.some(pf => pf._id === o._id));
+            setPropuestas(propuestasActualizadas);  
+    }
+    fetchProductos();
+    console.log(propuestas)
+    console.log(productos)
     }, [propuestas]);
 
 
@@ -253,8 +267,6 @@ export const ListarPropuestas = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                            {console.log(propuestas)}
-                            {console.log(productos)}
                             {productos.map((producto, index) => {
                                 const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
