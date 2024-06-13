@@ -89,6 +89,7 @@ export const ListarPropuestas = () => {
                 const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
                 const data = await response.json();
                 const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
+                    console.log(propuesta);
                     const responseDeseado = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`);
                     const productoDeseado = await responseDeseado.json();
                     const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
@@ -97,6 +98,7 @@ export const ListarPropuestas = () => {
                         return propuesta;
                     }
                 }));
+
                 setPropuestas(propuestasFiltradas.filter(Boolean));
                 setContador(contador + 1);
             } catch (error) {
@@ -111,7 +113,7 @@ export const ListarPropuestas = () => {
         const fetchProductos = async () => {
             const products = await Promise.all(propuestas.map(async (propuesta) => {
 
-                if ((propuesta.estado != 'aceptado') && (propuesta.estado != 'realizado')) {
+                if ((propuesta.estado != 'aceptado') && (propuesta.estado != 'realizado')&&(propuesta.estado != 'rechazado')) {
                     const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
                     let ofrecido = await response.json();
                     const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
@@ -355,6 +357,7 @@ export const ListarPropuestas = () => {
                                                         <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
                                                         :
                                                         <>
+                                                            {console.log(propuestas)}
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
                                                                 :
