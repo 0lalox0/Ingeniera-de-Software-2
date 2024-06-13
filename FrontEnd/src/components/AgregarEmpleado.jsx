@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth as getFirebaseAuth } from 'firebase/auth';
@@ -34,6 +34,15 @@ export const AgregarEmpleado = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const authForCreatingUsers = getFirebaseAuth(secondaryApp);
+    const refMensaje = useRef(null);
+    const refNombre = useRef(null);
+    const refApellido = useRef(null);
+    const refDNI = useRef(null);
+    const refEmail = useRef(null);
+    const refTelefono = useRef(null);
+    const refSucursal = useRef(null);
+    const refContra = useRef(null);
+    const refConfirm = useRef(null);
 
     const redirectEmpleados = () => navigate('/admin/empleados');
 
@@ -57,45 +66,85 @@ export const AgregarEmpleado = () => {
         fetchSucursales();
     }, []);
 
+    const conseguirEmpleado = async (dni) => {
+        let data;
+        try {
+            const response = await fetch(`http://localhost:8000/api/empleadosDNI/${dni}`);
+            data = await response.json();
+            console.log(data);
+            // null -> no existe
+            // si data == null -> empleado NO existe, devolver true
+            console.log('Es null?');
+            console.log(data == null);
+        } catch (error) {
+            console.log('entra aca');
+        }
+        if (data == null) {
+            console.log('devolviendo true');
+            return true;
+        }
+        else {
+            console.log('devolviendo fasle');
+            return false;
+        }
+    }
+
     const chequeo = () => {
+        [refNombre, refApellido, refDNI, refEmail,refTelefono, refSucursal,refConfirm, refContra].forEach(r => r.current.style.color = '');
         if (!nombre) {
             setError('Se debe ingresar un nombre.');
+            refNombre.current.style.color = 'red';
             return false;
         }
         if (!apellido) {
             setError('Se debe ingresar un apellido.');
+            refApellido.current.style.color = 'red';
             return false;
         }
         if (!dni) {
-            setError('Se debe ingresar el número dni.');
+            setError('Se debe ingresar el número de DNI.');
+            refDNI.current.style.color = 'red';
+            return false;
+        }
+        if (!conseguirEmpleado(dni)) {
+            setError('El empleado con ese DNI ya existe.');
+            refDNI.current.style.color = 'red';
             return false;
         }
         if (!email) {
             setError('Se debe ingresar un email.');
+            refEmail.current.style.color = 'red';
             return false;
         }
         if (!telefono) {
             setError('Se debe ingresar un telefono.');
+            refTelefono.current.style.color = 'red';
             return false;
         }
         if (!sucursal) {
             setError('Se debe elegir una sucursal.');
+            refSucursal.current.style.color = 'red';
             return false;
         }
         if (!email.endsWith('ferreplus.com')) {
             setError('El email debe ser de Ferreplus.')
+            refEmail.current.style.color = 'red';
             return false;
         }
         if (!password) {
             setError('Se debe ingresar una contraseña.');
+            refContra.current.style.color = 'red';
             return false;
         }
         if (!confirmPassword) {
             setError('Se debe confirmar la contraseña.');
+            refConfirm.current.style.color = 'red';
             return false;
         }
         if (password !== confirmPassword) {
             setError('Las contraseñas no coinciden.');
+            refContra.current.style.color = 'red';
+            refConfirm.current.style.color = 'red';
             return false;
         }
         return true;
@@ -136,7 +185,6 @@ export const AgregarEmpleado = () => {
                     setMessage("Empleado agregado con éxito!");
                     limpiarFormulario();
                 } catch (error) {
-                    console.log(error.message);
                     setMessage("Hubo un error al agregar al empleado a mongodb.");
                 }
             } catch (e) {
@@ -163,32 +211,32 @@ export const AgregarEmpleado = () => {
                     </h3>
 
                     <div className="mb-3">
-                        <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre: </label>
+                        <label htmlFor='nombre' ref={refNombre}> Nombre: </label>
                         <input className="form-control" type="text" placeholder='Juan' id='nombre' value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
+                        <label htmlFor='apellido' ref={refApellido}> Apellido: </label>
                         <input className="form-control" type="text" placeholder='Perez' id='apellido' value={apellido} onChange={e => setApellido(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="dni" className="form-label" style={{ color: error === 'Se debe ingresar el número dni.' ? 'red' : 'black' }}>DNI:</label>
+                        <label htmlFor="dni" className="form-label" ref={refDNI}>DNI:</label>
                         <input type="text" className="form-control" placeholder='33.333.333' id="dni" value={dni} onChange={e => setDni(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un email.' || error === 'El email debe ser de Ferreplus.' ? 'red' : 'black' }}> Email: </label>
+                        <label htmlFor="exampleInputEmail1" className="form-label" ref={refEmail}> Email: </label>
                         <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='ejemplo123@ferreplus.com' value={email} onChange={e => setEmail(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="telefono" className="form-label" style={{ color: error === 'Se debe ingresar un telefono.' ? 'red' : 'black' }}>Teléfono:</label>
-                        <input type="text" className="form-control" placeholder='221-5678758' id="telefono" value={telefono} onChange={e => setTelefono(e.target.value)} onKeyDown={handleKeyDown} />
+                        <label htmlFor="telefono" className="form-label" ref={refTelefono}>Teléfono:</label>
+                        <input type="tel" className="form-control" placeholder='221-5678758' id="telefono" value={telefono} onChange={e => setTelefono(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="sucursal" className="form-label">Sucursal:</label>
+                        <label htmlFor="sucursal" className="form-label" ref={refSucursal}>Sucursal:</label>
                         <select className="form-control" id="sucursal" value={sucursal} onChange={e => setSucursal(e.target.value)}>
                             <option value="">Seleccione una sucursal</option>
                             {sucursales.map((sucursal, index) => (
@@ -198,22 +246,20 @@ export const AgregarEmpleado = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
-                            {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' ref={refContra}>
                             Contraseña:</label>
                         <input className="form-control" id="exampleInputPassword1" type="password" placeholder='Contraseña' value={password} onChange={e => setPassword(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
-                            {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                        <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' ref={refConfirm}>
                             Confirmar contraseña:</label>
                         <input className="form-control" id="exampleInputPassword2" type="password" placeholder='Repetir contraseña' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} onKeyDown={handleKeyDown} />
                     </div>
 
                     <button className="btn btn-primary" onClick={registrarEmpleado}>Agregar Empleado</button>
 
-                    <p style={{ color: message === 'Empleado agregado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p style={{ color: message === 'Empleado agregado con éxito!' ? '#07f717' : 'red' }}> {message} </p>
 
                     {error && <p className='errorContainer'>{error}</p>}
                     <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>

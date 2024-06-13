@@ -108,12 +108,12 @@ export const EditarPerfil = () => {
                 return true;
             } catch (e) {
                 if (e.message.includes("email-already-in-use")) {
-                    setMessage("El email ingresado ya se encuentra registrado");
+                    setMessage("El email ingresado ya se encuentra registrado.");
                     refMensaje.current.style.color = 'red';
                     return false;
                 }
                 else {
-                    setMessage("Error al actualizar el email");
+                    setMessage("Error al actualizar el email.");
                     refMensaje.current.style.color = 'red';
                 }
                 return false;
