@@ -23,8 +23,8 @@ router.get('/empleados/:id', (req, res) => {
 
 //get empleado por dni
 router.get('/empleadosDNI/:id', (req, res) => {
-    const { dni } = req.params
-    EmpleadoSchema.findOne({dni: dni})
+    const { id } = req.params
+    EmpleadoSchema.findOne({dni: id})
     .then((data) => res.json(data)).catch(() => null)
 })
 
