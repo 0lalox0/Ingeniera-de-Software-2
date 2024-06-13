@@ -148,20 +148,27 @@ export const ListarPropuestas = () => {
            console.log(productosOcupados);
             let propuestasPendientes = propuestasI.filter(p => p.estado === 'pendiente');
             console.log(propuestasPendientes);
+            if(productosOcupados.length >0){
             let propuestasFiltradas = propuestasPendientes.filter(p => {
                 let productoOfrecidoOcupado = productosOcupados.some(po => po.ofrecido._id == p.productoDeseado);
                 let productoDeseadoOcupado = productosOcupados.some(po => po.deseado._id == p.productoOfrecido);
                 return !productoOfrecidoOcupado && !productoDeseadoOcupado;
             });
+            
             console.log(propuestasI);
             console.log(propuestasFiltradas);
             let propuestasActualizadas = propuestasI.filter(o => !propuestasFiltradas.some(pf => pf._id === o._id));
             setPropuestas(propuestasActualizadas);
             console.log(propuestasActualizadas)
+            } else{
+                setPropuestas(propuestasI);
+            }
             setContador(contador + 1)
     }
     if(propuestasI.length > 0)
          fetchProductos();
+    else   
+        console.log('nada')
     }, [propuestasI]);
 
     useEffect(() => {
