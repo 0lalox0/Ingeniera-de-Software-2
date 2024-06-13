@@ -72,6 +72,7 @@ export const ElegirProducto = () => {
                         setMensajeEleccion('Propuesta enviada con éxito.');
                         refMensaje.current.style.color = '#07f717';
                         setEleccion(null);
+                        setIntercambios(intercambios.filter(i => i._id !== id));
                         return response.json();
                     })
                     .catch(error => {
@@ -139,7 +140,7 @@ export const ElegirProducto = () => {
                             </table>
                         </div>
                         : <>
-                            <p> No has publicado ningún producto para intercambiar.</p>
+                            <p> No tenés ningún producto disponible para intercambiar.</p>
                             <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button>
                         </>}
                 </>

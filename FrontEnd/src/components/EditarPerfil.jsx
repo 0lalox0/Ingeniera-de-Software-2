@@ -160,7 +160,7 @@ export const EditarPerfil = () => {
             if (!response.ok) {
                 throw new Error('Error al actualizar el usuario');
             }
-            setMessage('Usuario actualizado con éxito!');
+            setMessage('¡Usuario actualizado con éxito!');
             return true;
         } catch (error) {
             setMessage('Error al actualizar el usuario');
@@ -172,8 +172,8 @@ export const EditarPerfil = () => {
         <>
             {role === 'cliente' ?
                 <div className='formularioSucursal' onKeyDown={handleKeyDown}>
-                    <h2>Ver/Editar perfil </h2>
-
+                    <h2>Ver perfil </h2>
+                    <p style={{ color: '#439ac8' }} > Acá vas a poder ver y modificar los datos de tu cuenta.</p>
                     <div className="mb-3">
                         <label htmlFor="nombreUsuario" style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre </label>
                         {isEditingName ? (
@@ -251,26 +251,11 @@ export const EditarPerfil = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="Puntaje "> Reputación: </label>
-                        <>
-                            <div className="containerModificar">
-                                <p className='texto'> Puntaje: {puntaje/votos || 0} </p>
-                            </div>
-                        </>
-                    </div>
-                    <div className="mb-3">
-                        <>
-                            <div className="containerModificar">
-                                {votos ? <p className='texto'> Intercambios: {votos} </p> :
-                                    <>
-                                        <p className='texto'> Intercambios:</p>
-                                        <p className='texto'> Todavía no tiene intercambios </p>
-                                    </>}
-                            </div>
-                        </>
+                            <p> Valoración: {(puntaje / votos).toFixed(2)}</p>
+                            <p> Cantidad de intercambios realizados: {votos}</p>
                     </div>
 
-                    <p style={{ color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p style={{ color: message === 'Email actualizado con éxito!' || message === 'Usuario actualizado con éxito!' ? '#07f717' : 'red' }}> {message} </p>
                     <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
                 </div>
                 : <Mantenimiento></Mantenimiento>}
