@@ -31,6 +31,7 @@ export const AgregarEmpleado = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [sucursales, setSucursales] = useState([]);
+    const [empleados, setEmpleados] = useState([]);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const authForCreatingUsers = getFirebaseAuth(secondaryApp);
@@ -65,29 +66,24 @@ export const AgregarEmpleado = () => {
 
         fetchSucursales();
     }, []);
+    useEffect(() => {
+        const fetchEmpleados = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/empleados');
+                const data = await response.json();
+                setEmpleados(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
 
-    const conseguirEmpleado = async (dni) => {
-        let data;
-        try {
-            const response = await fetch(`http://localhost:8000/api/empleadosDNI/${dni}`);
-            data = await response.json();
-            console.log(data);
-            // null -> no existe
-            // si data == null -> empleado NO existe, devolver true
-            console.log('Es null?');
-            console.log(data == null);
-        } catch (error) {
-            console.log('entra aca');
-        }
-        if (data == null) {
-            console.log('devolviendo true');
-            return true;
-        }
-        else {
-            console.log('devolviendo fasle');
-            return false;
-        }
+        fetchEmpleados();
+    }, []);
+
+    const existeEmpleado = (dni) => {
+        return empleados.find(empleado => empleado.dni === dni);
     }
+      
 
     const chequeo = () => {
         [refNombre, refApellido, refDNI, refEmail,refTelefono, refSucursal,refConfirm, refContra].forEach(r => r.current.style.color = '');
@@ -106,7 +102,7 @@ export const AgregarEmpleado = () => {
             refDNI.current.style.color = 'red';
             return false;
         }
-        if (!conseguirEmpleado(dni)) {
+        if (existeEmpleado(dni)) {
             setError('El empleado con ese DNI ya existe.');
             refDNI.current.style.color = 'red';
             return false;
