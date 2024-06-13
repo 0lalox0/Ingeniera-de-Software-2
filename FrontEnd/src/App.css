@@ -427,7 +427,7 @@ td:hover {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 12%;
+  margin-top: 13%;
 }
 
 .card {
@@ -594,7 +594,7 @@ td:hover {
 }
 
 #botonProponer,
-#botonFecha {
+#botonFecha, .botonEmpleado {
   margin-top: auto;
   margin-bottom: 2rem;
   margin-right: 1rem;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
+import { Mantenimiento } from './Mantenimiento';
 
 export const GestionPropuestasAceptadas = () => {
     const navigate = useNavigate();
@@ -152,7 +153,6 @@ export const GestionPropuestasAceptadas = () => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Estado</th>
                                 <th scope="col">Producto ofrecido</th>
                                 <th scope="col">Foto</th>
                                 <th scope="col">Producto deseado</th>
@@ -162,6 +162,7 @@ export const GestionPropuestasAceptadas = () => {
                                 <th scope="col">Solicitante</th>
                                 <th scope='col'> Fecha </th>
                                 <th scope='col'> Rango horario </th>
+                                <th scope="col">Estado</th>
                                 <th scope="col"> Información </th>
                             </tr>
                         </thead>
@@ -169,11 +170,9 @@ export const GestionPropuestasAceptadas = () => {
                             {productos.map((producto, index) => {
                                 const fecha = new Date(propuestas[index].fecha);
                                 const fechaString = fecha.toLocaleDateString();
-                                const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
                                     <tr key={propuestas[index]._id}>
-                                        <td> {propuestas[index].estado} </td>
                                         <td> {producto.ofrecido.titulo} </td>
                                         <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
                                         <td> {producto.deseado.titulo} </td>
@@ -183,10 +182,11 @@ export const GestionPropuestasAceptadas = () => {
                                         <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
+                                        <td> {propuestas[index].estado} </td>
                                         {propuestas[index].estado == 'aceptado' ?
                                             <td>
-                                                .<button onClick={() => aceptarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-success"> Confirmar Intercambio</button>
-                                                <button onClick={() => rechazarIntercambio(propuestas[index])} id='botonFecha' className="btn btn-danger"> Cancelar Intercambio</button>
+                                                <button onClick={() => aceptarIntercambio(propuestas[index])} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
+                                                <button onClick={() => rechazarIntercambio(propuestas[index])} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
                                             </td>
                                             : <td>
                                                 {propuestas[index].estado == 'realizado' ?
@@ -208,7 +208,7 @@ export const GestionPropuestasAceptadas = () => {
                         </tbody>
                     </table>
                 </div>
-                : <> </>}
+                : <> <Mantenimiento> </Mantenimiento></>}
         </>
     )
 }

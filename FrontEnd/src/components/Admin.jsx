@@ -18,7 +18,7 @@ export const Admin = () => {
         <div className='perfilUsuario'>
           <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
           <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus Intercambios.</p>
-          
+
           <div className='card-container' id='cardAdministrador'>
             <div className="card" onClick={redirectSucursales}>
               <img src={sucursales} alt="" />

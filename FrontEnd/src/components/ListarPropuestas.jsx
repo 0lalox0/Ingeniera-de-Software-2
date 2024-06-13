@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
 import Modal from 'react-modal';
+import { Mantenimiento } from './Mantenimiento';
 Modal.setAppElement('#root');
 
 export const ListarPropuestas = () => {
@@ -243,28 +244,25 @@ export const ListarPropuestas = () => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Producto ofrecido</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Producto deseado</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Categoría</th>
-                                <th scope="col">Sucursal</th>
-                                <th scope="col">Solicitante</th>
+                                <th scope="col" >Producto ofrecido </th>
+                                <th scope="col"> Foto </th>
+                                <th scope="col"> Producto deseado </th>
+                                <th scope="col"> Foto </th>
+                                <th scope="col"> Categoría </th>
+                                <th scope="col"> Sucursal </th>
+                                <th scope="col"> Solicitante </th>
                                 <th scope='col'> Fecha </th>
                                 <th scope='col'> Rango horario </th>
+                                <th scope="col"> Estado </th>
                                 <th scope="col"> Información </th>
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
                             {productos.map((producto, index) => {
-                                const fecha = new Date(propuestas[index].fecha);
-                                const fechaString = fecha.toLocaleDateString();
-                                const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+                                const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
                                     <tr key={propuestas[index]._id}>
-                                        <td> {propuestas[index].estado} </td>
                                         <td> {producto.ofrecido.titulo} </td>
                                         <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
                                         <td> {producto.deseado.titulo} </td>
@@ -274,6 +272,7 @@ export const ListarPropuestas = () => {
                                         <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
+                                        <td> {propuestas[index].estado} </td>
                                         <td>
                                             {producto.deseado.idUsuario == localStorage.getItem("email") ?
                                                 <>
@@ -296,10 +295,10 @@ export const ListarPropuestas = () => {
                                                                             {propuestas[index].estado == 'realizado' ?
                                                                                 <>
                                                                                     <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                                    {propuestas[index].calificoOfrecido === false ? (
-                                                                                        <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                    {!propuestas[index].calificoOfrecido ? (
+                                                                                        <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
                                                                                     ) : (
-                                                                                        <p>Ya califico usuario</p>
+                                                                                        <p style={{ color: '#fcba03' }}> ¡Has calificado al usuario!</p>
                                                                                     )}
                                                                                     <Modal
                                                                                         isOpen={modalIsOpen}
@@ -369,9 +368,9 @@ export const ListarPropuestas = () => {
                                                                             <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
 
                                                                             {propuestas[index].calificoDeseado === false ? (
-                                                                                <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
                                                                             ) : (
-                                                                                <p>Ya califico usuario</p>
+                                                                                <p style={{ color: '#fcba03' }}>¡Has calificado al usuario!</p>
                                                                             )}
                                                                             <Modal
                                                                                 isOpen={modalIsOpen}
@@ -434,7 +433,7 @@ export const ListarPropuestas = () => {
                     </table>
                 </div>
                 :
-                <> </>
+                <> <Mantenimiento> </Mantenimiento> </>
             }
         </>
     )

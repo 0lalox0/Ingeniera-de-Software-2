@@ -27,16 +27,17 @@ export const ProductoIntercambio = () => {
     useEffect(() => {
         fetch(`http://localhost:8000/api/prodintercambios/${id}`)
             .then(response => response.json())
-            .then(data => { 
-                setProducto(data); 
+            .then(data => {
+                setProducto(data);
                 fetch(`http://localhost:8000/api/users/${data.idUsuario}`)
-                .then(response => response.json())
-                .then(data => {setUsuario(data);
-                     console.log(data);
-                     setLoading(false);
-                })
-                .catch(error => console.error('Error:', error));
-             })
+                    .then(response => response.json())
+                    .then(data => {
+                        setUsuario(data);
+                        console.log(data);
+                        setLoading(false);
+                    })
+                    .catch(error => console.error('Error:', error));
+            })
             .catch(error => console.error('Error:', error));
     }, []);
 
@@ -88,10 +89,12 @@ export const ProductoIntercambio = () => {
 
     if (loading)
         return <img src={cargando} width='10%' height='10%' />
+
     let valoracion = 0;
-    if(usuario.cantidadVotos != 0){
-        valoracion = (usuario.puntos/usuario.cantidadVotos);
-    }
+    if (usuario.cantidadVotos != 0)
+        valoracion = (usuario.puntos / usuario.cantidadVotos).toFixed(2);
+
+
     return (
         <>
             <div className="ver-intercambio">
@@ -121,8 +124,7 @@ export const ProductoIntercambio = () => {
                         <p> Descripción del producto: {producto.descripcion}. </p>
                         <p> Intercambio a realizar en la {producto.nombreSucursal} desde las {producto.inicioRango} hasta las {producto.finRango}, los días {producto.dia}.</p>
                         <p> Categoría del producto: {producto.categoria}.</p>
-                        <p> Publicado por: {producto.nombre} {producto.apellido}.</p>
-                        <p> Valoracion del usuario: {valoracion}</p>
+                        <p> Publicado por: {producto.nombre} {producto.apellido}, que cuenta con una valoración de <span style={{ color: '#fcba03' }}> {valoracion} puntos </span> basándose en {usuario.cantidadVotos} votos.</p>
                         {role === 'cliente' && producto.idUsuario !== localStorage.getItem("email") ? <>
                             <p style={{ color: '#439ac8' }}> ¿Te interesa este producto? ¡Proponele a {producto.nombre} de intercambiarlo por un producto tuyo!</p>
                             <button onClick={elegirFecha} id='botonFecha' className="btn btn-success"> Elegir fecha </button>
@@ -130,7 +132,7 @@ export const ProductoIntercambio = () => {
 
                         <div className='seleccionFecha' ref={refFecha} style={{ display: 'none' }}>
                             <div style={{ display: 'block' }}>
-                                <label htmlFor="fechaIntercambiar"> Elegí un día para intercambiar</label>
+                                <label htmlFor="fechaIntercambiar" style={{ marginRight: '8px' }}> Elegí un día para intercambiar</label>
                                 <input type="date" id='fechaIntercambiar' onChange={cambiarFecha} />
                                 <p className='errorContainer'> {mensaje} </p>
                             </div>
