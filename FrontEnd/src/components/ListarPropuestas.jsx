@@ -143,15 +143,15 @@ export const ListarPropuestas = () => {
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
 
             let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
-                (o.ofrecido.estado == 'ocupado') && (o.deseado.estado == 'ocupado'));
+                (o.ofrecido.estado == 'ocupado') || (o.deseado.estado == 'ocupado'));
            // console.log(propuestasI);
            console.log(productosOcupados);
             let propuestasPendientes = propuestasI.filter(p => p.estado === 'pendiente');
-           // console.log(propuestasPendientes);
+            console.log(propuestasPendientes);
             let propuestasFiltradas = propuestasPendientes.filter(p => {
-                let productoOfrecidoOcupado = productosOcupados.some(po => po.ofrecido.id === p.ofrecido.id);
-                let productoDeseadoOcupado = productosOcupados.some(po => po.deseado.id === p.deseado.id);
-                return productoOfrecidoOcupado && productoDeseadoOcupado;
+                let productoOfrecidoOcupado = productosOcupados.some(po => po.ofrecido._id == p.productoDeseado);
+                let productoDeseadoOcupado = productosOcupados.some(po => po.deseado._id == p.productoOfrecido);
+                return !productoOfrecidoOcupado && !productoDeseadoOcupado;
             });
             console.log(propuestasI);
             console.log(propuestasFiltradas);
