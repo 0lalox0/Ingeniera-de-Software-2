@@ -79,6 +79,7 @@ export const ListarPropuestas = () => {
             },
             body: JSON.stringify(data),
         });
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -291,8 +292,10 @@ export const ListarPropuestas = () => {
                                                                             {propuestas[index].estado == 'realizado' ?
                                                                                 <>
                                                                                     <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                                    {propuestas[index].calificoOfrecido === false && (
+                                                                                    {propuestas[index].calificoOfrecido === false ? (
                                                                                         <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                                    ) : (
+                                                                                        <p>Ya califico usuario</p>
                                                                                     )}
                                                                                     <Modal
                                                                                         isOpen={modalIsOpen}
@@ -360,8 +363,10 @@ export const ListarPropuestas = () => {
                                                                         <>
                                                                             <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
 
-                                                                            {propuestas[index].calificoDeseado === false && (
+                                                                            {propuestas[index].calificoDeseado === false ? (
                                                                                 <button id='botonFecha' className="btn btn-success" onClick={openModal}> Valorar usuario</button>
+                                                                            ) : (
+                                                                                <p>Ya califico usuario</p>
                                                                             )}
                                                                             <Modal
                                                                                 isOpen={modalIsOpen}
