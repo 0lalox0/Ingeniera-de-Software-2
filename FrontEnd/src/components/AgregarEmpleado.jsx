@@ -187,10 +187,13 @@ export const AgregarEmpleado = () => {
                 console.log(e.message);
                 if (e.message.includes("(auth/weak-password)")) {
                     setError("Contraseña débil.");
+                    refContra.current.style.color = 'red';
                 } else if (e.message.includes("(auth/email-already-in-use)")) {
                     setError("El email ingresado ya se encuentra registrado.");
+                    refEmail.current.style.color = 'red';
                 } else if (e.message.includes("(auth/invalid-email)")) {
                     setError("Email inválido.");
+                    refEmail.current.style.color = 'red';
                 } else {
                     setError("Error al crear la cuenta.");
                 }

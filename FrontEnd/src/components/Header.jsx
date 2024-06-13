@@ -90,7 +90,7 @@ export const HeaderFerreplus = () => {
                 <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
               </>
                 : role === 'empleado' ? <>
-                  <li><a className="dropdown-item">Gestionar</a></li>
+                  <li><a className="dropdown-item" onClick={redirectEmpleado}>Gestionar</a></li>
                   <li><a className="dropdown-item" onClick={() => { signOut(getAuth()); location.reload() }}>Cerrar sesión</a></li>
                 </> :
                   <>
