@@ -11,6 +11,7 @@ export const Intercambios = () => {
     const [categoria, setCategoria] = useState('todas');
     const [mensajeVisible, setMensajeVisible] = useState(false);
     const [sucursal, setSucursal] = useState('todas');
+    const [usuarios, setUsuarios] = useState('todas');
 
     useEffect(() => {
         fetch('http://localhost:8000/api/sucursales')
@@ -18,7 +19,18 @@ export const Intercambios = () => {
             .then(data => setSucursales(data))
             .catch(error => console.error('Error:', error));
     }, []);
-
+    useEffect(() => {
+        fetch('http://localhost:8000/api/users')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setUsuarios(data)
+            })
+            .catch(error => console.error('Error:', error));
+    }, []);
+    const getUser = (email) => {
+        return usuarios.filter(o => o.email == email);
+    }
     const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
 
     const redirectProducto = (idProducto) => navigate(`/intercambios/${idProducto}`);
@@ -104,6 +116,12 @@ export const Intercambios = () => {
                     if (intercambio.estado !== 'libre') {
                         return null;
                     }
+                    let user = getUser(intercambio.idUsuario)[0];
+                    console.log(user);
+                    let valoracion = 0;
+                    if(user.cantidadVotos != 0){
+                        valoracion = (user.puntos/user.cantidadVotos);
+                    }
                     return (
                         <div className="card mb-3" key={intercambio._id} onClick={() => redirectProducto(intercambio._id)}>
                             <div className="row g-0">
@@ -116,7 +134,7 @@ export const Intercambios = () => {
                                         <p className="card-text"> Sucursal del intercambio: {intercambio.nombreSucursal}</p>
                                         <p className="card-text"> Categoría: {intercambio.categoria}.</p>
                                         <p style={{ color: '#439ac8' }}> Hacé click para obtener más información.</p>
-                                        <p className="card-text"><small className="text-body-secondary">Publicado por: {intercambio.nombre} {intercambio.apellido} </small></p>
+                                        <p className="card-text"><small className="text-body-secondary">Publicado por: {intercambio.nombre} {intercambio.apellido} Valoracion: {valoracion}</small></p>
                                     </div>
                                 </div>
                             </div>
