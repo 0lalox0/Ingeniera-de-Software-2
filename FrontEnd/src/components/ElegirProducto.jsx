@@ -20,7 +20,7 @@ export const ElegirProducto = () => {
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
             .then(response => response.json())
-            .then(data => setIntercambios(data))
+            .then(data => setIntercambios(data.filter(i => i.estado == 'libre')))
             .catch(error => console.error('Error:', error));
     }, []);
 

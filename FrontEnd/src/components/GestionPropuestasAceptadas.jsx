@@ -104,39 +104,50 @@ export const GestionPropuestasAceptadas = () => {
         }
 
         const propuestaActualizada = await response.json();
-        if(nuevoEstado == 'norealizado'){
-        const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({   
-                estado: 'libre'
-            }),
-        });
-        
-        const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({   
-                estado: 'libre'
-            }),
-        });
+        if (nuevoEstado == 'norealizado') {
+            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'libre'
+                }),
+            });
+
+            const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'libre'
+                }),
+            });
         }
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));
     }
 
-    const aceptarIntercambio = async (propuesta) => {
-        await actualizarEstadoIntercambio(propuesta, 'realizado');
-        window.location.reload();
+    const chequearFecha = (fechaIntercambio) => {
+        const hoy = new Date();
+        if (fechaIntercambio > hoy)
+            return false;
+        return true;
     }
 
-    const rechazarIntercambio = async (propuesta) => {
-        await actualizarEstadoIntercambio(propuesta, 'norealizado');
-        window.location.reload();
+    const aceptarIntercambio = async (propuesta, fecha) => {
+        if (chequearFecha(fecha)) {
+            await actualizarEstadoIntercambio(propuesta, 'realizado');
+            window.location.reload();
+        }
+    }
+
+    const rechazarIntercambio = async (propuesta, fecha) => {
+        if (chequearFecha(fecha)) {
+            await actualizarEstadoIntercambio(propuesta, 'norealizado');
+            window.location.reload();
+        }
     }
 
     if (contador < 2)
@@ -153,16 +164,16 @@ export const GestionPropuestasAceptadas = () => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Producto ofrecido</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Producto deseado</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Categoría</th>
-                                <th scope="col">Sucursal</th>
-                                <th scope="col">Solicitante</th>
+                                <th scope="col"> Producto ofrecido </th>
+                                <th scope="col"> Foto </th>
+                                <th scope="col"> Producto deseado </th>
+                                <th scope="col"> Foto </th>
+                                <th scope="col"> Categoría </th>
+                                <th scope="col"> Sucursal </th>
+                                <th scope="col"> Solicitante </th>
                                 <th scope='col'> Fecha </th>
                                 <th scope='col'> Rango horario </th>
-                                <th scope="col">Estado</th>
+                                <th scope="col"> Estado </th>
                                 <th scope="col"> Información </th>
                             </tr>
                         </thead>
@@ -185,8 +196,8 @@ export const GestionPropuestasAceptadas = () => {
                                         <td> {propuestas[index].estado} </td>
                                         {propuestas[index].estado == 'aceptado' ?
                                             <td>
-                                                <button onClick={() => aceptarIntercambio(propuestas[index])} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
-                                                <button onClick={() => rechazarIntercambio(propuestas[index])} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
+                                                <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
+                                                <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
                                             </td>
                                             : <td>
                                                 {propuestas[index].estado == 'realizado' ?
