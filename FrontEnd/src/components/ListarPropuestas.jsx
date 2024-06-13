@@ -14,7 +14,7 @@ export const ListarPropuestas = () => {
     const [sucursales, setSucursales] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [contador, setContador] = useState(0);
-
+    const[propuestasI, setPropuestasI] = useState([]);
     const [userId, setUserId] = useState(null);
     const emailLocal = localStorage.getItem("email");
     const [puntajeElegido, setPuntajeElegido] = useState("");
@@ -97,9 +97,9 @@ export const ListarPropuestas = () => {
                         return propuesta;
                     }
                 }));
-
-                setPropuestas(propuestasFiltradas.filter(Boolean));
-                setContador(contador + 1);
+                console.log(propuestasFiltradas.filter(Boolean));
+                setPropuestasI(propuestasFiltradas.filter(Boolean));
+                //setContador(contador + 1);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -110,14 +110,15 @@ export const ListarPropuestas = () => {
 
     useEffect(() => {
         const fetchProductos = async () => {
-            const products = await Promise.all(propuestas.map(async (propuesta) => {
+            console.log(propuestasI);
+            const products = await Promise.all(propuestasI.map(async (propuesta) => {
 
                 if (propuesta.estado == 'pendiente') {
                     const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
                     let ofrecido = await response.json();
                     const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
                     let deseado = await res.json();
-                    setContador(contador + 1);
+                    //setContador(contador + 1);
                     return {
                         ofrecido: ofrecido,
                         deseado: deseado
@@ -129,7 +130,7 @@ export const ListarPropuestas = () => {
                     let deseado = await res.json();
                     ofrecido.estado = 'libre';
                     deseado.estado = 'libre';
-                    setContador(contador + 1);
+                    //setContador(contador + 1);
                     return {
                         ofrecido: ofrecido,
                         deseado: deseado
@@ -137,27 +138,31 @@ export const ListarPropuestas = () => {
                 }
             }));
             let e = localStorage.getItem("email");
+            console.log(products);
             setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
 
             let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
                 (o.ofrecido.estado == 'ocupado') && (o.deseado.estado == 'ocupado'));
-
-            let propuestasPendientes = propuestas.filter(p => p.estado === 'pendiente');
-            
+           // console.log(propuestasI);
+           console.log(productosOcupados);
+            let propuestasPendientes = propuestasI.filter(p => p.estado === 'pendiente');
+           // console.log(propuestasPendientes);
             let propuestasFiltradas = propuestasPendientes.filter(p => {
                 let productoOfrecidoOcupado = productosOcupados.some(po => po.ofrecido.id === p.ofrecido.id);
                 let productoDeseadoOcupado = productosOcupados.some(po => po.deseado.id === p.deseado.id);
-                return !productoOfrecidoOcupado && !productoDeseadoOcupado;
+                return productoOfrecidoOcupado && productoDeseadoOcupado;
             });
-            let propuestasActualizadas = propuestas.filter(o => !propuestasFiltradas.some(pf => pf._id === o._id));
-            setPropuestas(propuestasActualizadas);  
+            console.log(propuestasI);
+            console.log(propuestasFiltradas);
+            let propuestasActualizadas = propuestasI.filter(o => !propuestasFiltradas.some(pf => pf._id === o._id));
+            setPropuestas(propuestasActualizadas);
+            console.log(propuestasActualizadas)
+            setContador(contador + 1)
     }
-    fetchProductos();
-    console.log(propuestas)
-    console.log(productos)
-    }, [propuestas]);
-
+    if(propuestasI.length > 0)
+         fetchProductos();
+    }, [propuestasI]);
 
     useEffect(() => {
         const fetchSucursales = async () => {
