@@ -14,7 +14,9 @@ export const EliminarIntercambio = () => {
     useEffect(() => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
             .then(response => response.json())
-            .then(data => setIntercambios(data))
+            .then(data => {
+                setIntercambios(data.filter(o => o.estado == 'libre'));
+            })
             .catch(error => console.error('Error:', error));
     }, []);
 
