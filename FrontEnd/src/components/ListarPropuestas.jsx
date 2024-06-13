@@ -219,7 +219,7 @@ export const ListarPropuestas = () => {
 
     const aceptarIntercambio = async (propuesta) => {
         await actualizarEstadoIntercambio(propuesta, 'aceptado');
-        // window.location.reload(); // Refrescar la página
+        window.location.reload(); // Refrescar la página
     }
 
     const rechazarIntercambio = async (propuesta) => {
