@@ -253,6 +253,8 @@ export const ListarPropuestas = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
+                            {console.log(propuestas)}
+                            {console.log(productos)}
                             {productos.map((producto, index) => {
                                 const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
@@ -353,6 +355,7 @@ export const ListarPropuestas = () => {
                                                         <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
                                                         :
                                                         <>
+                                                            
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
                                                                 :
