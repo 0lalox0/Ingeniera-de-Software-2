@@ -90,7 +90,6 @@ export const ListarPropuestas = () => {
                 const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
                 const data = await response.json();
                 const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
-                    console.log(propuesta);
                     const responseDeseado = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`);
                     const productoDeseado = await responseDeseado.json();
                     const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
@@ -139,11 +138,8 @@ export const ListarPropuestas = () => {
                 }
             }));
             let e = localStorage.getItem("email");
-            console.log(products);
             setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
-            console.log(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
-            (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
         }
         fetchProductos();
     }, [propuestas]);
@@ -193,7 +189,6 @@ export const ListarPropuestas = () => {
         }
         const propuestaActualizada = await response.json();
         if (nuevoEstado == 'aceptado') {
-            console.log(propuesta);
             const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
                 method: 'PUT',
                 headers: {
@@ -258,6 +253,8 @@ export const ListarPropuestas = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
+                            {console.log(propuestas)}
+                            {console.log(productos)}
                             {productos.map((producto, index) => {
                                 const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
@@ -358,7 +355,7 @@ export const ListarPropuestas = () => {
                                                         <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
                                                         :
                                                         <>
-                                                            {console.log(propuestas)}
+                                                            
                                                             {propuestas[index].estado == 'rechazado' ?
                                                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
                                                                 :
