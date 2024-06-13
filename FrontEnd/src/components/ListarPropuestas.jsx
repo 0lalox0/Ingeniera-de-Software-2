@@ -67,9 +67,9 @@ export const ListarPropuestas = () => {
         let data = {};
 
         if (tipoUsuario === 'Deseado') {
-            data = { calificoDeseado: true, estado: "pendiente" };
+            data = { calificoDeseado: true };
         } else if (tipoUsuario === 'Ofrecido') {
-            data = { calificoOfrecido: true, estado: "pendiente" };
+            data = { calificoOfrecido: true };
         }
 
         await fetch(`http://localhost:8000/api/propuestaIntercambio/${idPropuesta}`, {
@@ -395,7 +395,7 @@ export const ListarPropuestas = () => {
                                                                                         </div>
                                                                                     ))}
                                                                                 </form>
-                                                                                <button onClick={(event) => (puntajeElegido, producto.deseado.idUsuario, 'Deseado', propuestas[index]._id)}>Guardar</button>
+                                                                                <button onClick={(event) => sumarPuntos(puntajeElegido, producto.deseado.idUsuario, 'Deseado', propuestas[index]._id)}>Guardar</button>
                                                                             </Modal>
 
                                                                         </>
