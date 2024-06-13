@@ -113,7 +113,7 @@ export const ListarPropuestas = () => {
         const fetchProductos = async () => {
             const products = await Promise.all(propuestas.map(async (propuesta) => {
 
-                if ((propuesta.estado != 'aceptado') && (propuesta.estado != 'realizado')&&(propuesta.estado != 'rechazado')) {
+                if (propuesta.estado == 'pendiente') {
                     const response = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoOfrecido}`);
                     let ofrecido = await response.json();
                     const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
@@ -141,6 +141,8 @@ export const ListarPropuestas = () => {
             console.log(products);
             setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
+            console.log(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
+            (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
         }
         fetchProductos();
     }, [propuestas]);
