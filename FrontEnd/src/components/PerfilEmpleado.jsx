@@ -4,6 +4,7 @@ import compras from '../assets/compras.png';
 import intercambio from '../assets/intercambio.png';
 import { Mantenimiento } from './Mantenimiento';
 import { useNavigate } from 'react-router-dom';
+import CardComponent from './Card';
 
 export const PerfilEmpleado = () => {
     const { role } = useUser();
@@ -34,21 +35,20 @@ export const PerfilEmpleado = () => {
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como empleado de Ferreplus, podrás gestionar los intercambios aceptados por los usuarios.</p>
 
                     <div className='card-container'>
-                        <div className="card" onClick={redirectGestionPropuestas}>
-                            <img src={intercambio} />
-                            <div className="card-content">
-                                <h3> Gestionar intercambios</h3>
-                                <p> Acá vas a poder confirmar o cancelar intercambios aceptados por los usuarios de Ferreplus Intercambios.</p>
-                            </div>
-                        </div>
 
-                        <div className="card">
-                            <img src={compras} />
-                            <div className="card-content">
-                                <h3> Gestionar compras </h3>
-                                <p> Acá vas a poder confirmar o cancelar las compras realizadas por los usuarios de Ferreplus Intercambios.</p>
-                            </div>
-                        </div>
+                        <CardComponent
+                            title='Gestionar intercambios'
+                            paragraph='Acá vas a poder confirmar o cancelar intercambios aceptados por los usuarios de Ferreplus Intercambios.'
+                            imageSrc={intercambio}
+                            onClick={redirectGestionPropuestas}
+                        />
+
+                        <CardComponent
+                            title='Gestionar compras'
+                            paragraph='Acá vas a poder confirmar o cancelar las compras realizadas por los usuarios de Ferreplus Intercambios.'
+                            imageSrc={compras}
+                        />
+
                     </div>
                 </div>
                 :
@@ -57,20 +57,3 @@ export const PerfilEmpleado = () => {
         </>
     )
 }
-/*
-<div className='perfilUsuario'>
-                    <h1 style={{ color: "#242465" }}> Bienvenido {userInfo.nombre}</h1>
-                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus Intercambios.</p>
-                    
-                    <div className='card-container'>
-                        <div className="card" onClick={redirectGestionPropuestas}>
-                            <img src={intercambio} />
-                            <div className="card-content">
-                                <h3> Intercambios agendados</h3>
-                                <p> Acá vas a poder confirmar p cancelar intercambios aceptador por los usuarios de Ferreplus.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-*/

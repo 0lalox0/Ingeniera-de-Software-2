@@ -6,9 +6,11 @@ import intercambio from '../assets/intercambio.png'
 import passIcon from '../assets/pass-icon.png'
 import { Mantenimiento } from './Mantenimiento';
 import { useNavigate } from 'react-router-dom';
+import CardComponent from './Card';
 
 export const PerfilUsuario = () => {
     const { role } = useUser();
+    const navigate = useNavigate();
 
     const [userInfo, setUserInfo] = useState('');
     let e = localStorage.getItem("email");
@@ -24,9 +26,11 @@ export const PerfilUsuario = () => {
             setUserInfo(data);
         })
     }
-    const navigate = useNavigate();
+
     const redirectCambioContraSinEmail = () => navigate('/cambiocontrasinemail');
+    
     const redirectEditarPerfil = () => navigate('/editarPerfil');
+    
     const redirectGestionIntercambios = () => navigate('/perfilUsuario/intercambios');
 
     return (
@@ -37,37 +41,32 @@ export const PerfilUsuario = () => {
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus Intercambios.</p>
                     <div className='card-container'>
 
-                        <div className="card">
-                            <img src={productos} />
-                            <div className="card-content">
-                                <h3> Mis productos</h3>
-                                <p> Acá vas a poder ver toda la información relacionada con tus productos.</p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Mis productos'
+                            paragraph='Acá vas a poder ver toda la información relacionada con tus productos.'
+                            imageSrc={productos}
+                        />
 
-                        <div className="card">
-                            <img src={intercambio} onClick={redirectGestionIntercambios}/>
-                            <div className="card-content">
-                                <h3> Mis intercambios</h3>
-                                <p> Acá vas a poder toda la información relacionada con tus intercambios.</p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Mis intercambios'
+                            paragraph='Acá vas a poder toda la información relacionada con tus intercambios.'
+                            imageSrc={intercambio}
+                            onClick={redirectGestionIntercambios}
+                        />
 
-                        <div className="card" onClick={redirectEditarPerfil}>
-                            <img src={userIcon} />
-                            <div className="card-content">
-                                <h3> Mis datos</h3>
-                                <p> Acá vas a poder ver y modificar tus datos. </p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Mis datos'
+                            paragraph='Acá vas a poder ver y modificar tus datos.'
+                            imageSrc={userIcon}
+                            onClick={redirectEditarPerfil}
+                        />
 
-                        <div className="card" onClick={redirectCambioContraSinEmail}>
-                            <img src={passIcon} alt="" />
-                            <div className="card-content">
-                                <h3> Cambiar contraseña</h3>
-                                <p> Acá vas a poder modificar tu contraseña. </p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Cambiar contraseña'
+                            paragraph='Acá vas a poder modificar tu contraseña.'
+                            imageSrc={passIcon}
+                            onClick={redirectCambioContraSinEmail}
+                        />
 
                     </div>
                 </div>

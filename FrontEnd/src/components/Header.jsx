@@ -45,9 +45,9 @@ export const HeaderFerreplus = () => {
 
       <div className='menuOpciones'>
         <ul>
-          <li onClick={redirectProductos} className={isActive('/productos') || isActive('/') ? 'paginaActiva' : ''}> Catálogo de ventas</li>
           <li onClick={redirectIntercambios} className={isActive('/intercambios') ? 'paginaActiva' : ''}> Intercambios</li>
           <li onClick={redirectSucursales} className={isActive('/sucursales') ? 'paginaActiva' : ''}> Sucursales</li>
+          {/* <li onClick={redirectProductos} className={isActive('/productos') || isActive('/') ? 'paginaActiva' : ''}> Catálogo de ventas</li> */}
         </ul>
       </div>
 

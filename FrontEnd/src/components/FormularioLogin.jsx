@@ -33,7 +33,7 @@ export const FormularioLogin = () => {
             try {
                 await signInWithEmailAndPassword(getAuth(), email, password);
                 localStorage.setItem("email", email);
-                navigate('/productos');
+                navigate('/intercambios');
             } catch (e) {
                 if (e.message.includes("auth/wrong-password"))
                     setError('Mail o contraseña incorrectos.');
