@@ -12,9 +12,28 @@ export const GestionPropuestasAceptadas = () => {
     const [sucursales, setSucursales] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [contador, setContador] = useState(0);
-
+    const [empleado, setEmpleado] = useState(null);
+    const [nombreSucursalEmpleado, setNombreSucursalEmpleado] = useState(null);
     const [userId, setUserId] = useState(null);
     const emailLocal = localStorage.getItem("email");
+
+    useEffect(() => {
+        const fetchEmpleado = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/empleados/${emailLocal}`);
+                const data = await response.json();
+                setEmpleado(data);
+                const responseSucursal = await fetch(`http://localhost:8000/api/sucursales/${data.sucursal}`);
+                const dataSucursal = await responseSucursal.json();
+                setNombreSucursalEmpleado(dataSucursal.nombre);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        fetchEmpleado();
+    }, []);
+
     useEffect(() => {
         const fetchPropuestas = async () => {
             try {
@@ -135,16 +154,16 @@ export const GestionPropuestasAceptadas = () => {
 
     const aceptarIntercambio = async (propuesta, fecha) => {
         //if (chequearFecha(fecha)) {
-            await actualizarEstadoIntercambio(propuesta, 'realizado');
-            window.location.reload();
+        await actualizarEstadoIntercambio(propuesta, 'realizado');
+        window.location.reload();
         //}
     }
 
     const rechazarIntercambio = async (propuesta, fecha) => {
         //if (chequearFecha(fecha)) {
-            await actualizarEstadoIntercambio(propuesta, 'norealizado');
-            window.location.reload();
-       //}
+        await actualizarEstadoIntercambio(propuesta, 'norealizado');
+        window.location.reload();
+        //}
     }
 
     if (contador < 2)
@@ -175,44 +194,45 @@ export const GestionPropuestasAceptadas = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                            {productos.map((producto, index) => {
-                                const fecha = new Date(propuestas[index].fecha);
-                                const fechaString = fecha.toLocaleDateString();
-                                const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
-                                return (
-                                    <tr key={propuestas[index]._id}>
-                                        <td> {producto.ofrecido.titulo} </td>
-                                        <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
-                                        <td> {producto.deseado.titulo} </td>
-                                        <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
-                                        <td> {producto.ofrecido.categoria} </td>
-                                        <td> {sucursales[index]?.nombre} </td>
-                                        <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
-                                        <td> {fechaString} </td>
-                                        <td> {rango} </td>
-                                        <td> {propuestas[index].estado} </td>
-                                        {propuestas[index].estado == 'aceptado' ?
-                                            <td>
-                                                <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
-                                                <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
-                                            </td>
-                                            : <td>
-                                                {propuestas[index].estado == 'realizado' ?
-                                                    <p style={{ color: '#07f717' }}> Intercambio registrado</p>
-                                                    : <>
-                                                        {propuestas[index].estado == 'norealizado' ?
-                                                            <p style={{ color: 'red' }}> Intercambio cancelado</p>
-                                                            :
-                                                            null
+                            {productos.filter((producto, index) => sucursales[index]?.nombre === nombreSucursalEmpleado)
+                                .map((producto, index) => {
+                                    const fecha = new Date(propuestas[index].fecha);
+                                    const fechaString = fecha.toLocaleDateString();
+                                    const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
+                                    return (
+                                        <tr key={propuestas[index]._id}>
+                                            <td> {producto.ofrecido.titulo} </td>
+                                            <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
+                                            <td> {producto.deseado.titulo} </td>
+                                            <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
+                                            <td> {producto.ofrecido.categoria} </td>
+                                            <td> {sucursales[index]?.nombre} </td>
+                                            <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
+                                            <td> {fechaString} </td>
+                                            <td> {rango} </td>
+                                            <td> {propuestas[index].estado} </td>
+                                            {propuestas[index].estado == 'aceptado' ?
+                                                <td>
+                                                    <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
+                                                    <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
+                                                </td>
+                                                : <td>
+                                                    {propuestas[index].estado == 'realizado' ?
+                                                        <p style={{ color: '#07f717' }}> Intercambio registrado</p>
+                                                        : <>
+                                                            {propuestas[index].estado == 'norealizado' ?
+                                                                <p style={{ color: 'red' }}> Intercambio cancelado</p>
+                                                                :
+                                                                null
 
-                                                        }
-                                                    </>
-                                                }
-                                            </td>
-                                        }
-                                    </tr>
-                                );
-                            })}
+                                                            }
+                                                        </>
+                                                    }
+                                                </td>
+                                            }
+                                        </tr>
+                                    );
+                                })}
                         </tbody>
                     </table>
                 </div>
