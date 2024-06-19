@@ -6,6 +6,7 @@ import todos from '../assets/empleados.png';
 import useUser from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
 import { Mantenimiento } from './Mantenimiento';
+import CardComponent from './Card';
 
 export const GestionEmpleados = () => {
     const { role } = useUser();
@@ -19,47 +20,45 @@ export const GestionEmpleados = () => {
     return (
         <>
             {role === 'admin' ?
-                <div className='perfilUsuario'>
-                    <h1 style={{ color: "#242465" }}> Administración de Empleados de Ferreplus Intercambios</h1>
-                    <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar a todos los empleados de Ferreplus Intercambios.</p>
+                <>
+                    <div className='perfilUsuario'>
+                        <h1 style={{ color: "#242465" }}> Administración de Empleados de Ferreplus Intercambios</h1>
+                        <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar a todos los empleados de Ferreplus Intercambios.</p>
+                    </div>
 
-                    <div className='card-container' id='cardAdministrador' >
-                        
-                        <div className="card" onClick={redirectAgregarEmpleado}>
-                            <img src={agregar} />
-                            <div className="card-content">
-                                <h3> Agregar empleado</h3>
-                                <p> Acá vas a poder agregar a un empleado al equipo de Ferreplus.</p>
-                            </div>
-                        </div>
+                    <div className='card-container' >
 
-                        <div className="card" onClick={redirectEliminarEmpleado}>
-                            <img src={eliminar} />
-                            <div className="card-content">
-                                <h3> Eliminar empleado</h3>
-                                <p> Acá vas a poder eliminar un empleado del equipo de Ferreplus.</p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Agregar empleado'
+                            paragraph='Acá vas a poder agregar a un empleado al equipo de Ferreplus.'
+                            imageSrc={agregar}
+                            onClick={redirectAgregarEmpleado}
+                        />
 
-                        <div className="card" onClick={redirectAsignarSucursal}>
-                            <img src={mover} />
-                            <div className="card-content">
-                                <h3> Asignar sucursal </h3>
-                                <p> Acá vas a poder asignarle una sucursal a un empleado de Ferreplus.</p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Eliminar empleado'
+                            paragraph='Acá vas a poder eliminar un empleado del equipo de Ferreplus.'
+                            imageSrc={eliminar}
+                            onClick={redirectEliminarEmpleado}
+                        />
 
-                        <div className="card" onClick={redirectListarEmpleados}>
-                            <img src={todos} />
-                            <div className="card-content">
-                                <h3> Listar empleados </h3>
-                                <p> Acá vas a poder ver el listado de los empleados de Ferreplus.</p>
-                            </div>
-                        </div>
+                        <CardComponent 
+                            title='Asignar sucursal'
+                            paragraph='Acá vas a poder asignarle una sucursal a un empleado de Ferreplus.'
+                            imageSrc={mover}
+                            onClick={redirectAsignarSucursal}
+                        />
+
+                        <CardComponent 
+                            title='Listar empleados'
+                            paragraph='Acá vas a poder ver el listado de los empleados de Ferreplus.'
+                            imageSrc={todos}
+                            onClick={redirectListarEmpleados}
+                        />
 
                     </div>
                     <p onClick={redirectAdmin} className='textoRedireccion'> Volver al panel administrativo</p>
-                </div>
+                </>
                 :
                 <Mantenimiento> </Mantenimiento>
             }

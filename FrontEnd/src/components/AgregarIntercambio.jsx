@@ -313,25 +313,15 @@ export const AgregarIntercambio = () => {
                     <p id='avisoSemana' ref={refDiaSemana}> Día de la semana a realizar el intercambio: </p>
                     <div className="mb-3">
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value='lunes' onChange={e => setDiaSemana(e.target.value)} />
-                        <label className="form-check-label" htmlFor="flexRadioDefault1">
-                            Lunes
-                        </label>
+                        <label className="form-check-label" htmlFor="flexRadioDefault1"> Lunes </label>
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value='martes' onChange={e => setDiaSemana(e.target.value)} />
-                        <label className="form-check-label" htmlFor="flexRadioDefault2">
-                            Martes
-                        </label>
+                        <label className="form-check-label" htmlFor="flexRadioDefault2"> Martes </label>
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value='miércoles' onChange={e => setDiaSemana(e.target.value)} />
-                        <label className="form-check-label" htmlFor="flexRadioDefault3">
-                            Miércoles
-                        </label>
+                        <label className="form-check-label" htmlFor="flexRadioDefault3"> Miércoles </label>
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" value='jueves' onChange={e => setDiaSemana(e.target.value)} />
-                        <label className="form-check-label" htmlFor="flexRadioDefault4">
-                            Jueves
-                        </label>
+                        <label className="form-check-label" htmlFor="flexRadioDefault4"> Jueves </label>
                         <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" value='viernes' onChange={e => setDiaSemana(e.target.value)} />
-                        <label className="form-check-label" htmlFor="flexRadioDefault5">
-                            Viernes
-                        </label>
+                        <label className="form-check-label" htmlFor="flexRadioDefault5"> Viernes </label>
                     </div>
 
                     <div className="mb-3">

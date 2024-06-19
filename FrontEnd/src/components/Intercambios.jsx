@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useUser from "../hooks/useUser";
 import { useNavigate } from 'react-router-dom';
+import { CardIntercambio } from './CardIntercambio';
 
 export const Intercambios = () => {
     const { role } = useUser();
@@ -66,11 +67,7 @@ export const Intercambios = () => {
             <div className='titulo-intercambios'>
                 <h1>Productos para intercambiar</h1>
                 <>
-                    {role === 'cliente' ?
-                        <>
-                            <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button>
-                        </>
-                        : <> </>}
+                    {role === 'cliente' ? <> <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button></> : <> </>}
                 </>
 
                 <h3 style={{ color: "#242465" }}>Filtrado por categoría: </h3>
@@ -114,22 +111,15 @@ export const Intercambios = () => {
                     if (intercambio.estado !== 'libre')
                         return null;
                     return (
-                        <div className="card mb-3" key={intercambio._id} onClick={() => redirectProducto(intercambio._id)}>
-                            <div className="row g-0">
-                                <div className="col-md-4">
-                                    <img src={intercambio.urlFotos[0]} className="img-fluid rounded-start" />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">{intercambio.titulo}</h5>
-                                        <p className="card-text"> Sucursal del intercambio: {intercambio.nombreSucursal}</p>
-                                        <p className="card-text"> Categoría: {intercambio.categoria}.</p>
-                                        <p style={{ color: '#439ac8' }}> Hacé click para obtener más información.</p>
-                                        <p className="card-text"><small className="text-body-secondary">Publicado por: {intercambio.nombre} {intercambio.apellido}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <CardIntercambio
+                            id={intercambio._id}
+                            imageSrc={intercambio.urlFotos[0]}
+                            titulo={intercambio.titulo}
+                            sucursal={intercambio.nombreSucursal}
+                            categoria={intercambio.categoria}
+                            nombre={intercambio.nombre}
+                            apellido={intercambio.apellido}
+                        />
                     )
                 })}
                 <p style={{ display: mensajeVisible ? 'block' : 'none' }} className='errorContainer'> No hay productos para intercambiar publicados que coincidan.</p>

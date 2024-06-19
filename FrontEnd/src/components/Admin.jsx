@@ -5,6 +5,7 @@ import sucursales from '../assets/sucursales.png';
 import estadisticas from '../assets/estadisticas.png';
 import empleados from '../assets/gestionar-empleados.png';
 import { useNavigate } from 'react-router-dom';
+import CardComponent from './Card';
 
 export const Admin = () => {
   const { role } = useUser();
@@ -15,39 +16,38 @@ export const Admin = () => {
   return (
     <>
       {role === 'admin' ?
-        <div className='perfilUsuario'>
-          <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
-          <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus Intercambios.</p>
-
+        <>
+          <div className='perfilUsuario'>
+            <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
+            <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus Intercambios.</p>
+          </div>
+          
           <div className='card-container'>
-            <div className="card" onClick={redirectSucursales}>
-              <img src={sucursales} alt="" />
-              <div className="card-content">
-                <h3> Gestionar sucursales</h3>
-                <p> Acá vas a poder gestionar las sucursales de Ferreplus.</p>
-              </div>
-            </div>
 
-            <div className="card">
-              <img src={estadisticas} alt="" />
-              <div className="card-content">
-                <h3> Visualizar estadísticas</h3>
-                <p> Acá vas a poder todas las estadísticas de Ferreplus.</p>
-              </div>
-            </div>
+            <CardComponent
+              title='Gestionar sucursales'
+              paragraph='Acá vas a poder gestionar las sucursales de Ferreplus.'
+              imageSrc={sucursales}
+              onClick={redirectSucursales}
+            />
 
-            <div className="card" onClick={redirectEmpleados}>
-              <img src={empleados} alt="" />
-              <div className="card-content">
-                <h3> Gestionar empleados</h3>
-                <p> Acá vas a poder gestionar a los empleados de Ferreplus.</p>
-              </div>
-            </div>
+            <CardComponent
+              title='Visualizar estadísticas'
+              paragraph='Acá vas a poder todas las estadísticas de Ferreplus.'
+              imageSrc={estadisticas}
+            />
+
+            <CardComponent
+              title='Gestionar empleados'
+              paragraph='Acá vas a poder gestionar a los empleados de Ferreplus.'
+              imageSrc={empleados}
+              onClick={redirectEmpleados}
+            />
 
           </div>
-        </div>
-        :
-        <Mantenimiento> </Mantenimiento>
+
+        </>
+        : <Mantenimiento> </Mantenimiento>
       }
     </>
   )

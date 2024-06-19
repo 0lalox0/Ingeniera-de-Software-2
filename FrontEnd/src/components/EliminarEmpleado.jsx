@@ -1,6 +1,6 @@
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const EliminarEmpleado = () => {
@@ -12,13 +12,13 @@ export const EliminarEmpleado = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState('');
+    const refMensaje = useRef(null);
 
     const redirectEmpleados = () => navigate('/admin/empleados');
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            registrarEmpleado();
-        }
+        if (event.key === 'Enter')
+            bajaEmpleado();
     };
 
     useEffect(() => {
@@ -31,7 +31,6 @@ export const EliminarEmpleado = () => {
                 console.error('Error:', error);
             }
         };
-
         fetchSucursales();
     }, []);
 
@@ -44,7 +43,6 @@ export const EliminarEmpleado = () => {
                 setEmpleados(empleadosActivos);
             }
         };
-    
         fetchEmpleados();
     }, [sucursal]);
 
@@ -59,18 +57,17 @@ export const EliminarEmpleado = () => {
                     activo: false
                 }),
             });
-
-            if (!response.ok) {
+            if (!response.ok)
                 throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
             const data = await response.json();
             setMessage('Empleado dado de baja con éxito!');
+            refMensaje.current.style.color = '#07f717';
             setError('');
             return data;
         } catch (error) {
             setMessage('');
             setError(error.message);
+            refMensaje.current.style.color = 'red';
         }
     }
 
@@ -84,8 +81,8 @@ export const EliminarEmpleado = () => {
 
                     <div className="mb-3">
                         <label htmlFor="sucursal" className="form-label">Sucursal:</label>
-                        <select className="form-control" id="sucursal" value={sucursal} onChange={e => setSucursal(e.target.value)}>
-                            <option value="">Seleccione una sucursal</option>
+                        <select className="form-select" id="sucursal" value={sucursal} onChange={e => setSucursal(e.target.value)}>
+                            <option value="" disabled>Seleccione una sucursal</option>
                             {sucursales.map((sucursal, index) => (
                                 <option key={sucursal._id} value={sucursal._id}>{sucursal.nombre}</option>
                             ))}
@@ -94,8 +91,8 @@ export const EliminarEmpleado = () => {
 
                     <div className="mb-3">
                         <label htmlFor="empleado" className="form-label">Empleado:</label>
-                        <select className="form-control" id="empleado" value={empleadoSeleccionado} onChange={e => setEmpleadoSeleccionado(e.target.value)}>
-                            <option value="">Seleccione un empleado</option>
+                        <select className="form-select" id="empleado" value={empleadoSeleccionado} onChange={e => setEmpleadoSeleccionado(e.target.value)}>
+                            <option value="" disabled>Seleccione un empleado</option>
                             {empleados.map((empleado, index) => (
                                 <option key={empleado._id} value={empleado.email}>
                                     {empleado.nombre} {empleado.apellido} - {empleado.dni}
@@ -105,7 +102,7 @@ export const EliminarEmpleado = () => {
                     </div>
 
                     <button className="btn btn-primary" onClick={() => bajaEmpleado(empleadoSeleccionado)}>Dar de baja</button>
-                    <p style={{ color: message === 'Empleado dado de baja con éxito!' ? 'green' : 'red' }}> {message} </p>
+                    <p ref={refMensaje}> {message} </p>
 
                     {error && <p className='errorContainer'>{error}</p>}
                     <p className='textoRedireccion' onClick={redirectEmpleados}> Volver a la gestión de empleados </p>

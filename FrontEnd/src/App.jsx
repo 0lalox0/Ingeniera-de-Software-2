@@ -35,10 +35,10 @@ function App() {
     <>
       <HeaderFerreplus></HeaderFerreplus>
       <Routes>
-        <Route path='/' element={<Productos />}></Route>
+        <Route path='/' element={<Intercambios />}></Route>
         <Route path='/inicioSesion' element={<FormularioLogin />}></Route>
         <Route path='/registrarse' element={<FormularioRegistro />}></Route>
-        <Route path='/productos' element={<Productos />} />
+        {/* <Route path='/productos' element={<Productos />} /> */}
         <Route path='/cambiocontra' element={<CambioContra />}></Route>
         <Route path='/cambiocontrasinemail' element={<CambioContraSinEmail />}></Route>
         <Route path='/sucursales' element={<Sucursales />}> </Route>
