@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 export const CardIntercambio = ({ id, imageSrc, titulo, sucursal, categoria, nombre, apellido }) => {
     const navigate = useNavigate();
+
     const redirectProducto = (idProducto) => navigate(`/intercambios/${idProducto}`);
 
     return (
-        <div className="card mb-3" key={id} onClick={() => redirectProducto(id)}>
+        <div className="card mb-3" onClick={() => redirectProducto(id)}>
             <div className="row g-0">
                 <div className="col-md-4">
                     <img src={imageSrc} className="img-fluid rounded-start" />

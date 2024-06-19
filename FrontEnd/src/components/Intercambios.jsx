@@ -12,7 +12,7 @@ export const Intercambios = () => {
     const [categoria, setCategoria] = useState('todas');
     const [mensajeVisible, setMensajeVisible] = useState(false);
     const [sucursal, setSucursal] = useState('todas');
-    const [usuarios, setUsuarios] = useState('todas');
+    const [usuarios, setUsuarios] = useState(null);
 
     useEffect(() => {
         fetch('http://localhost:8000/api/sucursales')
@@ -31,8 +31,6 @@ export const Intercambios = () => {
     }, []);
 
     const redirectAgregar = () => navigate('/perfilusuario/agregarintercambio');
-
-    const redirectProducto = (idProducto) => navigate(`/intercambios/${idProducto}`);
 
     const aplicarFiltros = () => {
         let intercambiosFiltrados = todos;
@@ -57,7 +55,7 @@ export const Intercambios = () => {
     useEffect(() => {
         fetch('http://localhost:8000/api/prodintercambios')
             .then(response => response.json())
-            .then(data => { setIntercambios(data); setTodos(data.filter(i => i.estado == 'libre')) })
+            .then(data => { setIntercambios(data.filter(i => i.estado === 'libre')); setTodos(data.filter(i => i.estado == 'libre')) })
             .catch(error => console.error('Error:', error));
     }, []);
 
@@ -108,10 +106,9 @@ export const Intercambios = () => {
 
             <div className="intercambios">
                 {intercambios.map((intercambio) => {
-                    if (intercambio.estado !== 'libre')
-                        return null;
                     return (
                         <CardIntercambio
+                            key={intercambio._id}
                             id={intercambio._id}
                             imageSrc={intercambio.urlFotos[0]}
                             titulo={intercambio.titulo}

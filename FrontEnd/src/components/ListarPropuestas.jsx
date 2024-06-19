@@ -17,7 +17,7 @@ export const ListarPropuestas = () => {
     const [propuestasI, setPropuestasI] = useState([]);
     const [userId, setUserId] = useState(null);
     const emailLocal = localStorage.getItem("email");
-    const [puntajeElegido, setPuntajeElegido] = useState("");
+    const [puntajeElegido, setPuntajeElegido] = useState(0);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [rating, setRating] = useState('');
     
@@ -116,10 +116,9 @@ export const ListarPropuestas = () => {
                     };
                 }
             }));
-            let e = localStorage.getItem("email");
-            setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
+            setProductos(products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === emailLocal || o.deseado && o.deseado.idUsuario === emailLocal) &&
                 (o.ofrecido.estado == 'libre') && (o.deseado.estado == 'libre')));
-            let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === e || o.deseado && o.deseado.idUsuario === e) &&
+            let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === emailLocal || o.deseado && o.deseado.idUsuario === emailLocal) &&
                 (o.ofrecido.estado == 'ocupado') || (o.deseado.estado == 'ocupado'));
             let propuestasPendientes = propuestasI.filter(p => p.estado === 'pendiente');
             if (productosOcupados.length > 0) {
@@ -310,7 +309,7 @@ export const ListarPropuestas = () => {
                                                                                                 </div>
                                                                                             ))}
                                                                                         </form>
-                                                                                        <button onClick={(event) => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario, 'Ofrecido', propuestas[index]._id)}>Guardar</button>
+                                                                                        <button onClick={() => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario, 'Ofrecido', propuestas[index]._id)}>Guardar</button>
                                                                                     </Modal>
                                                                                 </>
                                                                             :
