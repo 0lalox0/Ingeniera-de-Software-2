@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
-/* meMandaron = {producto.deseado.idUsuario == localStorage.getItem("email")}
+/* 
+meMandaron = {producto.deseado.idUsuario == localStorage.getItem("email")}
 propuesta = {propuestas[index]}
 realizarIntercambio = {realizarIntercambio}
 idUsuarioOfrecido = {producto.ofrecido.idUsuario}
@@ -34,6 +37,7 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
         await updatePropuestaIntercambio(tipoUsuario, idPropuesta);
     };
 
+    Modal.setAppElement('#root');
 
     return (
         <td>
@@ -42,8 +46,8 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
                     {propuesta.estado == 'pendiente' ?
                         <>
                             <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
-                            <button onClick={() => realizarIntercambio(propuesta, 'aceptado')} className="btn btn-success"> Aceptar Intercambio</button>
-                            <button onClick={() => realizarIntercambio(propuesta, 'rechazado')} className="btn btn-danger"> Rechazar Intercambio</button>
+                            <button onClick={() => realizarIntercambio(propuesta, 'aceptado')} className="btn btn-success" style={{margin: '5px'}}> Aceptar Intercambio</button>
+                            <button onClick={() => realizarIntercambio(propuesta, 'rechazado')} className="btn btn-danger" style={{margin: '5px'}}> Rechazar Intercambio</button>
                         </>
                         :
                         <>
@@ -95,7 +99,7 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
                                                                 </div>
                                                             ))}
                                                         </form>
-                                                        <button onClick={() => sumarPuntos(puntajeElegido, idUsuarioOfrecido, 'Ofrecido', propuesta._id)}>Guardar</button>
+                                                        <button onClick={() => sumarPuntos(puntajeElegido, idUsuarioOfrecido, 'Ofrecido', propuesta._id)} className='btn btn-warning'>Guardar</button>
                                                     </Modal>
                                                 </>
                                                 :
@@ -161,7 +165,7 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
                                                         </div>
                                                     ))}
                                                 </form>
-                                                <button onClick={(event) => sumarPuntos(puntajeElegido, producto.deseado.idUsuario, 'Deseado', propuesta._id)}>Guardar</button>
+                                                <button onClick={(event) => sumarPuntos(puntajeElegido, idUsuarioDeseado, 'Deseado', propuesta._id)} className='btn btn-warning'>Guardar</button>
                                             </Modal>
 
                                         </>

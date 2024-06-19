@@ -4,6 +4,7 @@ import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
 import Modal from 'react-modal';
 import { Mantenimiento } from './Mantenimiento';
+import { InformacionPropuesta } from './InformacionPropuesta';
 Modal.setAppElement('#root');
 
 export const ListarPropuestas = () => {
@@ -20,7 +21,7 @@ export const ListarPropuestas = () => {
     const [puntajeElegido, setPuntajeElegido] = useState(0);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [rating, setRating] = useState('');
-    
+
     const openModal = () => setModalIsOpen(true);
 
     const closeModal = () => setModalIsOpen(false);
@@ -32,7 +33,7 @@ export const ListarPropuestas = () => {
         let data = await response.json();
         if (data.puntos === null)
             data.puntos = puntaje;
-        else 
+        else
             data.puntos = parseFloat(data.puntos) + parseFloat(puntaje);
         if (data.cantidadVotos === null)
             data.cantidadVotos = 1;
@@ -250,153 +251,15 @@ export const ListarPropuestas = () => {
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
                                         <td> {propuestas[index].estado} </td>
-                                        <td>
-                                            {producto.deseado.idUsuario == localStorage.getItem("email") ?
-                                                <>
-                                                    {propuestas[index].estado == 'pendiente' ?
-                                                        <>
-                                                            <p style={{ color: '#439ac8' }}> ¿Te interesa este intercambio? ¡Aceptalo! </p>
-                                                            <button onClick={() => realizarIntercambio(propuestas[index], 'aceptado')} id='botonFecha' className="btn btn-success"> Aceptar Intercambio</button>
-                                                            <button onClick={() => realizarIntercambio(propuestas[index], 'rechazado')} id='botonFecha' className="btn btn-danger"> Rechazar Intercambio</button>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            {propuestas[index].estado == 'aceptado' ?
-                                                                <p style={{ color: '#07f717' }}> ¡Has aceptado este intercambio!</p>
-                                                                :
-                                                                <>
-                                                                    {propuestas[index].estado == 'rechazado' ?
-                                                                        <p style={{ color: 'red' }}> Has rechazado esta propuesta de intercambio.</p>
-                                                                        :
-                                                                        <>
-                                                                            {propuestas[index].estado == 'realizado' ?
-                                                                                <>
-                                                                                    <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                                    {!propuestas[index].calificoOfrecido ? (
-                                                                                        <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
-                                                                                    ) : (
-                                                                                        <p style={{ color: '#fcba03' }}> ¡Has calificado al usuario!</p>
-                                                                                    )}
-                                                                                    <Modal
-                                                                                        isOpen={modalIsOpen}
-                                                                                        onRequestClose={closeModal}
-                                                                                        contentLabel="Valorar usuario"
-                                                                                        style={{
-                                                                                            content: {
-                                                                                                width: '150px',
-                                                                                                height: '200px',
-                                                                                                margin: 'auto',
-                                                                                                overflow: 'hidden',
-                                                                                                position: 'fixed',
-                                                                                                top: '50%',
-                                                                                                left: '50%',
-                                                                                                transform: 'translate(30%, -120%)'
-                                                                                            },
-                                                                                        }}
-                                                                                    >
-                                                                                        <form>
-                                                                                            {['1', '2', '3', '4', '5'].map((value) => (
-                                                                                                <div key={value}>
-                                                                                                    <input
-                                                                                                        type="radio"
-                                                                                                        id={`rating-${value}`}
-                                                                                                        name="rating"
-                                                                                                        value={value}
-                                                                                                        checked={rating === value}
-                                                                                                        onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
-                                                                                                    />
-                                                                                                    <label htmlFor={`rating-${value}`}>{value}</label>
-                                                                                                </div>
-                                                                                            ))}
-                                                                                        </form>
-                                                                                        <button onClick={() => sumarPuntos(puntajeElegido, producto.ofrecido.idUsuario, 'Ofrecido', propuestas[index]._id)}>Guardar</button>
-                                                                                    </Modal>
-                                                                                </>
-                                                                            :
-                                                                                <>
-                                                                                    {propuestas[index].estado == 'norealizado' ? <p style={{ color: 'red' }}> Intercambio cancelado.</p> : null }
-                                                                                </>
-                                                                        }
-                                                                        </>
-                                                                    }
-                                                                </>
-                                                            }
-                                                        </>
-                                                    }
-                                                </>
-                                            :
-                                                <>
-                                                    <p style={{ color: '#439ac8' }}> Has solicitado este intercambio. </p>
-                                                    {propuestas[index].estado == 'aceptado' ?
-                                                        <p style={{ color: '#07f717' }}> ¡Han aceptado este intercambio!</p>
-                                                        :
-                                                        <>
-                                                            {propuestas[index].estado == 'rechazado' ?
-                                                                <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
-                                                                :
-                                                                <>
-                                                                    {propuestas[index].estado == 'realizado' ?
-                                                                        <>
-                                                                            <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                                                            {!propuestas[index].calificoDeseado ? (
-                                                                                <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
-                                                                            ) : (
-                                                                                <p style={{ color: '#fcba03' }}>¡Has calificado al usuario!</p>
-                                                                            )}
-                                                                            <Modal
-                                                                                isOpen={modalIsOpen}
-                                                                                onRequestClose={closeModal}
-                                                                                contentLabel="Valorar usuario"
-                                                                                style={{
-                                                                                    content: {
-                                                                                        width: '150px',
-                                                                                        height: '200px',
-                                                                                        margin: 'auto',
-                                                                                        overflow: 'hidden',
-                                                                                        position: 'fixed',
-                                                                                        top: '50%',
-                                                                                        left: '50%',
-                                                                                        transform: 'translate(30%, -120%)'
-                                                                                    },
-                                                                                }}
-                                                                            >
-                                                                                <form>
-                                                                                    {['1', '2', '3', '4', '5'].map((value) => (
-                                                                                        <div key={value}>
-                                                                                            <input
-                                                                                                type="radio"
-                                                                                                id={`rating-${value}`}
-                                                                                                name="rating"
-                                                                                                value={value}
-                                                                                                checked={rating === value}
-                                                                                                onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
-                                                                                            />
-                                                                                            <label htmlFor={`rating-${value}`}>{value}</label>
-                                                                                        </div>
-                                                                                    ))}
-                                                                                </form>
-                                                                                <button onClick={(event) => sumarPuntos(puntajeElegido, producto.deseado.idUsuario, 'Deseado', propuestas[index]._id)}>Guardar</button>
-                                                                            </Modal>
-
-                                                                        </>
-                                                                        :
-                                                                        <>
-                                                                            {propuestas[index].estado == 'norealizado' ?
-                                                                                <p style={{ color: 'red' }}> Intercambio cancelado.</p>
-                                                                                :
-                                                                                <>
-                                                                                    <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>
-                                                                                </>
-                                                                            }
-                                                                        </>
-                                                                    }
-                                                                </>
-                                                            }
-                                                        </>
-                                                    }
-                                                </>
-                                            }
-                                        </td>
+                                        <InformacionPropuesta
+                                            meMandaron={producto.deseado.idUsuario == localStorage.getItem("email")}
+                                            propuesta={propuestas[index]}
+                                            realizarIntercambio={realizarIntercambio}
+                                            idUsuarioOfrecido={producto.ofrecido.idUsuario}
+                                            updateData={updateData}
+                                            updatePropuestaIntercambio={updatePropuestaIntercambio}
+                                            idUsuarioDeseado={producto.deseado.idUsuario}
+                                        />
                                     </tr>
                                 );
                             })}

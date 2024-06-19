@@ -213,8 +213,8 @@ export const GestionPropuestasAceptadas = () => {
                                             <td> {propuestas[index].estado} </td>
                                             {propuestas[index].estado == 'aceptado' ?
                                                 <td>
-                                                    <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success botonEmpleado"> Confirmar Intercambio</button>
-                                                    <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger botonEmpleado"> Cancelar Intercambio</button>
+                                                    <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success" style={{margin: '5px'}}> Confirmar Intercambio</button>
+                                                    <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger" style={{margin: '5px'}}> Cancelar Intercambio</button>
                                                 </td>
                                                 : <td>
                                                     {propuestas[index].estado == 'realizado' ?
