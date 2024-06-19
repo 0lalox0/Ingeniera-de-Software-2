@@ -11,7 +11,7 @@ export const GestionPropuestasAceptadas = () => {
     const [productos, setProductos] = useState([]);
     const [sucursales, setSucursales] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [contador, setContador] = useState(0);
+    const [contador, setContador] = useState(true);
     const [empleado, setEmpleado] = useState(null);
     const [nombreSucursalEmpleado, setNombreSucursalEmpleado] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -49,7 +49,7 @@ export const GestionPropuestasAceptadas = () => {
                     }
                 }));
                 setPropuestas(propuestasFiltradas.filter(Boolean));
-                setContador(contador + 1);
+                setContador(false);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -66,7 +66,6 @@ export const GestionPropuestasAceptadas = () => {
                 let ofrecido = await response.json();
                 const res = await fetch(`http://localhost:8000/api/prodintercambios/${propuesta.productoDeseado}`);
                 let deseado = await res.json();
-                setContador(contador + 1);
                 return {
                     ofrecido: ofrecido,
                     deseado: deseado
@@ -84,7 +83,6 @@ export const GestionPropuestasAceptadas = () => {
             const branches = await Promise.all(productos.map(async (producto) => {
                 const response = await fetch(`http://localhost:8000/api/sucursales/${producto.deseado.sucursal}`);
                 const data = await response.json();
-                setContador(contador + 1);
                 return data;
             }));
             setSucursales(branches);
@@ -97,7 +95,6 @@ export const GestionPropuestasAceptadas = () => {
             const users = await Promise.all(productos.map(async (producto) => {
                 const response = await fetch(`http://localhost:8000/api/users/${producto.ofrecido.idUsuario}`);
                 const data = await response.json();
-                setContador(contador + 1);
                 return data;
             }));
             setUsuarios(users);
@@ -166,7 +163,7 @@ export const GestionPropuestasAceptadas = () => {
         //}
     }
 
-    if (contador < 2)
+    if (contador)
         return <img src={cargando} width='10%' height='10%' />
 
     return (
