@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import sucursales from '../assets/sucursales.png';
@@ -10,8 +10,12 @@ import CardComponent from './Card';
 export const Admin = () => {
   const { role } = useUser();
   const navigate = useNavigate();
+
   const redirectSucursales = () => navigate('/admin/sucursales');
+
   const redirectEmpleados = () => navigate('/admin/empleados');
+
+  const redirectEstadisticas = () => navigate('/admin/estadisticas');
 
   return (
     <>
@@ -35,6 +39,7 @@ export const Admin = () => {
               title='Visualizar estadísticas'
               paragraph='Acá vas a poder todas las estadísticas de Ferreplus.'
               imageSrc={estadisticas}
+              onClick={redirectEstadisticas}
             />
 
             <CardComponent
@@ -45,7 +50,6 @@ export const Admin = () => {
             />
 
           </div>
-
         </>
         : <Mantenimiento> </Mantenimiento>
       }

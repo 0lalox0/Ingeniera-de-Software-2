@@ -3,7 +3,6 @@ import { HeaderFerreplus } from './components/Header'
 import { Route, Routes } from 'react-router-dom'
 import { FormularioLogin } from './components/FormularioLogin'
 import { FormularioRegistro } from './components/FormularioRegistro'
-import { Productos } from './components/Productos'
 import { CambioContra } from './components/CambioContra'
 import { CambioContraSinEmail } from './components/CambioContraSinEmail'
 import { Sucursales } from './components/Sucursales'
@@ -28,6 +27,7 @@ import { ElegirProducto } from './components/ElegirProducto'
 import { ListarPropuestas } from './components/ListarPropuestas'
 import { PerfilEmpleado } from './components/PerfilEmpleado'
 import { GestionPropuestasAceptadas } from './components/GestionPropuestasAceptadas'
+import { GestionEstadisticas } from './components/GestionEstadisticas'
 
 function App() {
 
@@ -38,12 +38,10 @@ function App() {
         <Route path='/' element={<Intercambios />}></Route>
         <Route path='/inicioSesion' element={<FormularioLogin />}></Route>
         <Route path='/registrarse' element={<FormularioRegistro />}></Route>
-        {/* <Route path='/productos' element={<Productos />} /> */}
         <Route path='/cambiocontra' element={<CambioContra />}></Route>
         <Route path='/cambiocontrasinemail' element={<CambioContraSinEmail />}></Route>
         <Route path='/sucursales' element={<Sucursales />}> </Route>
         <Route path='/intercambios' element={<Intercambios />}> </Route>
-        <Route path='/perfilUsuario' element={<PerfilUsuario />}> </Route>
         <Route path='/admin' element={<Admin />}> </Route>
         <Route path='/admin/sucursales' element={<GestionSucursales />}> </Route>
         <Route path='/admin/agregarSucursal' element={<AgregarSucursal />}></Route>
@@ -52,9 +50,11 @@ function App() {
         <Route path='/admin/eliminarEmpleado' element={<EliminarEmpleado />}> </Route>
         <Route path='/admin/asignarSucursal' element={<AsignarSucursal />}> </Route>
         <Route path='/admin/listarEmpleados' element={<ListarEmpleados />}> </Route>
+        <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
+        <Route path='/admin/estadisticas' element={<GestionEstadisticas />}> </Route>
         <Route path='/SubirImagen' element={<SubirImagen />}> </Route>
         <Route path='/editarPerfil' element={<EditarPerfil />}> </Route>
-        <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
+        <Route path='/perfilUsuario' element={<PerfilUsuario />}> </Route>
         <Route path='/perfilUsuario/intercambios' element={<GestionIntercambios />}></Route>
         <Route path='/perfilUsuario/agregarIntercambio' element={<AgregarIntercambio />}> </Route>
         <Route path='/perfilUsuario/eliminarIntercambio' element={<EliminarIntercambio />}> </Route>

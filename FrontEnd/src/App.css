@@ -20,12 +20,13 @@ header {
   height: 22%;
   background-color: #ebf1f8;
   top: 0%;
-  position: absolute;
+  position: fixed;
   left: 0%;
   right: 0%;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 #logoFerreplus {

@@ -1,6 +1,5 @@
 import useUser from '../hooks/useUser';
 import React, { useEffect, useState } from 'react';
-import compras from '../assets/compras.png';
 import intercambio from '../assets/intercambio.png';
 import { Mantenimiento } from './Mantenimiento';
 import { useNavigate } from 'react-router-dom';
@@ -41,12 +40,6 @@ export const PerfilEmpleado = () => {
                             paragraph='Acá vas a poder confirmar o cancelar intercambios aceptados por los usuarios de Ferreplus Intercambios.'
                             imageSrc={intercambio}
                             onClick={redirectGestionPropuestas}
-                        />
-
-                        <CardComponent
-                            title='Gestionar compras'
-                            paragraph='Acá vas a poder confirmar o cancelar las compras realizadas por los usuarios de Ferreplus Intercambios.'
-                            imageSrc={compras}
                         />
 
                     </div>

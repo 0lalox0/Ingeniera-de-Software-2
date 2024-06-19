@@ -12,11 +12,15 @@ export const GestionEmpleados = () => {
     const { role } = useUser();
     const navigate = useNavigate();
     const redirectAdmin = () => navigate('/admin');
-    const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
-    const redirectEliminarEmpleado = () => navigate('/admin/eliminarEmpleado');
-    const redirectAsignarSucursal = () => navigate('/admin/asignarSucursal');
-    const redirectListarEmpleados = () => navigate('/admin/listarEmpleados');
 
+    const redirectAgregarEmpleado = () => navigate('/admin/agregarEmpleado');
+
+    const redirectEliminarEmpleado = () => navigate('/admin/eliminarEmpleado');
+
+    const redirectAsignarSucursal = () => navigate('/admin/asignarSucursal');
+
+    const redirectListarEmpleados = () => navigate('/admin/listarEmpleados');
+    
     return (
         <>
             {role === 'admin' ?

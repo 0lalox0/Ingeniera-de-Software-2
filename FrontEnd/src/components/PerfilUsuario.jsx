@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useUser from '../hooks/useUser';
 import userIcon from '../assets/user-icon.png'
-import productos from '../assets/productos.png'
 import intercambio from '../assets/intercambio.png'
 import passIcon from '../assets/pass-icon.png'
 import { Mantenimiento } from './Mantenimiento';
@@ -40,12 +39,6 @@ export const PerfilUsuario = () => {
                     <h1 style={{ color: "#242465" }}> Bienvenido a tu perfil, {userInfo.name}</h1>
                     <p id='textoInfoPerfil' style={{ color: "#242465" }}> Acá podrás gestionar toda tu información relacionada a Ferreplus Intercambios.</p>
                     <div className='card-container'>
-
-                        <CardComponent 
-                            title='Mis productos'
-                            paragraph='Acá vas a poder ver toda la información relacionada con tus productos.'
-                            imageSrc={productos}
-                        />
 
                         <CardComponent 
                             title='Mis intercambios'
