@@ -53,6 +53,13 @@ router.get('/filtrarPropuestaIntercambios', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
+//obtener todos los intercambios de una sucursal
+router.get('/propuestas/:id', (req, res) => {
+    const { id } = req.params
+    IntercambioSchema.find({nombreSucursal: id})
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
 //config de seguridad
 router.use((req, res, next) => {  //todo esto
     res.setHeader('Access-Control-Allow-Origin', '*');
