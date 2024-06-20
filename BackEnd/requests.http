@@ -85,6 +85,12 @@ DELETE http://localhost:8000/api/eliminarTodosLosProductos HTTP/1.1
 ###
 GET http://localhost:8000/api/filtrarProdIntercambios?sucursal=664a2a4b7b736ead28436ab5 HTTP/1.1
 
+### 
+GET http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=Sucursal%20Los%20Horneros%20 HTTP/1.1
+
+###
+GET http://localhost:8000/api/propuestaIntercambio HTTP/1.1
+
 ###
 GET http://localhost:8000/api/prodIntercambiosPorUsuario/juancruzdeu@gmail.com HTTP/1.1
 ###

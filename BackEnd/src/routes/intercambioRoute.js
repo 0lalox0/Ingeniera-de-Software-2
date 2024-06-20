@@ -42,12 +42,13 @@ router.delete('/eliminarTodosLosIntercambios', (req, res) => {
 // Obtener intercambios con filtros
 router.get('/filtrarPropuestaIntercambios', (req, res) => {
    
-    const { usuarioOfrecido, usuarioDeseado, estado } = req.query;
+    const { usuarioOfrecido, usuarioDeseado, estado, nombreSucursal } = req.query;
     const query = {};
   
     if (usuarioOfrecido) query.usuarioOfrecido = usuarioOfrecido // búsqueda insensible a mayúsculas/minúsculas
     if (usuarioDeseado) query.usuarioDeseado = usuarioDeseado;
     if (estado) query.estado = estado;
+    if (nombreSucursal) query.nombreSucursal = nombreSucursal;
   
     const items = IntercambioSchema.find(query)
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
