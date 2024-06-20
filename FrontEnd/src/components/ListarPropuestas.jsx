@@ -5,43 +5,23 @@ import useUser from '../hooks/useUser';
 import Modal from 'react-modal';
 import { Mantenimiento } from './Mantenimiento';
 import { InformacionPropuesta } from './InformacionPropuesta';
+import { FiltroPropuestas } from './FiltroPropuestas';
 Modal.setAppElement('#root');
 
 export const ListarPropuestas = () => {
     const navigate = useNavigate();
     const { role } = useUser();
     const [propuestas, setPropuestas] = useState([]);
+    const [todos, setTodos] = useState([]);
     const [productos, setProductos] = useState([]);
     const [sucursales, setSucursales] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [contador, setContador] = useState(true);
     const [propuestasI, setPropuestasI] = useState([]);
-    const [userId, setUserId] = useState(null);
-    const emailLocal = localStorage.getItem("email");
-    const [puntajeElegido, setPuntajeElegido] = useState(0);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [rating, setRating] = useState('');
-
-    const openModal = () => setModalIsOpen(true);
-
-    const closeModal = () => setModalIsOpen(false);
-
-    //ACTUALIZAR PUNTOS DE USUARIO
-    const sumarPuntos = async (puntaje, idUsuario, tipoUsuario, idPropuesta) => {
-        setModalIsOpen(false);
-        const response = await fetch(`http://localhost:8000/api/users/${idUsuario}`);
-        let data = await response.json();
-        if (data.puntos === null)
-            data.puntos = puntaje;
-        else
-            data.puntos = parseFloat(data.puntos) + parseFloat(puntaje);
-        if (data.cantidadVotos === null)
-            data.cantidadVotos = 1;
-        else
-            data.cantidadVotos++;
-        await updateData(data, idUsuario);
-        await updatePropuestaIntercambio(tipoUsuario, idPropuesta);
-    };
+    const emailLocal = localStorage.getItem('email');
+    const [categoria, setCategoria] = useState('todas');
+    const [sucursal, setSucursal] = useState('todas');
+    const [estado, setEstado] = useState('todas');
 
     const updateData = async (data, idUsuario) => {
         await fetch(`http://localhost:8000/api/users/${idUsuario}`, {
@@ -85,6 +65,7 @@ export const ListarPropuestas = () => {
                     }
                 }));
                 setPropuestasI(propuestasFiltradas.filter(Boolean));
+                setTodos(propuestasFiltradas.filter(Boolean));
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -206,10 +187,74 @@ export const ListarPropuestas = () => {
         window.location.reload();
     }
 
+    const obtenerEstado = (estado) => {
+        const estados = {
+            norealizado: 'No realizado',
+            rechazado: 'Rechazado',
+            aceptado: 'Aceptado',
+            realizado: 'Realizado',
+            pendiente: 'Pendiente'
+        }
+        return estados[estado];
+    }
+
+    const obtenerEstiloEstado = (estado) => {
+        switch (estado) {
+            case 'Aceptado':
+            case 'Realizado':
+                return { color: '#07f717' }
+            case 'Pendiente':
+                return { color: '#f2ba1f' }
+            default:
+                return { color: 'red' }
+        }
+    }
+
+    const obtenerCategoria = async (idProducto) => {
+        try {
+            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${idProducto}`);
+            const data = await res.json();
+            return data.categoria;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const aplicarFiltros = async () => {
+        let propuestasFiltro = todos;
+
+        if (categoria !== 'todas') {
+            const propuestasConCategorias = await Promise.all(
+                propuestasFiltro.map(async prop => {
+                    const categoria = await obtenerCategoria(prop.productoOfrecido);
+                    return { ...prop, categoria };
+                })
+            );
+            propuestasFiltro = propuestasConCategorias.filter(prop => prop.categoria === categoria);
+        }
+
+        if (estado !== 'todas')
+            propuestasFiltro = propuestasFiltro.filter(prop => prop.estado == estado);
+
+        if (sucursal !== 'todas')
+            propuestasFiltro = propuestasFiltro.filter(prop => prop.nombreSucursal.trim() == sucursal);
+
+        if (propuestasFiltro.length == 0) {
+            setProductos([]);
+
+        }
+        setPropuestasI(propuestasFiltro);
+    }
+
+    const borrarFiltrado = () => {
+        setPropuestasI(todos);
+        setEstado('todas');
+        setSucursal('todas');
+        setCategoria('todas');
+    }
+
     if (contador)
         return <img src={cargando} width='10%' height='10%' />
-
-    Modal.setAppElement('#root');
 
     return (
         <>
@@ -217,6 +262,16 @@ export const ListarPropuestas = () => {
                 <div className='clase-propuestas'>
                     <div className='titulos titulo-propuestas'>
                         <h1>Propuestas pendientes</h1>
+                        <FiltroPropuestas
+                            filtrar={aplicarFiltros}
+                            borrar={borrarFiltrado}
+                            valorEstado={estado}
+                            setEstado={setEstado}
+                            valorSucursal={sucursal}
+                            setSucursal={setSucursal}
+                            valorCategoria={categoria}
+                            setCategoria={setCategoria}
+                        />
                         <p className='textoRedireccion' onClick={redirectGestion}> Volver a la gestión de intercambios</p>
                     </div>
                     <table className="table table-hover">
@@ -239,6 +294,7 @@ export const ListarPropuestas = () => {
                             {productos.map((producto, index) => {
                                 const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
+                                const estadoActual = obtenerEstado(propuestas[index].estado);
                                 return (
                                     <tr key={propuestas[index]._id}>
                                         <td> {producto.ofrecido.titulo} </td>
@@ -250,7 +306,7 @@ export const ListarPropuestas = () => {
                                         <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
                                         <td> {fechaString} </td>
                                         <td> {rango} </td>
-                                        <td> {propuestas[index].estado} </td>
+                                        <td style={obtenerEstiloEstado(estadoActual)}> {estadoActual} </td>
                                         <InformacionPropuesta
                                             meMandaron={producto.deseado.idUsuario == localStorage.getItem("email")}
                                             propuesta={propuestas[index]}

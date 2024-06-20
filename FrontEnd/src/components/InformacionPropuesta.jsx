@@ -2,16 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
-/* 
-meMandaron = {producto.deseado.idUsuario == localStorage.getItem("email")}
-propuesta = {propuestas[index]}
-realizarIntercambio = {realizarIntercambio}
-idUsuarioOfrecido = {producto.ofrecido.idUsuario}
-updateData = {updateData}
-updatePropuestaIntercambio = {updatePropuestaIntercambio}
-idUsuarioDeseado = {producto.deseado.idUsuario}
-*/
-
 export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambio, idUsuarioOfrecido, updateData, updatePropuestaIntercambio, idUsuarioDeseado }) => {
     const [puntajeElegido, setPuntajeElegido] = useState(0);
     const [modalIsOpen, setModalIsOpen] = useState(false);

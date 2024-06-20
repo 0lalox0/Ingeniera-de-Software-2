@@ -97,6 +97,36 @@ header {
   }
 }
 
+@media (max-height: 582px) {
+
+  .clase-sucursales table,
+  .clase-eleccion {
+    top: 45%;
+  }
+
+  .clase-propuestas table {
+    top: 150% !important;
+  }
+
+  header .search-container,
+  header .menuOpciones,
+  header .botones {
+    display: none;
+  }
+
+  #dropdown {
+    display: block !important;
+    position: absolute;
+    right: 1%;
+  }
+}
+
+@media (max-height: 900px) {
+  .clase-propuestas table {
+    top: 100% !important;
+  }
+}
+
 .dropdown-item:hover {
   cursor: pointer;
 }
@@ -316,26 +346,6 @@ td:hover {
   cursor: default;
 }
 
-@media (max-height: 582px) {
-
-  .clase-sucursales table,
-  .clase-eleccion {
-    top: 45%;
-  }
-
-  header .search-container,
-  header .menuOpciones,
-  header .botones {
-    display: none;
-  }
-
-  #dropdown {
-    display: block !important;
-    position: absolute;
-    right: 1%;
-  }
-}
-
 .botonEliminar {
   background-color: red;
   color: white;
@@ -458,6 +468,22 @@ td:hover {
   position: absolute;
   left: 1%;
   top: 25%;
+}
+
+.titulo-propuestas {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.clase-propuestas table {
+  top: 75%;
+}
+
+.botonesFiltro {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #fotosIntercambio {
