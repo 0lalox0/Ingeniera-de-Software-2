@@ -23,40 +23,42 @@ export const GestionPropuestasAceptadas = () => {
                 const response = await fetch(`http://localhost:8000/api/empleados/${emailLocal}`);
                 const data = await response.json();
                 setEmpleado(data);
-                const responseSucursal = await fetch(`http://localhost:8000/api/sucursales/${data.sucursal}`);
-                const dataSucursal = await responseSucursal.json();
-                setNombreSucursalEmpleado(dataSucursal.nombre);
             } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        fetchEmpleado();
-    }, []);
-
-    useEffect(() => {
-        const fetchPropuestas = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
-                const data = await response.json();
-                const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
-                    if (propuesta.estado === "aceptado" || propuesta.estado === "realizado" || propuesta.estado === "norealizado") {
-                        const responseDeseado = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`);
-                        const productoDeseado = await responseDeseado.json();
-                        const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
-                        const productoOfrecido = await responseOfrecido.json();
-                        return propuesta;
-                    }
-                }));
-                setPropuestas(propuestasFiltradas.filter(Boolean));
-                setContador(false);
-            } catch (error) {
-                console.error('Error:', error);
+                console.error('Error al obtener el empleado:', error);
             }
         };
-
-        fetchPropuestas();
+    
+        fetchEmpleado();
     }, []);
+    
+    useEffect(() => {
+        if (empleado) {
+            const fetchSucursalYPropuestas = async () => {
+                try {
+                    const responseSucursal = await fetch(`http://localhost:8000/api/sucursales/${empleado.sucursal}`);
+                    const dataSucursal = await responseSucursal.json();
+                    setNombreSucursalEmpleado(dataSucursal.nombre);
+                    const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(dataSucursal.nombre + " ")}`);                   
+                    const data = await response.json();
+                    const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
+                        if (propuesta.estado === "aceptado" || propuesta.estado === "realizado" || propuesta.estado === "norealizado") {
+                            const responseDeseado = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`);
+                            const productoDeseado = await responseDeseado.json();
+                            const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
+                            const productoOfrecido = await responseOfrecido.json();
+                            return propuesta;
+                        }
+                    }));
+                    setPropuestas(propuestasFiltradas.filter(Boolean));
+                    setContador(false);
+                } catch (error) {
+                    console.error('Error al obtener la sucursal o las propuestas:', error);
+                }
+            };
+    
+            fetchSucursalYPropuestas();
+        }
+    }, [empleado]);
 
     useEffect(() => {
         const fetchProductos = async () => {
@@ -191,10 +193,10 @@ export const GestionPropuestasAceptadas = () => {
                             </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                            {productos.filter((producto, index) => sucursales[index]?.nombre === nombreSucursalEmpleado)
-                                .map((producto, index) => {
+                            {productos.map((producto, index) => {
                                     const fecha = new Date(propuestas[index].fecha);
                                     const fechaString = fecha.toLocaleDateString();
+                                    console.log(nombreSucursalEmpleado);
                                     const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                     return (
                                         <tr key={propuestas[index]._id}>
