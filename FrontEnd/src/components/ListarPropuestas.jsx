@@ -19,9 +19,6 @@ export const ListarPropuestas = () => {
     const [contador, setContador] = useState(true);
     const [propuestasI, setPropuestasI] = useState([]);
     const emailLocal = localStorage.getItem('email');
-    const [categoria, setCategoria] = useState('todas');
-    const [sucursal, setSucursal] = useState('todas');
-    const [estado, setEstado] = useState('todas');
 
     const updateData = async (data, idUsuario) => {
         await fetch(`http://localhost:8000/api/users/${idUsuario}`, {
@@ -210,49 +207,6 @@ export const ListarPropuestas = () => {
         }
     }
 
-    const obtenerCategoria = async (idProducto) => {
-        try {
-            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${idProducto}`);
-            const data = await res.json();
-            return data.categoria;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const aplicarFiltros = async () => {
-        let propuestasFiltro = todos;
-
-        if (categoria !== 'todas') {
-            const propuestasConCategorias = await Promise.all(
-                propuestasFiltro.map(async prop => {
-                    const categoria = await obtenerCategoria(prop.productoOfrecido);
-                    return { ...prop, categoria };
-                })
-            );
-            propuestasFiltro = propuestasConCategorias.filter(prop => prop.categoria === categoria);
-        }
-
-        if (estado !== 'todas')
-            propuestasFiltro = propuestasFiltro.filter(prop => prop.estado == estado);
-
-        if (sucursal !== 'todas')
-            propuestasFiltro = propuestasFiltro.filter(prop => prop.nombreSucursal.trim() == sucursal);
-
-        if (propuestasFiltro.length == 0) {
-            setProductos([]);
-
-        }
-        setPropuestasI(propuestasFiltro);
-    }
-
-    const borrarFiltrado = () => {
-        setPropuestasI(todos);
-        setEstado('todas');
-        setSucursal('todas');
-        setCategoria('todas');
-    }
-
     if (contador)
         return <img src={cargando} width='10%' height='10%' />
 
@@ -263,67 +217,67 @@ export const ListarPropuestas = () => {
                     <div className='titulos titulo-propuestas'>
                         <h1>Propuestas pendientes</h1>
                         <FiltroPropuestas
-                            filtrar={aplicarFiltros}
-                            borrar={borrarFiltrado}
-                            valorEstado={estado}
-                            setEstado={setEstado}
-                            valorSucursal={sucursal}
-                            setSucursal={setSucursal}
-                            valorCategoria={categoria}
-                            setCategoria={setCategoria}
+                            todos={todos}
+                            setProductos={setProductos}
+                            setPropuestasI={setPropuestasI}
+                            miMail={emailLocal}
+                            hayPropuestas = {productos.length}
                         />
                         <p className='textoRedireccion' onClick={redirectGestion}> Volver a la gestión de intercambios</p>
                     </div>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col" >Producto ofrecido </th>
-                                <th scope="col"> Foto </th>
-                                <th scope="col"> Producto deseado </th>
-                                <th scope="col"> Foto </th>
-                                <th scope="col"> Categoría </th>
-                                <th scope="col"> Sucursal </th>
-                                <th scope="col"> Solicitante </th>
-                                <th scope='col'> Fecha </th>
-                                <th scope='col'> Rango horario </th>
-                                <th scope="col"> Estado </th>
-                                <th scope="col"> Información </th>
-                            </tr>
-                        </thead>
-                        <tbody className="table-group-divider">
-                            {productos.map((producto, index) => {
-                                const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
-                                const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
-                                const estadoActual = obtenerEstado(propuestas[index].estado);
-                                return (
-                                    <tr key={propuestas[index]._id}>
-                                        <td> {producto.ofrecido.titulo} </td>
-                                        <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
-                                        <td> {producto.deseado.titulo} </td>
-                                        <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
-                                        <td> {producto.ofrecido.categoria} </td>
-                                        <td> {sucursales[index]?.nombre} </td>
-                                        <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
-                                        <td> {fechaString} </td>
-                                        <td> {rango} </td>
-                                        <td style={obtenerEstiloEstado(estadoActual)}> {estadoActual} </td>
-                                        <InformacionPropuesta
-                                            meMandaron={producto.deseado.idUsuario == localStorage.getItem("email")}
-                                            propuesta={propuestas[index]}
-                                            realizarIntercambio={realizarIntercambio}
-                                            idUsuarioOfrecido={producto.ofrecido.idUsuario}
-                                            updateData={updateData}
-                                            updatePropuestaIntercambio={updatePropuestaIntercambio}
-                                            idUsuarioDeseado={producto.deseado.idUsuario}
-                                        />
+                    <>
+                        {productos.length > 0 ?
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" >Producto ofrecido </th>
+                                        <th scope="col"> Foto </th>
+                                        <th scope="col"> Producto deseado </th>
+                                        <th scope="col"> Foto </th>
+                                        <th scope="col"> Categoría </th>
+                                        <th scope="col"> Sucursal </th>
+                                        <th scope="col"> Solicitante </th>
+                                        <th scope='col'> Fecha </th>
+                                        <th scope='col'> Rango horario </th>
+                                        <th scope="col"> Estado </th>
+                                        <th scope="col"> Información </th>
                                     </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody className="table-group-divider">
+                                    {productos.map((producto, index) => {
+                                        const fechaString = new Date(propuestas[index].fecha).toLocaleDateString();
+                                        const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
+                                        const estadoActual = obtenerEstado(propuestas[index].estado);
+                                        return (
+                                            <tr key={propuestas[index]._id}>
+                                                <td> {producto.ofrecido.titulo} </td>
+                                                <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
+                                                <td> {producto.deseado.titulo} </td>
+                                                <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
+                                                <td> {producto.ofrecido.categoria} </td>
+                                                <td> {sucursales[index]?.nombre} </td>
+                                                <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
+                                                <td> {fechaString} </td>
+                                                <td> {rango} </td>
+                                                <td style={obtenerEstiloEstado(estadoActual)}> {estadoActual} </td>
+                                                <InformacionPropuesta
+                                                    meMandaron={producto.deseado.idUsuario == emailLocal}
+                                                    propuesta={propuestas[index]}
+                                                    realizarIntercambio={realizarIntercambio}
+                                                    idUsuarioOfrecido={producto.ofrecido.idUsuario}
+                                                    updateData={updateData}
+                                                    updatePropuestaIntercambio={updatePropuestaIntercambio}
+                                                    idUsuarioDeseado={producto.deseado.idUsuario}
+                                                />
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                            : <> </> }
+                    </>
                 </div>
-                :
-                <> <Mantenimiento> </Mantenimiento> </>
+                : <> <Mantenimiento> </Mantenimiento> </>
             }
         </>
     )

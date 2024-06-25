@@ -123,7 +123,7 @@ header {
 
 @media (max-height: 900px) {
   .clase-propuestas table {
-    top: 100% !important;
+    top: 120% !important;
   }
 }
 
@@ -264,6 +264,7 @@ header {
 .errorContainer {
   margin-top: 0.5rem;
   color: red;
+  align-self: flex-end;
 }
 
 .textoRedireccion {
@@ -468,6 +469,10 @@ td:hover {
   position: absolute;
   left: 1%;
   top: 25%;
+}
+
+#propuestasNoCoinciden {
+  padding-top: 2rem;
 }
 
 .titulo-propuestas {
