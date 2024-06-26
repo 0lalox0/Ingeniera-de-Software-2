@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { Schema, model } from 'mongoose'
 
 const ProductoCompraSchema = new Schema({
@@ -14,8 +15,7 @@ const ProductoCompraSchema = new Schema({
         require: true
     },
     categoria: {
-        type: String,
-        require: true
+        type: String
     },
     fecha: {
         type: Date,

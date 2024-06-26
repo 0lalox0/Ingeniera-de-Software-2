@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
@@ -20,6 +20,8 @@ export const GestionPropuestasAceptadas = () => {
     const emailLocal = localStorage.getItem("email");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [precio, setPrecio] = useState(0);
+    const [message, setMessage] = useState("");
+    const refMensaje = useRef(null);
 
     const openModal = () => setModalIsOpen(true);
 
@@ -173,8 +175,35 @@ export const GestionPropuestasAceptadas = () => {
         //}
     }
     const registarCompra = async () =>{
-        //Post al modelo
-        console.log(precio);
+        if(precio > 0) {
+            let n = new Date();
+            refMensaje.current.style.color = '#07f717';
+            setMessage("Se registro la compra exitosamente");
+            console.log(precio);
+            console.log(empleado._id);
+            console.log(nombreSucursalEmpleado)
+            console.log(n);
+            try{
+            const response = await fetch("http://localhost:8000/api/productoCompra", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    precio: precio,
+                    nombreSucursal: nombreSucursalEmpleado,
+                    idEmpleado: empleado._id, 
+                    fecha: n
+                })
+              });
+            }catch (error) {
+                console.error('Error:', error);
+              }
+        }
+        else   {
+            refMensaje.current.style.color = 'red';
+            setMessage("El valor ingresado debe ser un numero positivo");
+        }
     }
     if (contador)
         return <img src={cargando} width='10%' height='10%' />
@@ -254,6 +283,7 @@ export const GestionPropuestasAceptadas = () => {
                                                            <input type="number"  value={precio} onChange={e => setPrecio(e.target.value)}/>
                                                         </form>
                                                         <button onClick={() => registarCompra()} className='btn btn-warning'>Guardar Compra</button>
+                                                        <p className='errorContainer' ref={refMensaje}> {message} </p>
                                                     </Modal>
                                                     </>
                                                         : <>

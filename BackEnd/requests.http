@@ -163,3 +163,10 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal="Sucursal Darío " HTTP/1.1
+
+
+
+//Compras
+
+###
+GET http://localhost:8000/api/productoCompra HTTP/1.1
