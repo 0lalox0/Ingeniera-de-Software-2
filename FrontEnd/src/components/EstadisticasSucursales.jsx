@@ -33,9 +33,15 @@ export const EstadisticasSucursales = () => {
                 for (let sucursal of sucursales) {
                     const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(sucursal.nombre + " ")}`);
                     const data = await response.json();
-                    intercambiosTemp[sucursal.nombre] = data.length; // cantidad de intercambios por sucursal
+
+                    const realizados = data.filter(intercambio => intercambio.estado === 'realizado').length;
+                    intercambiosTemp[sucursal.nombre] = {
+                        total: data.length, // cantidad total de intercambios por sucursal
+                        realizados: realizados // cantidad de intercambios realizados por sucursal
+                    };
                 }
                 setIntercambios(intercambiosTemp);
+
             } catch (error) {
                 console.error("Error fetching intercambios:", error);
             }
@@ -48,51 +54,72 @@ export const EstadisticasSucursales = () => {
     useEffect(() => {
         if (!loading && d3Container.current) {
             // Ajustes de margen, ancho y alto
-            const margin = { top: 60, right: 30, bottom: 190, left: 50 }, // Margen inferior donde estan los nombres de las sucursales
+            const margin = { top: 60, right: 30, bottom: 190, left: 50 },
                 width = 460 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
-
+    
             // Añade el SVG al contenedor
             const svg = d3.select(d3Container.current)
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
-                .attr("transform", `translate(${margin.left},${margin.top+100})`);
+                .attr("transform", `translate(${margin.left},${margin.top + 100})`);
 
-            const data = Object.keys(intercambios).map(key => ({ sucursal: key, value: intercambios[key] }));
-
-            // Escala para el eje X (nombres de las sucursales)
-            const x = d3.scaleBand()
-                .range([0, width])
-                .domain(data.map(d => d.sucursal))
-                .padding(0.1);
-
+            // Datos de la base de datos
+            const data = Object.keys(intercambios).map(key => ({
+                sucursal: key,
+                total: intercambios[key].total,
+                realizados: intercambios[key].realizados
+            }));
+    
+            // Colores para las barras
+            const colorScale = d3.scaleOrdinal()
+                .domain(["total", "realizados"])
+                .range(["#1f77b4", "#ff7f0e"]);
+    
+            // Escala para el eje X (sucursales)
+            const x0 = d3.scaleBand()
+                .rangeRound([0, width])
+                .paddingInner(0.1)
+                .domain(data.map(d => d.sucursal));
+    
+            const x1 = d3.scaleBand()
+                .padding(0.05)
+                .domain(["total", "realizados"])
+                .rangeRound([0, x0.bandwidth()]);
+    
             svg.append("g")
                 .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(x))
+                .call(d3.axisBottom(x0))
                 .selectAll("text")
                 .attr("transform", "translate(-10,0)rotate(-45)")
                 .style("text-anchor", "end");
-
+    
             // Escala para el eje Y (valores)
             const y = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.value)])
+                .domain([0, d3.max(data, d => Math.max(d.total, d.realizados))])
                 .range([height, 0]);
-
+    
             svg.append("g")
                 .call(d3.axisLeft(y));
-
-            // Barras
-            svg.selectAll(".bar")
+    
+            // Barras para total de intercambios y realizados
+            const sucursal = svg.selectAll(".sucursal")
                 .data(data)
-                .enter()
-                .append("rect")
-                .attr("class", "bar")
-                .attr("x", d => x(d.sucursal))
+                .enter().append("g")
+                .attr("class", "sucursal")
+                .attr("transform", d => `translate(${x0(d.sucursal)},0)`);
+    
+            sucursal.selectAll("rect")
+                .data(d => [{key: "total", value: d.total}, {key: "realizados", value: d.realizados}])
+                .enter().append("rect")
+                .attr("x", d => x1(d.key))
                 .attr("y", d => y(d.value))
-                .attr("width", x.bandwidth())
+                .attr("width", x1.bandwidth())
                 .attr("height", d => height - y(d.value))
-                .attr("fill", "#69b3a2");
+                .attr("fill", d => colorScale(d.key));
+    
+            console.log(intercambios);
         }
     }, [loading, intercambios]);
 
