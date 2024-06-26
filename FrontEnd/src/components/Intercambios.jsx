@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useUser from "../hooks/useUser";
 import { useNavigate } from 'react-router-dom';
 import { CardIntercambio } from './CardIntercambio';
+import Footer from './Footer';
 
 export const Intercambios = () => {
     const { role } = useUser();
@@ -67,7 +68,6 @@ export const Intercambios = () => {
                 <>
                     {role === 'cliente' ? <> <button onClick={redirectAgregar} className="btn btn-success"> Publicar producto para intercambiar</button></> : <> </>}
                 </>
-
                 <h3 style={{ color: "#242465" }}>Filtrado por categoría: </h3>
                 <div className="filtradoCategorias">
                     <div className="mb-3">
@@ -121,7 +121,7 @@ export const Intercambios = () => {
                 })}
                 <p style={{ display: mensajeVisible ? 'block' : 'none' }} className='errorContainer'> No hay productos para intercambiar publicados que coincidan.</p>
             </div>
-
+            <Footer> </Footer>
         </div>
     )
 }

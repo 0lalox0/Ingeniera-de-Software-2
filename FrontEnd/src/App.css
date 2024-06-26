@@ -482,7 +482,7 @@ td:hover {
 }
 
 .clase-propuestas table {
-  top: 75%;
+  top: 80%;
 }
 
 .botonesFiltro {
@@ -526,6 +526,10 @@ td:hover {
 
 .form-check-input:focus {
   box-shadow: 0 0 0 0 !important;
+}
+
+.propuestasIntercambios table {
+  top: 40% !important;
 }
 
 #avisoSemana {
@@ -595,7 +599,8 @@ td:hover {
 }
 
 #botonProponer,
-#botonFecha, .botonEmpleado {
+#botonFecha,
+.botonEmpleado {
   margin-top: auto;
   margin-bottom: 2rem;
   margin-right: 1rem;
@@ -660,4 +665,24 @@ td:hover {
 .modifyInput {
   background-color: white !important;
   border: 1px solid black !important;
+}
+
+/* FOOTER  */
+footer {
+  width: 101%;
+  height: 5rem;
+  background-color: #ebf1f8;
+  position: absolute;
+  top: 100%;
+  left: -1%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer .menuOpciones ul {
+  top: 0%;
+  left: 42%;
+  margin-top: 1rem;
 }

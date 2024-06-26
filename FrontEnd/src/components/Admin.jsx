@@ -6,6 +6,7 @@ import estadisticas from '../assets/estadisticas.png';
 import empleados from '../assets/gestionar-empleados.png';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from './Card';
+import Footer from './Footer';
 
 export const Admin = () => {
   const { role } = useUser();
@@ -25,7 +26,7 @@ export const Admin = () => {
             <h1 style={{ color: "#242465" }}> Administración de Ferreplus Intercambios</h1>
             <p id='textoInfoPerfil' style={{ color: "#242465" }}> Como el administrador, podrás gestionar toda la información relacionada a Ferreplus Intercambios.</p>
           </div>
-          
+
           <div className='card-container'>
 
             <CardComponent
@@ -48,8 +49,9 @@ export const Admin = () => {
               imageSrc={empleados}
               onClick={redirectEmpleados}
             />
-
+          
           </div>
+        <Footer />
         </>
         : <Mantenimiento> </Mantenimiento>
       }

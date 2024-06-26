@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import Footer from './Footer';
 
 export const FormularioLogin = () => {
 
@@ -87,6 +88,7 @@ export const FormularioLogin = () => {
             <p onClick={redirectRegistro} className='textoRedireccion'>
                 ¿No tenés cuenta? Registrarse
             </p>
+            <Footer />
         </div>
     );
 }

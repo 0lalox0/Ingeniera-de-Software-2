@@ -5,7 +5,6 @@ import useUser from '../hooks/useUser';
 import { getAuth, signOut } from 'firebase/auth';
 
 export const HeaderFerreplus = () => {
-
   const navigate = useNavigate();
 
   const redirectInicioSesion = () => navigate('/inicioSesion');
@@ -13,8 +12,6 @@ export const HeaderFerreplus = () => {
   const redirectRegistro = () => navigate('/registrarse');
 
   const redirectHome = () => navigate('/');
-
-  const redirectProductos = () => navigate('/productos');
 
   const redirectIntercambios = () => navigate('/intercambios');
 
@@ -47,7 +44,6 @@ export const HeaderFerreplus = () => {
         <ul>
           <li onClick={redirectIntercambios} className={isActive('/intercambios') ? 'paginaActiva' : ''}> Intercambios</li>
           <li onClick={redirectSucursales} className={isActive('/sucursales') ? 'paginaActiva' : ''}> Sucursales</li>
-          {/* <li onClick={redirectProductos} className={isActive('/productos') || isActive('/') ? 'paginaActiva' : ''}> Catálogo de ventas</li> */}
         </ul>
       </div>
 
@@ -77,7 +73,6 @@ export const HeaderFerreplus = () => {
             Menú de opciones
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" onClick={redirectHome}> Catálogo de ventas</a></li>
             <li><a className="dropdown-item" onClick={redirectIntercambios}>Intercambios</a></li>
             <li><a className="dropdown-item" onClick={redirectSucursales}>Sucursales</a></li>
             <li><hr className="dropdown-divider" /></li>

@@ -37,10 +37,10 @@ export const GestionPropuestasAceptadas = () => {
                 console.error('Error al obtener el empleado:', error);
             }
         };
-    
+
         fetchEmpleado();
     }, []);
-    
+
     useEffect(() => {
         if (empleado) {
             const fetchSucursalYPropuestas = async () => {
@@ -48,7 +48,7 @@ export const GestionPropuestasAceptadas = () => {
                     const responseSucursal = await fetch(`http://localhost:8000/api/sucursales/${empleado.sucursal}`);
                     const dataSucursal = await responseSucursal.json();
                     setNombreSucursalEmpleado(dataSucursal.nombre);
-                    const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(dataSucursal.nombre + " ")}`);                   
+                    const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(dataSucursal.nombre + " ")}`);
                     const data = await response.json();
                     const propuestasFiltradas = await Promise.all(data.map(async propuesta => {
                         if (propuesta.estado === "aceptado" || propuesta.estado === "realizado" || propuesta.estado === "norealizado") {
@@ -65,7 +65,7 @@ export const GestionPropuestasAceptadas = () => {
                     console.error('Error al obtener la sucursal o las propuestas:', error);
                 }
             };
-    
+
             fetchSucursalYPropuestas();
         }
     }, [empleado]);
@@ -174,8 +174,8 @@ export const GestionPropuestasAceptadas = () => {
         window.location.reload();
         //}
     }
-    const registarCompra = async () =>{
-        if(precio > 0) {
+    const registarCompra = async () => {
+        if (precio > 0) {
             let n = new Date();
             refMensaje.current.style.color = '#07f717';
             setMessage("Se registro la compra exitosamente");
@@ -183,24 +183,24 @@ export const GestionPropuestasAceptadas = () => {
             console.log(empleado._id);
             console.log(nombreSucursalEmpleado)
             console.log(n);
-            try{
-            const response = await fetch("http://localhost:8000/api/productoCompra", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    precio: precio,
-                    nombreSucursal: nombreSucursalEmpleado,
-                    idEmpleado: empleado._id, 
-                    fecha: n
-                })
-              });
-            }catch (error) {
+            try {
+                const response = await fetch("http://localhost:8000/api/productoCompra", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        precio: precio,
+                        nombreSucursal: nombreSucursalEmpleado,
+                        idEmpleado: empleado._id,
+                        fecha: n
+                    })
+                });
+            } catch (error) {
                 console.error('Error:', error);
-              }
+            }
         }
-        else   {
+        else {
             refMensaje.current.style.color = 'red';
             setMessage("El valor ingresado debe ser un numero positivo");
         }
@@ -213,10 +213,10 @@ export const GestionPropuestasAceptadas = () => {
     return (
         <>
             {role === 'empleado' ?
-                <div className='clase-propuestas'>
+                <div className='clase-propuestas propuestasIntercambios'>
                     <div className='titulos titulo-propuestas'>
                         <h1>Propuestas agendadas para intercambiar</h1>
-                        <p className='textoRedireccion' onClick={redirectEmpleado}> Volver al perfil</p>
+                        <p className='textoRedireccion' onClick={redirectEmpleado}> Volver a la gestión</p>
                     </div>
                     <table className="table table-hover">
                         <thead>
@@ -236,71 +236,71 @@ export const GestionPropuestasAceptadas = () => {
                         </thead>
                         <tbody className="table-group-divider">
                             {productos.map((producto, index) => {
-                                    const fecha = new Date(propuestas[index].fecha);
-                                    const fechaString = fecha.toLocaleDateString();
-                                    console.log(nombreSucursalEmpleado);
-                                    const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
-                                    return (
-                                        <tr key={propuestas[index]._id}>
-                                            <td> {producto.ofrecido.titulo} </td>
-                                            <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
-                                            <td> {producto.deseado.titulo} </td>
-                                            <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
-                                            <td> {producto.ofrecido.categoria} </td>
-                                            <td> {sucursales[index]?.nombre} </td>
-                                            <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
-                                            <td> {fechaString} </td>
-                                            <td> {rango} </td>
-                                            <td> {propuestas[index].estado} </td>
-                                            {propuestas[index].estado == 'aceptado' ?
-                                                <td>
-                                                    <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success" style={{margin: '5px'}}> Confirmar Intercambio</button>
-                                                    <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger" style={{margin: '5px'}}> Cancelar Intercambio</button>
-                                                </td>
-                                                : <td>
-                                                    {propuestas[index].estado == 'realizado' ?
+                                const fecha = new Date(propuestas[index].fecha);
+                                const fechaString = fecha.toLocaleDateString();
+                                console.log(nombreSucursalEmpleado);
+                                const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
+                                return (
+                                    <tr key={propuestas[index]._id}>
+                                        <td> {producto.ofrecido.titulo} </td>
+                                        <td> <img src={producto.ofrecido.urlFotos[0]} width='80px' height='60px' /> </td>
+                                        <td> {producto.deseado.titulo} </td>
+                                        <td> <img src={producto.deseado.urlFotos[0]} width='80px' height='60px' /> </td>
+                                        <td> {producto.ofrecido.categoria} </td>
+                                        <td> {sucursales[index]?.nombre} </td>
+                                        <td> {usuarios[index]?.name} {usuarios[index]?.lastname} </td>
+                                        <td> {fechaString} </td>
+                                        <td> {rango} </td>
+                                        <td> {propuestas[index].estado} </td>
+                                        {propuestas[index].estado == 'aceptado' ?
+                                            <td>
+                                                <button onClick={() => aceptarIntercambio(propuestas[index], fecha)} className="btn btn-success" style={{ margin: '5px' }}> Confirmar Intercambio</button>
+                                                <button onClick={() => rechazarIntercambio(propuestas[index], fecha)} className="btn btn-danger" style={{ margin: '5px' }}> Cancelar Intercambio</button>
+                                            </td>
+                                            : <td>
+                                                {propuestas[index].estado == 'realizado' ?
                                                     <>
                                                         <p style={{ color: '#07f717' }}> Intercambio registrado</p>
                                                         <button id='botonFecha' onClick={openModal} className='btn btn-warning'> Registrar Compra</button>
                                                         <Modal
-                                                        isOpen={modalIsOpen}
-                                                        onRequestClose={closeModal}
-                                                        contentLabel="Valorar usuario"
-                                                        style={{
-                                                            content: {
-                                                                width: '150px',
-                                                                height: '200px',
-                                                                margin: 'auto',
-                                                                overflow: 'hidden',
-                                                                position: 'fixed',
-                                                                top: '50%',
-                                                                left: '50%',
-                                                                transform: 'translate(30%, -120%)'
-                                                            },
-                                                        }}
-                                                    >
-                                                        <form>
-                                                           <input type="number"  value={precio} onChange={e => setPrecio(e.target.value)}/>
-                                                        </form>
-                                                        <button onClick={() => registarCompra()} className='btn btn-warning'>Guardar Compra</button>
-                                                        <p className='errorContainer' ref={refMensaje}> {message} </p>
-                                                    </Modal>
+                                                            isOpen={modalIsOpen}
+                                                            onRequestClose={closeModal}
+                                                            contentLabel="Valorar usuario"
+                                                            style={{
+                                                                content: {
+                                                                    width: '10rem',
+                                                                    height: '15rem',
+                                                                    margin: 'auto',
+                                                                    overflow: 'hidden',
+                                                                    position: 'fixed',
+                                                                    top: '50%',
+                                                                    left: '50%',
+                                                                    transform: 'translate(30%, -120%)'
+                                                                },
+                                                            }}
+                                                        >
+                                                            <form>
+                                                                <p style={{textAlign: 'center'}}> Ingrese precio de la compra realizada: </p>
+                                                                <input type="number" value={precio} onChange={e => setPrecio(e.target.value)} style={{width: '100%'}} min={0}/>
+                                                            </form>
+                                                            <button onClick={() => registarCompra()} className='btn btn-warning' style={{margin: '10px'}}>Guardar Compra</button>
+                                                            <p className='errorContainer' ref={refMensaje}> {message} </p>
+                                                        </Modal>
                                                     </>
-                                                        : <>
-                                                            {propuestas[index].estado == 'norealizado' ?
-                                                                <p style={{ color: 'red' }}> Intercambio cancelado</p>
-                                                                :
-                                                                null
+                                                    : <>
+                                                        {propuestas[index].estado == 'norealizado' ?
+                                                            <p style={{ color: 'red' }}> Intercambio cancelado</p>
+                                                            :
+                                                            null
+                                                        }
+                                                    </>
 
-                                                            }
-                                                        </>
-                                                    
-                                                    }
-                                                </td>
-                                            }
-                                        </tr>
-                                    );
-                                })}
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

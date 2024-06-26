@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Footer from './Footer';
 
 export const Sucursales = () => {
     const [sucursales, setSucursales] = useState([]);
@@ -44,6 +45,7 @@ export const Sucursales = () => {
                     })}
                 </tbody>
             </table>
+            <Footer />
         </div>
     )
 }

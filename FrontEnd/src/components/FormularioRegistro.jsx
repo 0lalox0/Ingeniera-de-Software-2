@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import Footer from './Footer';
 
 export const FormularioRegistro = () => {
     const [name, setName] = useState('');
@@ -185,6 +186,8 @@ export const FormularioRegistro = () => {
             {error && <p className='errorContainer'>{error}</p>}
 
             <p onClick={redirectInicioSesion} className='textoRedireccion'> ¿Ya estás registrado? Iniciar sesión </p>
+        
+        <Footer />
         </div >
     )
 }
