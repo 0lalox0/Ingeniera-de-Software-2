@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 
 export const GestionPropuestasAceptadas = () => {
     const navigate = useNavigate();
@@ -16,6 +18,12 @@ export const GestionPropuestasAceptadas = () => {
     const [nombreSucursalEmpleado, setNombreSucursalEmpleado] = useState(null);
     const [userId, setUserId] = useState(null);
     const emailLocal = localStorage.getItem("email");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [precio, setPrecio] = useState(0);
+
+    const openModal = () => setModalIsOpen(true);
+
+    const closeModal = () => setModalIsOpen(false);
 
     useEffect(() => {
         const fetchEmpleado = async () => {
@@ -164,9 +172,14 @@ export const GestionPropuestasAceptadas = () => {
         window.location.reload();
         //}
     }
-
+    const registarCompra = async () =>{
+        //Post al modelo
+        console.log(precio);
+    }
     if (contador)
         return <img src={cargando} width='10%' height='10%' />
+
+    Modal.setAppElement('#root');
 
     return (
         <>
@@ -217,7 +230,32 @@ export const GestionPropuestasAceptadas = () => {
                                                 </td>
                                                 : <td>
                                                     {propuestas[index].estado == 'realizado' ?
+                                                    <>
                                                         <p style={{ color: '#07f717' }}> Intercambio registrado</p>
+                                                        <button id='botonFecha' onClick={openModal} className='btn btn-warning'> Registrar Compra</button>
+                                                        <Modal
+                                                        isOpen={modalIsOpen}
+                                                        onRequestClose={closeModal}
+                                                        contentLabel="Valorar usuario"
+                                                        style={{
+                                                            content: {
+                                                                width: '150px',
+                                                                height: '200px',
+                                                                margin: 'auto',
+                                                                overflow: 'hidden',
+                                                                position: 'fixed',
+                                                                top: '50%',
+                                                                left: '50%',
+                                                                transform: 'translate(30%, -120%)'
+                                                            },
+                                                        }}
+                                                    >
+                                                        <form>
+                                                           <input type="number"  value={precio} onChange={e => setPrecio(e.target.value)}/>
+                                                        </form>
+                                                        <button onClick={() => registarCompra()} className='btn btn-warning'>Guardar Compra</button>
+                                                    </Modal>
+                                                    </>
                                                         : <>
                                                             {propuestas[index].estado == 'norealizado' ?
                                                                 <p style={{ color: 'red' }}> Intercambio cancelado</p>
@@ -226,6 +264,7 @@ export const GestionPropuestasAceptadas = () => {
 
                                                             }
                                                         </>
+                                                    
                                                     }
                                                 </td>
                                             }
