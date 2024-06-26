@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import Footer from './Footer';
 
 export const CambioContra = () => {
     const navigate = useNavigate();
@@ -57,6 +57,7 @@ export const CambioContra = () => {
                     </div>
                 </>
             }
+        <Footer />
         </div>
     )
 }

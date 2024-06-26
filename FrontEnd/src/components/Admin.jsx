@@ -51,7 +51,6 @@ export const Admin = () => {
             />
           
           </div>
-        <Footer />
         </>
         : <Mantenimiento> </Mantenimiento>
       }

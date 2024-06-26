@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, EmailAuthProvider, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
+import Footer from './Footer';
 
 export const CambioContraSinEmail = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -84,30 +85,33 @@ export const CambioContraSinEmail = () => {
     return (
         <>
             {role === 'cliente' ?
-                <div className='cambioContra' onKeyDown={handleKeyDown} >
-                    {cambiar ? (
-                        <>
-                            <h2> Cambiar contraseña </h2>
-                            <label className='form-label' htmlFor='inputCurrentPassword' ref={currentPasswordRef}> Contraseña actual: </label>
-                            <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' />
-                            <label className='form-label' htmlFor='inputNewPassword' ref={newPasswordRef}> Nueva contraseña: </label>
-                            <input type="password" className="form-control" value={newPassword} onChange={e => setNewPassword(e.target.value)} id='inputNewPassword' />
-                            <label className='form-label' htmlFor='inputConfirmPassword' ref={confirmPasswordRef}> Confirmar nueva contraseña: </label>
-                            <input type="password" className="form-control" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} id='inputConfirmPassword' />
-                            {error && <p className='errorContainer'> {error} </p>}
-                            <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>
-                            <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
-                        </>
-                    )
-                        : <>
-                            <div className='mensajeExito'>
-                                <h2 style={{ color: "#242465" }}> ¡Listo!</h2>
-                                <p> Su contraseña ha sido actualizada con exito</p>
+                <>
+                    <div className='cambioContra' onKeyDown={handleKeyDown} >
+                        {cambiar ? (
+                            <>
+                                <h2> Cambiar contraseña </h2>
+                                <label className='form-label' htmlFor='inputCurrentPassword' ref={currentPasswordRef}> Contraseña actual: </label>
+                                <input type="password" className="form-control" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} id='inputCurrentPassword' />
+                                <label className='form-label' htmlFor='inputNewPassword' ref={newPasswordRef}> Nueva contraseña: </label>
+                                <input type="password" className="form-control" value={newPassword} onChange={e => setNewPassword(e.target.value)} id='inputNewPassword' />
+                                <label className='form-label' htmlFor='inputConfirmPassword' ref={confirmPasswordRef}> Confirmar nueva contraseña: </label>
+                                <input type="password" className="form-control" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} id='inputConfirmPassword' />
+                                {error && <p className='errorContainer'> {error} </p>}
+                                <button className='search-button' onClick={() => cambiarContra(currentPassword, newPassword)}> Cambiar contraseña </button>
                                 <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
-                            </div>
-                        </>
-                    }
-                </div>
+                            </>
+                        )
+                            : <>
+                                <div className='mensajeExito'>
+                                    <h2 style={{ color: "#242465" }}> ¡Listo!</h2>
+                                    <p> Su contraseña ha sido actualizada con exito</p>
+                                    <p className='textoRedireccion' onClick={redirectMiPerfil}> Volver a Mi Perfil </p>
+                                </div>
+                            </>
+                        }
+                    </div>
+                <Footer></Footer>
+                </>
                 : <Mantenimiento></Mantenimiento>}
         </>
     )
