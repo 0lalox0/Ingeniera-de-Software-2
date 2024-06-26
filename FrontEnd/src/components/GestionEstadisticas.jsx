@@ -13,6 +13,8 @@ export const GestionEstadisticas = () => {
 
   const redirectAdmin = () => navigate('/admin');
 
+  const redirectEstadisticasSucursales = () => navigate('/admin/estadisticasSucursales');
+
   return (
     <>
       {role === 'admin' ? <>
@@ -29,6 +31,7 @@ export const GestionEstadisticas = () => {
             title='Estadísticas de sucursales'
             paragraph='Visualizá las estadísticas de las sucursales de Ferreplus'
             imageSrc={sucursales}
+            onClick={redirectEstadisticasSucursales}
           />
 
           <CardComponent

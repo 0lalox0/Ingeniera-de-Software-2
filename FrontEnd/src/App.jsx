@@ -28,6 +28,7 @@ import { ListarPropuestas } from './components/ListarPropuestas'
 import { PerfilEmpleado } from './components/PerfilEmpleado'
 import { GestionPropuestasAceptadas } from './components/GestionPropuestasAceptadas'
 import { GestionEstadisticas } from './components/GestionEstadisticas'
+import { EstadisticasSucursales } from './components/EstadisticasSucursales'
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
         <Route path='/admin/listarEmpleados' element={<ListarEmpleados />}> </Route>
         <Route path='/admin/eliminarSucursal' element={<EliminarSucursal />}> </Route>
         <Route path='/admin/estadisticas' element={<GestionEstadisticas />}> </Route>
+        <Route path='/admin/estadisticasSucursales' element={<EstadisticasSucursales />}> </Route>
         <Route path='/SubirImagen' element={<SubirImagen />}> </Route>
         <Route path='/editarPerfil' element={<EditarPerfil />}> </Route>
         <Route path='/perfilUsuario' element={<PerfilUsuario />}> </Route>
