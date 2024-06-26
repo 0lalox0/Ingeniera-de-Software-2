@@ -119,8 +119,6 @@ export const EstadisticasSucursales = () => {
                 .attr("height", d => height - y(d.value))
                 .attr("fill", d => colorScale(d.key));
 
-            // Después de agregar las barras al gráfico
-
             // Datos de la leyenda
             const leyendaDatos = [
                 { color: colorScale("total"), nombre: "Total" },
@@ -130,7 +128,7 @@ export const EstadisticasSucursales = () => {
             // Agregar grupo para la leyenda
             const leyenda = svg.append("g")
                 .attr("class", "leyenda")
-                .attr("transform", "translate(" + (width - 100) + ",0)"); // Ajusta la posición según necesites
+                .attr("transform", "translate(" + (width - 100) + ",0)"); // Ajusta la posición
 
             // Rectángulos y texto para leyendas con colores
             leyendaDatos.forEach((d, i) => {

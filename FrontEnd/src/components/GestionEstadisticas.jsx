@@ -14,6 +14,8 @@ export const GestionEstadisticas = () => {
   const redirectAdmin = () => navigate('/admin');
 
   const redirectEstadisticasSucursales = () => navigate('/admin/estadisticasSucursales');
+  const redirectEstadisticasCategorias = () => navigate('/admin/estadisticasCategorias');
+  const redirectEstadisticasEmpleados = () => navigate('/admin/estadisticasEmpleados');
 
   return (
     <>
@@ -38,12 +40,14 @@ export const GestionEstadisticas = () => {
             title='Estadísticas de categorías'
             paragraph='Visualizá las estadísticas de las categorías de los productos'
             imageSrc={categorias}
+            onClick={redirectEstadisticasCategorias}
           />
 
           <CardComponent
             title='Estadísticas de empleados'
             paragraph='Visualizá las estadísticas de los empleados de Ferreplus'
             imageSrc={empleados}
+            onClick={redirectEstadisticasEmpleados}
           />
 
         </div>

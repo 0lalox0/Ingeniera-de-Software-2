@@ -273,7 +273,7 @@ export const GestionPropuestasAceptadas = () => {
                                                                     margin: 'auto',
                                                                     overflow: 'hidden',
                                                                     position: 'fixed',
-                                                                    top: '50%',
+                                                                    top: '100%',
                                                                     left: '50%',
                                                                     transform: 'translate(30%, -120%)'
                                                                 },
