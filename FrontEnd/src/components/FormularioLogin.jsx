@@ -30,11 +30,31 @@ export const FormularioLogin = () => {
     }
 
     const logIn = async () => {
+
         if (chequeo()) {
             try {
-                await signInWithEmailAndPassword(getAuth(), email, password);
-                localStorage.setItem("email", email);
-                navigate('/intercambios');
+                if (email.endsWith('@ferreplus.com')) {
+                    try {
+                        const response = await fetch('http://localhost:8000/api/empleados');
+                        const empleados = await response.json();
+                        const empleado = empleados.find(emp => emp.email === email);
+                        if (empleado && empleado.activo) {
+                            await signInWithEmailAndPassword(getAuth(), email, password);
+                            localStorage.setItem("email", email);
+                            navigate('/intercambios');
+                        } else {
+                            setError('El empleado no está activo.');
+                            return;
+                        }
+                    } catch (error) {
+                        setError('Error al verificar el estado del empleado.');
+                        return;
+                    }
+                } else {
+                    await signInWithEmailAndPassword(getAuth(), email, password);
+                    localStorage.setItem("email", email);
+                    navigate('/intercambios');
+                }
             } catch (e) {
                 if (e.message.includes("auth/wrong-password"))
                     setError('Mail o contraseña incorrectos.');
