@@ -34,6 +34,7 @@ import { EstadisticasEmpleados } from './components/EstadisticasEmpleados'
 import { Contacto } from './components/Contacto'
 import { Soporte } from './components/Soporte'
 import { Terminos } from './components/Terminos'
+import { Preguntas } from './components/Preguntas'
 
 function App() {
 
@@ -75,6 +76,7 @@ function App() {
         <Route path='/contacto' element={<Contacto />} />
         <Route path='/soporte' element={<Soporte />} />
         <Route path='/terminos' element={<Terminos />} />
+        <Route path='/preguntas' element={<Preguntas />} />
       </Routes>
     </>
   )

@@ -117,76 +117,79 @@ export const FormularioRegistro = () => {
     const redirectInicioSesion = () => navigate('/inicioSesion');
 
     return (
-        <div className='formularioRegistro' onKeyDown={handleKeyDown}>
+        <>
+            <div className='formularioRegistro' onKeyDown={handleKeyDown}>
 
-            <h3 style={{ color: "#242465" }}>
-                ¡Registrate en Ferreplus Intercambios!
-            </h3>
+                <h3 style={{ color: "#242465" }}>
+                    ¡Registrate en Ferreplus Intercambios!
+                </h3>
 
-            <div className="mb-3">
-                <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre completo: </label>
-                <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label htmlFor='nombre' style={{ color: error === 'Se debe ingresar un nombre.' ? 'red' : 'black' }}> Nombre completo: </label>
+                    <input className="form-control" type="text" placeholder='Juan' id='nombre' value={name} onChange={e => setName(e.target.value)} onKeyDown={handleKeyDown} />
+                </div>
 
-            <div className="mb-3">
-                <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
-                <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label htmlFor='apellido' style={{ color: error === 'Se debe ingresar un apellido.' ? 'red' : 'black' }}> Apellido: </label>
+                    <input className="form-control" type="text" placeholder='Perez' id='apellido' value={surname} onChange={e => setSurname(e.target.value)} onKeyDown={handleKeyDown} />
+                </div>
 
-            <div className="mb-3">
-                <label id='labelFecha' htmlFor='fechaNacimiento' style=
-                    {{ color: error === 'Se debe seleccionar una fecha.' || error === 'Se debe ser mayor de 18 años para poder registrarse.' ? 'red' : 'black' }}>
-                    Fecha de nacimiento: </label>
-                <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label id='labelFecha' htmlFor='fechaNacimiento' style=
+                        {{ color: error === 'Se debe seleccionar una fecha.' || error === 'Se debe ser mayor de 18 años para poder registrarse.' ? 'red' : 'black' }}>
+                        Fecha de nacimiento: </label>
+                    <input className="form-control" type="date" id='fechaNacimiento' value={date} onChange={e => setDate(e.target.value)} onKeyDown={handleKeyDown} />
+                </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un mail.' || error === 'No se pueden usar emails de Ferreplus.' ? 'red' : 'black' }}> Mail: </label>
-                <input
-                    type="email"
-                    className="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder='ejemplo123@gmail.com'
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputEmail1" className="form-label" style={{ color: error === 'Se debe ingresar un mail.' || error === 'No se pueden usar emails de Ferreplus.' ? 'red' : 'black' }}> Mail: </label>
+                    <input
+                        type="email"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        placeholder='ejemplo123@gmail.com'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        onKeyDown={handleKeyDown} />
+                </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
-                    {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
-                    Contraseña:</label>
-                <input
-                    className="form-control"
-                    id="exampleInputPassword1"
-                    type="password"
-                    placeholder='Contraseña'
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra1' style=
+                        {{ color: error === 'Se debe ingresar una contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                        Contraseña:</label>
+                    <input
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        type="password"
+                        placeholder='Contraseña'
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        onKeyDown={handleKeyDown} />
+                </div>
 
-            <div className="mb-3">
-                <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
-                    {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
-                    Confirmar contraseña:</label>
-                <input
-                    className="form-control"
-                    id="exampleInputPassword2"
-                    type="password"
-                    placeholder='Repetir contraseña'
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    onKeyDown={handleKeyDown} />
-            </div>
+                <div className="mb-3">
+                    <label htmlFor="exampleInputPassword1" className="form-label" id='labelContra2' style=
+                        {{ color: error === 'Se debe confirmar la contraseña.' || error === 'Las contraseñas no coinciden.' ? 'red' : 'black' }}>
+                        Confirmar contraseña:</label>
+                    <input
+                        className="form-control"
+                        id="exampleInputPassword2"
+                        type="password"
+                        placeholder='Repetir contraseña'
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        onKeyDown={handleKeyDown} />
+                </div>
 
-            <button className="btn btn-primary" onClick={createAccount}>Crear cuenta</button>
+                <button className="btn btn-primary" onClick={createAccount}>Crear cuenta</button>
 
-            {error && <p className='errorContainer'>{error}</p>}
+                {error && <p className='errorContainer'>{error}</p>}
 
-            <p onClick={redirectInicioSesion} className='textoRedireccion'> ¿Ya estás registrado? Iniciar sesión </p>
-        
-        </div >
+                <p onClick={redirectInicioSesion} className='textoRedireccion'> ¿Ya estás registrado? Iniciar sesión </p>
+
+            </div >
+            <Footer />
+        </>
     )
 }
