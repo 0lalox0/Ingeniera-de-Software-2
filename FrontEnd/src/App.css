@@ -67,7 +67,6 @@ header {
 
 @media (max-width: 900px) {
 
-  header .search-container,
   header .menuOpciones,
   header .botones {
     display: none;
@@ -101,23 +100,15 @@ header {
 
   .clase-sucursales table,
   .clase-eleccion {
-    top: 45%;
+    top: 40% !important;
+  }
+
+  #logoFerreplus {
+    width: 15rem;
   }
 
   .clase-propuestas table {
     top: 150% !important;
-  }
-
-  header .search-container,
-  header .menuOpciones,
-  header .botones {
-    display: none;
-  }
-
-  #dropdown {
-    display: block !important;
-    position: absolute;
-    right: 1%;
   }
 }
 
@@ -129,53 +120,6 @@ header {
 
 .dropdown-item:hover {
   cursor: pointer;
-}
-
-.search-container {
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-}
-
-.search-input {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: 2px solid #210c98;
-  border-radius: 10px;
-  width: auto;
-}
-
-.search-button {
-  padding: 12px 20px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  margin: 3px;
-}
-
-.fa {
-  margin-right: 10px;
-}
-
-.search-button:hover {
-  background-color: #0056b3;
-}
-
-.search-input:focus {
-  outline: none;
-  margin: 0%;
-  border: 3px solid #210c98;
-}
-
-.search-button:focus {
-  outline: none;
-  margin: 3px;
-  border: none;
 }
 
 .menuOpciones {
@@ -199,6 +143,7 @@ header {
 .menuOpciones li:hover {
   cursor: pointer;
   font-weight: bold;
+  color: #242465;
 }
 
 #botonMiPerfil,

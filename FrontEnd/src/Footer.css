@@ -23,10 +23,19 @@
 
 @media (max-width: 1300px) {
     .texto {
-        max-width: 90%;
+        max-width: 100%;
     }
+
+    .textoContacto {
+        font-size: small;
+    }
+
+}
+
+.texto img {
+    transition: transform 0.3s ease-in-out;
 }
 
 .texto img:hover {
-    transform: translateY(-3px);
+    transform: translateY(-10px);
 }

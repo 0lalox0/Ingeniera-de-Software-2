@@ -33,6 +33,7 @@ import { EstadisticasCategorias } from './components/EstadisticasCategorias'
 import { EstadisticasEmpleados } from './components/EstadisticasEmpleados'
 import { Contacto } from './components/Contacto'
 import { Soporte } from './components/Soporte'
+import { Terminos } from './components/Terminos'
 
 function App() {
 
@@ -73,6 +74,7 @@ function App() {
         <Route path='/perfilEmpleado/propuestas' element={<GestionPropuestasAceptadas />}> </Route>
         <Route path='/contacto' element={<Contacto />} />
         <Route path='/soporte' element={<Soporte />} />
+        <Route path='/terminos' element={<Terminos />} />
       </Routes>
     </>
   )
