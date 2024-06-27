@@ -33,13 +33,6 @@ export const HeaderFerreplus = () => {
     <header>
       <img src={logo} alt="" id="logoFerreplus" onClick={redirectHome} />
 
-      <div className="search-container">
-        <input type="text" className="search-input" placeholder="Buscá en Ferreplus..." id='buscador' />
-        <button type="submit" className="search-button">
-          <i className="fa fa-search"></i>Buscar
-        </button>
-      </div>
-
       <div className='menuOpciones'>
         <ul>
           <li onClick={redirectIntercambios} className={isActive('/intercambios') ? 'paginaActiva' : ''}> Intercambios</li>

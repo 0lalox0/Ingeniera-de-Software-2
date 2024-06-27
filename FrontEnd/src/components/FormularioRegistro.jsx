@@ -187,7 +187,6 @@ export const FormularioRegistro = () => {
 
             <p onClick={redirectInicioSesion} className='textoRedireccion'> ¿Ya estás registrado? Iniciar sesión </p>
         
-        <Footer />
         </div >
     )
 }

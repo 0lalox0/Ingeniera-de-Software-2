@@ -1,0 +1,32 @@
+/* CONTACTO */
+.texto {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 60%;
+    margin: 1rem;
+    position: absolute;
+    top: 25%;
+    left: 0;
+}
+
+.texto h1 {
+    color: #242465;
+}
+
+@media (max-height: 500px) {
+    .texto {
+        max-width: 90%;
+        top: 15%;
+    }
+}
+
+@media (max-width: 1300px) {
+    .texto {
+        max-width: 90%;
+    }
+}
+
+.texto img:hover {
+    transform: translateY(-3px);
+}

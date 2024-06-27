@@ -31,6 +31,8 @@ import { GestionEstadisticas } from './components/GestionEstadisticas'
 import { EstadisticasSucursales } from './components/EstadisticasSucursales'
 import { EstadisticasCategorias } from './components/EstadisticasCategorias'
 import { EstadisticasEmpleados } from './components/EstadisticasEmpleados'
+import { Contacto } from './components/Contacto'
+import { Soporte } from './components/Soporte'
 
 function App() {
 
@@ -69,6 +71,8 @@ function App() {
         <Route path='/elegiProducto/:id' element={<ElegirProducto />}></Route>
         <Route path='/perfilEmpleado' element={<PerfilEmpleado />}> </Route>
         <Route path='/perfilEmpleado/propuestas' element={<GestionPropuestasAceptadas />}> </Route>
+        <Route path='/contacto' element={<Contacto />} />
+        <Route path='/soporte' element={<Soporte />} />
       </Routes>
     </>
   )
