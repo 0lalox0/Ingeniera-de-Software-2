@@ -28,6 +28,13 @@ router.get('/empleadosDNI/:id', (req, res) => {
     .then((data) => res.json(data)).catch(() => null)
 })
 
+//get empleado por id
+router.get('/empleadosId/:id', (req, res) => {
+    const { id } = req.params
+    EmpleadoSchema.findOne({_id: id})
+    .then((data) => res.json(data)).catch(() => null)
+})
+
 //update a empleado
 router.put('/empleados/:id', (req, res) => {
     const { id } = req.params
