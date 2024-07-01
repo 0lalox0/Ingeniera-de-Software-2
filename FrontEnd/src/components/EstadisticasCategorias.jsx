@@ -14,78 +14,133 @@ export const EstadisticasCategorias = () => {
     const redirectAdminEstadisticas = () => navigate('/admin/estadisticas');
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/prodIntercambios')
-            .then(response => response.json())
-            .then(data => setIntercambios(data))
-            .catch(error => console.error('Error:', error));
+        const fetchIntercambios = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
+                let data = await response.json();
+                const intercambiosConCategoria = await Promise.all(data.map(async (intercambio) => {
+                    const responseProducto = await fetch(`http://localhost:8000/api/prodIntercambios/${intercambio.productoOfrecido}`);
+                    const producto = await responseProducto.json();
+                    return { ...intercambio, categoria: producto.categoria };// Devuelve intercambio y agrega el campo 'categoria'
+                }));
+                setIntercambios(intercambiosConCategoria);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error en fetch de intercambios:', error);
+                setLoading(false);
+            }
+        };
+        fetchIntercambios();
+        
     }, []);
 
     useEffect(() => {
-
         if (!loading && d3Container.current) {
-            console.log(intercambios);
-            // Agrupa intercambios por categoria y suma cantidades
-            const agrupado = {};
-            intercambios.forEach(({ categoria, cantidad }) => {
-                if (agrupado[categoria]) {
-                    agrupado[categoria] += cantidad;
-                } else {
-                    agrupado[categoria] = cantidad;
-                }
-            });
-            const datosAgrupados = Object.keys(agrupado).map(categoria => ({
-                categoria,
-                cantidad: agrupado[categoria]
-            }));
-            console.log(datosAgrupados);
             // Ajustes de margen, ancho y alto
             const margin = { top: 60, right: 30, bottom: 190, left: 50 },
                 width = 460 - margin.left - margin.right,
-                height = 350 - margin.top - margin.bottom;
-
-            // SVG
+                height = 400 - margin.top - margin.bottom; // Ajuste en altura para mejor visualización
+    
+            // Añade el SVG al contenedor
             const svg = d3.select(d3Container.current)
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
-
-            // Escala X
-            const x = d3.scaleBand()
-                .range([0, width])
-                .domain(intercambios.map(d => d.categoria))
-                .padding(0.1);
-
-            // Escala Y
-            const y = d3.scaleLinear()
-                .domain([0, d3.max(intercambios, d => d.cantidad)])
-                .range([height, 0]);
-
-            // Añade eje X al SVG
+    
+            // Preparación de los datos
+            const categorias = intercambios.reduce((acc, intercambio) => {
+                const { categoria, estado } = intercambio;
+                if (!acc[categoria]) {
+                    acc[categoria] = { total: 0, realizados: 0 };
+                }
+                acc[categoria].total += 1;
+                if (estado === 'realizado') {
+                    acc[categoria].realizados += 1;
+                }
+                return acc;
+            }, {});
+    
+            const data = Object.keys(categorias).map(key => ({
+                categoria: key,
+                ...categorias[key]
+            }));
+    
+            // Colores para las barras
+            const colorScale = d3.scaleOrdinal()
+                .domain(["total", "realizados"])
+                .range(["#1f77b4", "#ff7f0e"]);
+    
+            // Escala para el eje X (categorias)
+            const x0 = d3.scaleBand()
+                .rangeRound([0, width])
+                .paddingInner(0.1)
+                .domain(data.map(d => d.categoria));
+    
+            const x1 = d3.scaleBand()
+                .padding(0.05)
+                .domain(["total", "realizados"])
+                .rangeRound([0, x0.bandwidth()]);
+    
             svg.append("g")
                 .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(x))
+                .call(d3.axisBottom(x0))
                 .selectAll("text")
-                .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", "rotate(-65)");
-
-            // Añade eje Y al SVG
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+    
+            // Escala para el eje Y (valores)
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => Math.max(d.total, d.realizados))])
+                .range([height, 0]);
+    
             svg.append("g")
-                .call(d3.axisLeft(y));
-
-            // Barras del gráfico
-            svg.selectAll(".bar")
-                .data(intercambios)
+                .call(d3.axisLeft(y).ticks(7)); // Limita el eje y a 7 elementos
+    
+            // Barras para total de intercambios y realizados
+            const categoria = svg.selectAll(".categoria")
+                .data(data)
+                .enter().append("g")
+                .attr("class", "categoria")
+                .attr("transform", d => `translate(${x0(d.categoria)},0)`);
+    
+            categoria.selectAll("rect")
+                .data(d => [{ key: "total", value: d.total }, { key: "realizados", value: d.realizados }])
                 .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", d => x(d.categoria))
-                .attr("width", x.bandwidth())
-                .attr("y", d => y(d.cantidad))
-                .attr("height", d => height - y(d.cantidad))
-                .attr("fill", "#69b3a2");
-
+                .attr("x", d => x1(d.key))
+                .attr("y", d => y(d.value))
+                .attr("width", x1.bandwidth())
+                .attr("height", d => height - y(d.value))
+                .attr("fill", d => colorScale(d.key));
+    
+            // Datos de la leyenda
+            const leyendaDatos = [
+                { color: colorScale("total"), nombre: "Total" },
+                { color: colorScale("realizados"), nombre: "Concretados" }
+            ];
+    
+            // Agregar grupo para la leyenda
+            const leyenda = svg.append("g")
+                .attr("class", "leyenda")
+                .attr("transform", "translate(" + (width - 100) + ",0)"); // Ajusta la posición
+    
+            // Rectángulos y texto para leyendas con colores
+            leyendaDatos.forEach((d, i) => {
+                leyenda.append("rect")
+                    .attr("x", 0)
+                    .attr("y", i * 20) // Ajusta la separación entre elementos
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", d.color);
+    
+                leyenda.append("text")
+                    .attr("x", 24)
+                    .attr("y", i * 20 + 9) // Ajusta para alinear con el centro del rectángulo
+                    .attr("dy", ".35em") // Centrado vertical
+                    .text(d.nombre)
+                    .style("text-anchor", "start")
+                    .style("font-size", "12px");
+            });
         }
     }, [loading, intercambios]);
 
@@ -94,11 +149,12 @@ export const EstadisticasCategorias = () => {
             {role === 'admin' ?
                 <div className='clase-propuestas'>
                     <div className='titulos titulo-propuestas'>
+                        
                         <h1>Estadísticas - Categorías</h1>
                         <h2>Intercambios publicados por categoría</h2>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
                     </div>
-                    <div>
+                    <div style={{ marginTop: '150px' }}>
                         {loading ? <p>Cargando...</p> : <svg ref={d3Container}></svg>}
                     </div>
                 </div>
