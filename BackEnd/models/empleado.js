@@ -31,6 +31,14 @@ const EmpleadoSchema = new Schema({
     activo: { 
         type: Boolean,
         default: true
+    },
+    cantidadAceptados: {
+        type: Number,
+        default: 0
+    },
+    cantidadRechazados: {
+        type: Number,
+        default: 0
     }
 })
 
