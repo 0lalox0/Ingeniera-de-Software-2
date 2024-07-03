@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import * as d3 from 'd3';
+import cargando from '../assets/cargando.gif';
 
 export const EstadisticasEmpleados = () => {
     const { role } = useUser();
@@ -143,7 +144,7 @@ export const EstadisticasEmpleados = () => {
                 .range([height, 0]);
 
             svg.append("g")
-            .call(d3.axisLeft(y).ticks(data.length).tickFormat(d3.format("d")));
+                .call(d3.axisLeft(y).ticks(data.length).tickFormat(d3.format("d")));
 
             svg.selectAll("bars")
                 .data(data)
@@ -160,20 +161,14 @@ export const EstadisticasEmpleados = () => {
     return (
         <>
             {role === 'admin' ?
-                <div className='clase-propuestas'>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div className='titulos titulo-propuestas' style={{ marginTop: '0px' }}>
                         <h1>Estadísticas - Empleados</h1>
-                        <h2>Top 5 con más ganancias registradas</h2>
-                        <p className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
-                    </div>
-                    <div style={{ marginTop: '150px' }}>
-                        {loading ? <p>Cargando...</p> : <svg ref={d3GananciasContainer}></svg>}
-                    </div>
-                    <div className='titulos titulo-propuestas' style={{ marginTop: '400px' }}>
-                        <h2>Top 5 con más intercambios registrados</h2>
-                    </div>
-                    <div style={{ marginTop: '0px' }}>
-                        {loading ? <p>Cargando...</p> : <svg ref={d3IntercambiosContainer}></svg>}
+                        <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas</p>
+                        <h2 style={{ color: '#439ac8' }} >Top 5 empleados con más ganancias registradas: </h2>
+                        {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
+                        <h2 style={{ color: '#439ac8' }} >Top 5 empleados con más intercambios registrados: </h2>
+                        {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3IntercambiosContainer}></svg>}
                     </div>
                 </div>
                 : <> <Mantenimiento> </Mantenimiento></>}
