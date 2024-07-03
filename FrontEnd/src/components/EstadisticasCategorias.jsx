@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import * as d3 from 'd3';
+import cargando from '../assets/cargando.gif';
 
 export const EstadisticasCategorias = () => {
     const { role } = useUser();
@@ -31,7 +32,7 @@ export const EstadisticasCategorias = () => {
             }
         };
         fetchIntercambios();
-        
+
     }, []);
 
     useEffect(() => {
@@ -40,14 +41,14 @@ export const EstadisticasCategorias = () => {
             const margin = { top: 60, right: 30, bottom: 190, left: 50 },
                 width = 460 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom; // Ajuste en altura para mejor visualización
-    
+
             // Añade el SVG al contenedor
             const svg = d3.select(d3Container.current)
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
-    
+
             // Preparación de los datos
             const categorias = intercambios.reduce((acc, intercambio) => {
                 const { categoria, estado } = intercambio;
@@ -60,50 +61,50 @@ export const EstadisticasCategorias = () => {
                 }
                 return acc;
             }, {});
-    
+
             const data = Object.keys(categorias).map(key => ({
                 categoria: key,
                 ...categorias[key]
             }));
-    
+
             // Colores para las barras
             const colorScale = d3.scaleOrdinal()
                 .domain(["total", "realizados"])
                 .range(["#1f77b4", "#ff7f0e"]);
-    
+
             // Escala para el eje X (categorias)
             const x0 = d3.scaleBand()
                 .rangeRound([0, width])
                 .paddingInner(0.1)
                 .domain(data.map(d => d.categoria));
-    
+
             const x1 = d3.scaleBand()
                 .padding(0.05)
                 .domain(["total", "realizados"])
                 .rangeRound([0, x0.bandwidth()]);
-    
+
             svg.append("g")
                 .attr("transform", `translate(0,${height})`)
                 .call(d3.axisBottom(x0))
                 .selectAll("text")
                 .attr("transform", "translate(-10,0)rotate(-45)")
                 .style("text-anchor", "end");
-    
+
             // Escala para el eje Y (valores)
             const y = d3.scaleLinear()
                 .domain([0, d3.max(data, d => Math.max(d.total, d.realizados))])
                 .range([height, 0]);
-    
+
             svg.append("g")
                 .call(d3.axisLeft(y).ticks(7)); // Limita el eje y a 7 elementos
-    
+
             // Barras para total de intercambios y realizados
             const categoria = svg.selectAll(".categoria")
                 .data(data)
                 .enter().append("g")
                 .attr("class", "categoria")
                 .attr("transform", d => `translate(${x0(d.categoria)},0)`);
-    
+
             categoria.selectAll("rect")
                 .data(d => [{ key: "total", value: d.total }, { key: "realizados", value: d.realizados }])
                 .enter().append("rect")
@@ -112,18 +113,18 @@ export const EstadisticasCategorias = () => {
                 .attr("width", x1.bandwidth())
                 .attr("height", d => height - y(d.value))
                 .attr("fill", d => colorScale(d.key));
-    
+
             // Datos de la leyenda
             const leyendaDatos = [
                 { color: colorScale("total"), nombre: "Total" },
                 { color: colorScale("realizados"), nombre: "Concretados" }
             ];
-    
+
             // Agregar grupo para la leyenda
             const leyenda = svg.append("g")
                 .attr("class", "leyenda")
                 .attr("transform", "translate(" + (width - 100) + ",0)"); // Ajusta la posición
-    
+
             // Rectángulos y texto para leyendas con colores
             leyendaDatos.forEach((d, i) => {
                 leyenda.append("rect")
@@ -132,7 +133,7 @@ export const EstadisticasCategorias = () => {
                     .attr("width", 18)
                     .attr("height", 18)
                     .style("fill", d.color);
-    
+
                 leyenda.append("text")
                     .attr("x", 24)
                     .attr("y", i * 20 + 9) // Ajusta para alinear con el centro del rectángulo
@@ -147,15 +148,13 @@ export const EstadisticasCategorias = () => {
     return (
         <>
             {role === 'admin' ?
-                <div className='clase-propuestas'>
-                    <div className='titulos titulo-propuestas'>
-                        
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div className='titulos titulo-propuestas' style={{ marginTop: '0px' }}>
                         <h1>Estadísticas - Categorías</h1>
-                        <h2>Intercambios publicados por categoría</h2>
-                        <p className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
-                    </div>
-                    <div style={{ marginTop: '150px' }}>
-                        {loading ? <p>Cargando...</p> : <svg ref={d3Container}></svg>}
+                        <p style={{ position: 'relative', top: '0', alignSelf: 'auto' }} className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
+                        <h2 style={{ color: '#439ac8' }}>Intercambios por categoría: </h2>
+                        <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
+                        {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
                     </div>
                 </div>
                 : <> <Mantenimiento> </Mantenimiento></>}

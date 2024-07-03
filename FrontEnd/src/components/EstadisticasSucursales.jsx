@@ -313,10 +313,10 @@ export const EstadisticasSucursales = () => {
                         </div>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
                         <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
-                        <h2 style={{ color: '#242465' }}> Intercambios realizados por sucursal: </h2>
+                        <h2 style={{ color: '#439ac8' }}> Intercambios por sucursal: </h2>
                         <p ref={refMensaje} style={{ position: 'relative', top: '0', alignSelf: 'auto' }}> {mensajeError} </p>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
-                        <h2 style={{ color: '#242465' }} >Ganancias por sucursal: </h2>
+                        <h2 style={{ color: '#439ac8' }} >Ganancias por sucursal: </h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
                     </div>
                 </div>
