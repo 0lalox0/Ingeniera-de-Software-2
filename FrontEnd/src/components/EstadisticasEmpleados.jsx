@@ -167,7 +167,7 @@ export const EstadisticasEmpleados = () => {
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas</p>
                         <h2 style={{ color: '#439ac8' }} >Top 5 empleados con más ganancias registradas: </h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
-                        <h2 style={{ color: '#439ac8' }} >Top 5 empleados con más intercambios registrados: </h2>
+                        <h2 style={{ color: '#439ac8' }} >Top 5 empleados con más Compras registradas: </h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3IntercambiosContainer}></svg>}
                     </div>
                 </div>

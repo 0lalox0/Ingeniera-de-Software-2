@@ -1,5 +1,21 @@
 document.getElementById("buton").addEventListener("click",async () =>{
   console.log("hola");
+  /*const res = await fetch("http://localhost:8000/api/prodIntercambios");
+  let data = await res.json();
+  data = data.filter(p => p.estado == "ocupado");
+  console.log(data);
+  data.forEach(p => {
+    const r =  fetch(`http://localhost:8000/api/prodIntercambios/${p._id}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        estado: "eliminado"
+      }),
+  });
+  });*/
+  
   /*function convertBase64(file){
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
@@ -36,8 +52,8 @@ document.getElementById("buton").addEventListener("click",async () =>{
     const que = await res;
     console.log(que);
     */
-   let data = { registrado: true }
-    const res = await fetch(`http://localhost:8000/api/prodIntercambio/`, {
+   /*let data = { registrado: true }
+    const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/`, {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json',
@@ -46,7 +62,7 @@ document.getElementById("buton").addEventListener("click",async () =>{
   });
   if (!res.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
-  }
+  }*/
  //console.log(response);
   /* console.log("hola");
     let email = localStorage.getItem("email");

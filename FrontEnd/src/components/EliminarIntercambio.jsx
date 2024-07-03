@@ -135,7 +135,7 @@ export const EliminarIntercambio = () => {
                                                         {intercambio.estado === 'libre' ?
                                                                 <button onClick={() => botonEliminar(intercambio._id)} className='botonEliminar'>Eliminar producto </button>
                                                                 : <>
-                                                                <p>Este producto no se puede eliminar</p>
+                                                                <p className='errorContainer'>Este producto no se puede eliminar.</p>
                                                                 </>
                                                         }
                                                         </>
