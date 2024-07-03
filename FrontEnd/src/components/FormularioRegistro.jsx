@@ -78,7 +78,7 @@ export const FormularioRegistro = () => {
         if (chequeo()) {
             try {
                 await createUserWithEmailAndPassword(getAuth(), email, password);
-                navigate('/productos');
+                navigate('/');
                 localStorage.setItem("email", email); //si se crea la cuenta, hay que guardar la info en mongodb
                 try {
                     const response = await fetch('http://localhost:8000/api/users', {
