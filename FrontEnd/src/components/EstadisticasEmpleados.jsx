@@ -61,7 +61,7 @@ export const EstadisticasEmpleados = () => {
             const gananciasPorApellido = {};
             Object.values(comprasPorEmpleado).forEach(grupoCompras => {
                 grupoCompras.compras.forEach(({ precio, apellidoEmpleado, nombreEmpleado }) => {
-                    const nombreCompleto = `${apellidoEmpleado} ${nombreEmpleado}`;
+                    const nombreCompleto = ` ${nombreEmpleado} ${apellidoEmpleado}`;
                     if (!gananciasPorApellido[nombreCompleto]) {
                         gananciasPorApellido[nombreCompleto] = 0;
                     }

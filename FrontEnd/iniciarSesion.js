@@ -16,7 +16,7 @@ document.getElementById("buton").addEventListener("click",async () =>{
         image: img
     })
    });*/
-   try{
+   /*try{
     const res = await fetch("http://localhost:8000/api/propuestaIntercambio");
     const data = await res.json();
     console.log(data);
@@ -35,6 +35,18 @@ document.getElementById("buton").addEventListener("click",async () =>{
               }
     const que = await res;
     console.log(que);
+    */
+   let data = { registrado: true }
+    const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/666b122fdec1569eed5c1f9d`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
  //console.log(response);
   /* console.log("hola");
     let email = localStorage.getItem("email");

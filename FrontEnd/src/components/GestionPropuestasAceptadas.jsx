@@ -4,6 +4,7 @@ import cargando from '../assets/cargando.gif';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import Modal from 'react-modal';
+import { faWindows } from '@fortawesome/free-brands-svg-icons';
 Modal.setAppElement('#root');
 
 export const GestionPropuestasAceptadas = () => {
@@ -174,7 +175,8 @@ export const GestionPropuestasAceptadas = () => {
         window.location.reload();
         //}
     }
-    const registarCompra = async () => {
+    const registarCompra = async (propuesta) => {
+        console.log(propuesta);
         if (precio > 0) {
             let n = new Date();
             refMensaje.current.style.color = '#07f717';
@@ -199,6 +201,20 @@ export const GestionPropuestasAceptadas = () => {
             } catch (error) {
                 console.error('Error:', error);
             }
+            const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/${propuesta._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrado : true
+                }),
+            });
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            closeModal();
+           //window.location.reload();
         }
         else {
             refMensaje.current.style.color = 'red';
@@ -261,31 +277,35 @@ export const GestionPropuestasAceptadas = () => {
                                                 {propuestas[index].estado == 'realizado' ?
                                                     <>
                                                         <p style={{ color: '#07f717' }}> Intercambio registrado</p>
-                                                        <button id='botonFecha' onClick={openModal} className='btn btn-warning'> Registrar Compra</button>
-                                                        <Modal
-                                                            isOpen={modalIsOpen}
-                                                            onRequestClose={closeModal}
-                                                            contentLabel="Valorar usuario"
-                                                            style={{
-                                                                content: {
-                                                                    width: '10rem',
-                                                                    height: '15rem',
-                                                                    margin: 'auto',
-                                                                    overflow: 'hidden',
-                                                                    position: 'fixed',
-                                                                    top: '100%',
-                                                                    left: '50%',
-                                                                    transform: 'translate(30%, -120%)'
-                                                                },
-                                                            }}
-                                                        >
-                                                            <form>
-                                                                <p style={{textAlign: 'center'}}> Ingrese precio de la compra realizada: </p>
-                                                                <input type="number" value={precio} onChange={e => setPrecio(e.target.value)} style={{width: '100%'}} min={0}/>
-                                                            </form>
-                                                            <button onClick={() => registarCompra()} className='btn btn-warning' style={{margin: '10px'}}>Guardar Compra</button>
-                                                            <p className='errorContainer' ref={refMensaje}> {message} </p>
-                                                        </Modal>
+                                                        {propuestas[index].registrado === false && (
+                                                        <>
+                                                            <button id='botonFecha' onClick={openModal} className='btn btn-warning'> Registrar Compra</button>  
+                                                            <Modal
+                                                                isOpen={modalIsOpen}
+                                                                onRequestClose={closeModal}
+                                                                contentLabel="Valorar usuario"
+                                                                style={{
+                                                                    content: {
+                                                                        width: '10rem',
+                                                                        height: '15rem',
+                                                                        margin: 'auto',
+                                                                        overflow: 'hidden',
+                                                                        position: 'fixed',
+                                                                        top: '100%',
+                                                                        left: '50%',
+                                                                        transform: 'translate(30%, -120%)'
+                                                                    },
+                                                                }}
+                                                            >
+                                                                <form>
+                                                                    <p style={{textAlign: 'center'}}> Ingrese precio de la compra realizada: </p>
+                                                                    <input type="number" value={precio} onChange={e => setPrecio(e.target.value)} style={{width: '100%'}} min={0}/>
+                                                                </form>
+                                                                <button onClick={() => registarCompra(propuestas[index])} className='btn btn-warning' style={{margin: '10px'}}>Guardar Compra</button>
+                                                                <p className='errorContainer' ref={refMensaje}> {message} </p>
+                                                            </Modal>
+                                                        </>
+                                                        )}                                                       
                                                     </>
                                                     : <>
                                                         {propuestas[index].estado == 'norealizado' ?
