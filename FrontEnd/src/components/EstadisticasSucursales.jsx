@@ -16,6 +16,8 @@ export const EstadisticasSucursales = () => {
     const [ganancias, setGanancias] = useState({});
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFin, setFechaFin] = useState('');
+    const [hayMensaje, setHayMensaje] = useState(false);
+    const [mensajeError, setMensajeError] = useState('');
 
     const redirectAdminEstadisticas = () => navigate('/admin/estadisticas');
 
@@ -227,21 +229,26 @@ export const EstadisticasSucursales = () => {
 
     const chequearFecha = () => {
         const hoy = new Date().toISOString().split('T')[0];
-        if (fechaInicio > fechaFin)
+        if (fechaInicio > fechaFin) {
+            setMensajeError('La fecha de inicio no puede ser futura a la fecha de fin.');
             return false;
-        if (fechaInicio > hoy || fechaFin > hoy)
+        }
+        if (fechaInicio > hoy || fechaFin > hoy) {
+            setMensajeError('No puede ingresar fechas futuras.'); 
             return false;
+        }
         return true;
     }
 
     const aplicarFiltro = () => {
         if (chequearFecha()) {
-            console.log('pasó');
-        } else
-            console.log('noooo');
+            // aca hay que hacer que se filtren las estadísticas
+            setMensajeError('');
+        }
     }
 
     const borrarFiltro = () => {
+        setMensajeError('');
         setFechaFin('');
         setFechaInicio('');
     }
@@ -269,7 +276,8 @@ export const EstadisticasSucursales = () => {
                             <button type='button' className='btn btn-danger' style={{ width: '30%', margin: '5px' }} onClick={borrarFiltro}> Borrar filtros</button>
                         </div>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
-                        <p className='errorContainer' style={{ position: 'relative', top: '0' }}> </p>
+                        <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
+                        {mensajeError ? <p className='errorContainer' style={{ position: 'relative', top: '0', alignSelf: 'auto'}}> {mensajeError} </p> : <> </>}
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
                         <h2 style={{ color: '#242465' }} >Ganancias por sucursal</h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
