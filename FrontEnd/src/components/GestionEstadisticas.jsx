@@ -14,7 +14,9 @@ export const GestionEstadisticas = () => {
   const redirectAdmin = () => navigate('/admin');
 
   const redirectEstadisticasSucursales = () => navigate('/admin/estadisticasSucursales');
+
   const redirectEstadisticasCategorias = () => navigate('/admin/estadisticasCategorias');
+  
   const redirectEstadisticasEmpleados = () => navigate('/admin/estadisticasEmpleados');
 
   return (

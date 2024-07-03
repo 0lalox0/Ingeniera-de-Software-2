@@ -190,7 +190,8 @@ export const ListarPropuestas = () => {
             rechazado: 'Rechazado',
             aceptado: 'Aceptado',
             realizado: 'Realizado',
-            pendiente: 'Pendiente'
+            pendiente: 'Pendiente',
+            rechazadoAutom: 'rechazadoAutom'
         }
         return estados[estado];
     }

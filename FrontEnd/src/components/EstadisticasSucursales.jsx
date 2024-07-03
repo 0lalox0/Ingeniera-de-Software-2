@@ -19,6 +19,7 @@ export const EstadisticasSucursales = () => {
     const [hayMensaje, setHayMensaje] = useState(false);
     const [mensajeError, setMensajeError] = useState('');
     const [filtrar, setFiltrar] = useState(false);
+    const refMensaje = useRef(null);
 
     const redirectAdminEstadisticas = () => navigate('/admin/estadisticas');
 
@@ -43,17 +44,16 @@ export const EstadisticasSucursales = () => {
                     const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(sucursal.nombre + " ")}`);
                     let data = await response.json();
                     let realizados;
-                    if(filtrar){
-                        data = data.filter(intercambio => isDateInRange(intercambio.fecha,fechaInicio,fechaFin));
+                    if (filtrar) {
+                        data = data.filter(intercambio => isDateInRange(intercambio.fecha, fechaInicio, fechaFin));
                         realizados = data.filter(intercambio => intercambio.estado === 'realizado').length;
-                       }else{
+                    } else {
                         realizados = data.filter(intercambio => intercambio.estado === 'realizado').length;
-                       }   
+                    }
                     intercambiosTemp[sucursal.nombre] = {
                         total: data.length, // cantidad total de intercambios por sucursal
                         realizados: realizados // cantidad de intercambios realizados por sucursal
                     };
-                    console.log(intercambiosTemp);
                 }
                 setIntercambios(intercambiosTemp);
 
@@ -72,17 +72,13 @@ export const EstadisticasSucursales = () => {
                 for (let sucursal of sucursales) {
                     gananciasTemp[sucursal.nombre] = 0;
                 }
-                console.log(productos[0].fecha);
-                if(filtrar){
-                    productos = productos.filter(producto => isDateInRange(producto.fecha,fechaInicio,fechaFin));
-                    console.log(productos);
+                if (filtrar) {
+                    productos = productos.filter(producto => isDateInRange(producto.fecha, fechaInicio, fechaFin));
                 }
                 productos.forEach(producto => {
                     const { nombreSucursal, precio } = producto;
                     gananciasTemp[nombreSucursal] += precio;
                 });
-
-                console.log(gananciasTemp);
                 setGanancias(gananciasTemp);
             } catch (error) {
                 console.error("Error fetching ganancias:", error);
@@ -265,38 +261,41 @@ export const EstadisticasSucursales = () => {
     const aplicarFiltro = () => {
         if (chequearFecha()) {
             // aca hay que hacer que se filtren las estadísticas
-            console.log("hola");
             setFiltrar(true);
-            setMensajeError('');
+            setMensajeError(`Se han filtrado las estadísticas desde el ${fechaInicio} hasta el ${fechaFin}`);
+            refMensaje.current.style.color = '#07f717';
         }
     }
 
     const borrarFiltro = () => {
-        setMensajeError('');
+        if (filtrar && (fechaFin != '' || fechaInicio !== '')) {
+            setMensajeError('Se han eliminado los filtros aplicados.');
+            refMensaje.current.style.color = 'red';
+        } else
+            setMensajeError('');
         setFechaFin('');
         setFechaInicio('');
         setFiltrar(false);
 
     }
+
     function isDateInRange(dateString, startDateString, endDateString) {
-        //console.log(dateString,startDateString,endDateString);
         const date = new Date(dateString);
         const startDate = new Date(startDateString);
         const endDate = new Date(endDateString);
-        
+
         // Set the time to the beginning of the day for start and end dates
         startDate.setUTCHours(0, 0, 0, 0);
         endDate.setUTCHours(23, 59, 59, 999);
-        console.log(date >= startDate && date <= endDate);
         return date >= startDate && date <= endDate;
     }
+
     return (
         <>
             {role === 'admin' ?
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div className='titulos titulo-propuestas' style={{ marginTop: '0px' }}>
                         <h1>Estadísticas - Sucursales</h1>
-                        <h2 style={{ color: '#242465' }}> Intercambios realizados por sucursal</h2>
                         <h2 style={{ color: '#439ac8' }}> Filtrado por fecha: </h2>
                         <h4 style={{ color: '#439ac8' }}> Fecha de inicio: </h4>
                         <input type="date" style={{ width: '30%' }}
@@ -314,9 +313,10 @@ export const EstadisticasSucursales = () => {
                         </div>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
                         <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
-                        {mensajeError ? <p className='errorContainer' style={{ position: 'relative', top: '0', alignSelf: 'auto' }}> {mensajeError} </p> : <> </>}
+                        <h2 style={{ color: '#242465' }}> Intercambios realizados por sucursal: </h2>
+                        <p ref={refMensaje} style={{ position: 'relative', top: '0', alignSelf: 'auto' }}> {mensajeError} </p>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
-                        <h2 style={{ color: '#242465' }} >Ganancias por sucursal</h2>
+                        <h2 style={{ color: '#242465' }} >Ganancias por sucursal: </h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
                     </div>
                 </div>

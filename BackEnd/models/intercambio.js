@@ -8,7 +8,7 @@ const IntercambioSchema = new Schema({
     usuarioDeseado: { type: String},
     nombreSucursal: { type: String},
     dia: { type: String},
-    estado: { type: String, enum: ['pendiente', 'aceptado', 'rechazado', 'realizado', 'norealizado'], default: 'pendiente' },
+    estado: { type: String, enum: ['pendiente', 'aceptado', 'rechazado', 'realizado', 'norealizado','rechazadoAutom'], default: 'pendiente' },
     fecha: { type: Date },
     calificoOfrecido: { type: Boolean, default: false },
     calificoDeseado: { type: Boolean, default: false },

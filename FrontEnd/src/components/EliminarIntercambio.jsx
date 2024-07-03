@@ -41,23 +41,34 @@ export const EliminarIntercambio = () => {
 
     const botonConfirmar = async (idProducto) => {
         setEliminar(null);
-        /*
+        
         let productoEliminar = buscarProducto(idProducto);
-        const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
+        const response = await fetch(`http://localhost:8000/api/eliminarIntercambio/${idProducto}`);
         let data = await response.json();
-        data.forEach(intercambio => async() => {
+        //console.log(data);
+        data.forEach(intercambio => {
             console.log(intercambio);
             //PUT
-            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${intercambio._id}`, {
+            const res =  fetch(`http://localhost:8000/api/propuestaIntercambio/${intercambio._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    estado: 'rechazado'
+                    estado: 'rechazadoAutom'
                 }),
             });
-        })*/
+
+        })
+        const res =  fetch(`http://localhost:8000/api/prodIntercambios/${idProducto}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                estado: 'eliminado'
+            }),
+        });
         /*try {
             const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
             const options = {
