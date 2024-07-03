@@ -229,12 +229,16 @@ export const EstadisticasSucursales = () => {
 
     const chequearFecha = () => {
         const hoy = new Date().toISOString().split('T')[0];
+        if (fechaInicio == '' || fechaFin == '') {
+            setMensajeError('Por favor, ingrese fechas.');
+            return false;
+        }
         if (fechaInicio > fechaFin) {
             setMensajeError('La fecha de inicio no puede ser futura a la fecha de fin.');
             return false;
         }
         if (fechaInicio > hoy || fechaFin > hoy) {
-            setMensajeError('No puede ingresar fechas futuras.'); 
+            setMensajeError('No puede ingresar fechas futuras.');
             return false;
         }
         return true;
@@ -265,11 +269,13 @@ export const EstadisticasSucursales = () => {
                         <input type="date" style={{ width: '30%' }}
                             value={fechaInicio}
                             onChange={e => setFechaInicio(e.target.value)}
+                            defaultValue={''}
                         />
                         <h4 style={{ color: '#439ac8' }}> Fecha de fin: </h4>
                         <input type="date" style={{ width: '30%' }}
                             value={fechaFin}
                             onChange={e => setFechaFin(e.target.value)}
+                            defaultValue={''}
                         />
                         <div style={{ display: 'flex' }}>
                             <button type="button" className="btn btn-primary" style={{ width: '30%', margin: '5px', marginLeft: '0' }} onClick={aplicarFiltro}> Filtrar </button>
@@ -277,7 +283,7 @@ export const EstadisticasSucursales = () => {
                         </div>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
                         <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
-                        {mensajeError ? <p className='errorContainer' style={{ position: 'relative', top: '0', alignSelf: 'auto'}}> {mensajeError} </p> : <> </>}
+                        {mensajeError ? <p className='errorContainer' style={{ position: 'relative', top: '0', alignSelf: 'auto' }}> {mensajeError} </p> : <> </>}
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
                         <h2 style={{ color: '#242465' }} >Ganancias por sucursal</h2>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
