@@ -95,12 +95,12 @@ export const EliminarIntercambio = () => {
                 <>
                     <div className='eliminacion-sucursales'>
                         <h1 style={{ color: "#242465" }}> Productos publicados para intercambiar </h1>
-                        <p className='textoRedireccion' onClick={redirectGestion}> Volver a la gestión de intercambios</p>
-                        <p className='errorContainer' ref={refMensaje}> {mensajeEliminar}</p>
+                        <p className='textoRedireccion' onClick={redirectGestion} style={{ position: 'relative', top: '0' }}> Volver a la gestión de intercambios</p>
+                        <p className='errorContainer' ref={refMensaje} style={{ position: 'absolute', top: '80%', left: '0' }}> {mensajeEliminar} </p>
                     </div>
                     {intercambios.length > 0 ?
                         <div className='clase-sucursales'>
-                            <table className="table table-hover align-middle " id='tablaSucursalesEliminar'>
+                            <table className="table table-hover align-middle " id='tablaSucursalesEliminar' style={{ top: '50%' }}>
                                 <thead>
                                     <tr>
                                         <th scope="col"> Título </th>

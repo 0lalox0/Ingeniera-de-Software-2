@@ -242,17 +242,21 @@ export const EstadisticasSucursales = () => {
     }, [loading, ganancias]);
 
     const chequearFecha = () => {
+        refMensaje.current.style.color = '';
         const hoy = new Date().toISOString().split('T')[0];
         if (fechaInicio == '' || fechaFin == '') {
             setMensajeError('Por favor, ingrese fechas.');
+            refMensaje.current.style.color = 'red';
             return false;
         }
         if (fechaInicio > fechaFin) {
             setMensajeError('La fecha de inicio no puede ser futura a la fecha de fin.');
+            refMensaje.current.style.color = 'red';
             return false;
         }
         if (fechaInicio > hoy || fechaFin > hoy) {
             setMensajeError('No puede ingresar fechas futuras.');
+            refMensaje.current.style.color = 'red';
             return false;
         }
         return true;
@@ -260,7 +264,6 @@ export const EstadisticasSucursales = () => {
 
     const aplicarFiltro = () => {
         if (chequearFecha()) {
-            // aca hay que hacer que se filtren las estadísticas
             setFiltrar(filtrar+1);
             setMensajeError(`Se han filtrado las estadísticas desde el ${fechaInicio} hasta el ${fechaFin}`);
             refMensaje.current.style.color = '#07f717';
@@ -283,8 +286,6 @@ export const EstadisticasSucursales = () => {
         const date = new Date(dateString);
         const startDate = new Date(startDateString);
         const endDate = new Date(endDateString);
-
-        // Set the time to the beginning of the day for start and end dates
         startDate.setUTCHours(0, 0, 0, 0);
         endDate.setUTCHours(23, 59, 59, 999);
         return date >= startDate && date <= endDate;
@@ -313,6 +314,7 @@ export const EstadisticasSucursales = () => {
                         </div>
                         <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
                         <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
+                        <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Concretados: todos los intercambios que han sido confirmados por los empleados. </small></p>
                         <h2 style={{ color: '#439ac8' }}> Intercambios por sucursal: </h2>
                         <p ref={refMensaje} style={{ position: 'relative', top: '0', alignSelf: 'auto' }}> {mensajeError} </p>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}

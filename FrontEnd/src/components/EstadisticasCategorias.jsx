@@ -154,6 +154,7 @@ export const EstadisticasCategorias = () => {
                         <p style={{ position: 'relative', top: '0', alignSelf: 'auto' }} className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
                         <h2 style={{ color: '#439ac8' }}>Intercambios por categoría: </h2>
                         <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Total: todos los intercambios sin importar el estado. </small></p>
+                        <p className="card-text" style={{ position: 'relative', top: '0' }}><small className="text-body-secondary"> Concretados: todos los intercambios que han sido confirmados por los empleados. </small></p>
                         {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
                     </div>
                 </div>
