@@ -41,8 +41,24 @@ export const EliminarIntercambio = () => {
 
     const botonConfirmar = async (idProducto) => {
         setEliminar(null);
+        /*
         let productoEliminar = buscarProducto(idProducto);
-        try {
+        const response = await fetch('http://localhost:8000/api/propuestaIntercambio');
+        let data = await response.json();
+        data.forEach(intercambio => async() => {
+            console.log(intercambio);
+            //PUT
+            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${intercambio._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'rechazado'
+                }),
+            });
+        })*/
+        /*try {
             const url = `http://localhost:8000/api/prodintercambios/${idProducto}`;
             const options = {
                 method: 'DELETE',
@@ -56,7 +72,7 @@ export const EliminarIntercambio = () => {
         } catch (error) {
             setMensajeEliminar('Hubo un error al eliminar el producto.');
             return;
-        }
+        }*/
         setMensajeEliminar(`Se ha eliminado el producto con título ${productoEliminar.titulo} de la categoría ${productoEliminar.categoria}`);
         setIntercambios(intercambios.filter((intercambio) => intercambio._id != idProducto));
     }
