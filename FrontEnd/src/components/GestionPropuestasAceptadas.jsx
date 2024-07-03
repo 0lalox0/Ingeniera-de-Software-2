@@ -153,6 +153,26 @@ export const GestionPropuestasAceptadas = () => {
                     estado: 'libre'
                 }),
             });
+        } else{
+            const res = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'eliminado'
+                }),
+            });
+
+            const resul = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoDeseado}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    estado: 'eliminado'
+                }),
+            });
         }
         // Actualizar el estado de la propuesta en el estado local
         setPropuestas(propuestas.map(p => p._id === propuesta._id ? propuestaActualizada : p));

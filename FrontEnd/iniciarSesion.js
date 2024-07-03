@@ -37,7 +37,7 @@ document.getElementById("buton").addEventListener("click",async () =>{
     console.log(que);
     */
    let data = { registrado: true }
-    const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/666b122fdec1569eed5c1f9d`, {
+    const res = await fetch(`http://localhost:8000/api/prodIntercambio/`, {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useUser from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
+import { Mantenimiento } from './Mantenimiento';
 
 export const EliminarIntercambio = () => {
     const { role } = useUser();
@@ -15,7 +16,7 @@ export const EliminarIntercambio = () => {
         fetch('http://localhost:8000/api/prodIntercambiosPorUsuario/' + email)
             .then(response => response.json())
             .then(data => {
-                setIntercambios(data.filter(o => o.estado == 'libre'));
+                setIntercambios(data.filter(o => o.estado != 'eliminado'));
             })
             .catch(error => console.error('Error:', error));
     }, []);
@@ -41,7 +42,7 @@ export const EliminarIntercambio = () => {
 
     const botonConfirmar = async (idProducto) => {
         setEliminar(null);
-        
+
         let productoEliminar = buscarProducto(idProducto);
         const response = await fetch(`http://localhost:8000/api/eliminarIntercambio/${idProducto}`);
         let data = await response.json();
@@ -49,7 +50,7 @@ export const EliminarIntercambio = () => {
         data.forEach(intercambio => {
             console.log(intercambio);
             //PUT
-            const res =  fetch(`http://localhost:8000/api/propuestaIntercambio/${intercambio._id}`, {
+            const res = fetch(`http://localhost:8000/api/propuestaIntercambio/${intercambio._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ export const EliminarIntercambio = () => {
             });
 
         })
-        const res =  fetch(`http://localhost:8000/api/prodIntercambios/${idProducto}`, {
+        const res = fetch(`http://localhost:8000/api/prodIntercambios/${idProducto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,7 +131,14 @@ export const EliminarIntercambio = () => {
                                                             <button onClick={botonCancelar}>Cancelar</button>
                                                         </>
                                                     ) : (
-                                                        <button onClick={() => botonEliminar(intercambio._id)} className='botonEliminar'>Eliminar producto </button>
+                                                        <>
+                                                        {intercambio.estado === 'libre' ?
+                                                                <button onClick={() => botonEliminar(intercambio._id)} className='botonEliminar'>Eliminar producto </button>
+                                                                : <>
+                                                                <p>Este producto no se puede eliminar</p>
+                                                                </>
+                                                        }
+                                                        </>
                                                     )}
                                                 </td>
                                             </tr>
@@ -144,8 +152,8 @@ export const EliminarIntercambio = () => {
                         </>}
                 </>
                 :
-                <>
-                </>}
+                <Mantenimiento></Mantenimiento>
+                }
         </>
     )
 }
