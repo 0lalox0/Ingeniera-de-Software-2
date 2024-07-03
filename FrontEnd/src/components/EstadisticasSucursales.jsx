@@ -18,7 +18,7 @@ export const EstadisticasSucursales = () => {
     const [fechaFin, setFechaFin] = useState('');
     const [hayMensaje, setHayMensaje] = useState(false);
     const [mensajeError, setMensajeError] = useState('');
-    const [filtrar, setFiltrar] = useState(false);
+    const [filtrar, setFiltrar] = useState(0);
     const refMensaje = useRef(null);
 
     const redirectAdminEstadisticas = () => navigate('/admin/estadisticas');
@@ -44,7 +44,7 @@ export const EstadisticasSucursales = () => {
                     const response = await fetch(`http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal=${encodeURIComponent(sucursal.nombre + " ")}`);
                     let data = await response.json();
                     let realizados;
-                    if (filtrar) {
+                    if (filtrar > 0) {
                         data = data.filter(intercambio => isDateInRange(intercambio.fecha, fechaInicio, fechaFin));
                         realizados = data.filter(intercambio => intercambio.estado === 'realizado').length;
                     } else {
@@ -72,7 +72,7 @@ export const EstadisticasSucursales = () => {
                 for (let sucursal of sucursales) {
                     gananciasTemp[sucursal.nombre] = 0;
                 }
-                if (filtrar) {
+                if (filtrar>0) {
                     productos = productos.filter(producto => isDateInRange(producto.fecha, fechaInicio, fechaFin));
                 }
                 productos.forEach(producto => {
@@ -261,21 +261,21 @@ export const EstadisticasSucursales = () => {
     const aplicarFiltro = () => {
         if (chequearFecha()) {
             // aca hay que hacer que se filtren las estadísticas
-            setFiltrar(true);
+            setFiltrar(filtrar+1);
             setMensajeError(`Se han filtrado las estadísticas desde el ${fechaInicio} hasta el ${fechaFin}`);
             refMensaje.current.style.color = '#07f717';
         }
     }
 
     const borrarFiltro = () => {
-        if (filtrar && (fechaFin != '' || fechaInicio !== '')) {
+        if (filtrar > 0 && (fechaFin != '' || fechaInicio !== '')) {
             setMensajeError('Se han eliminado los filtros aplicados.');
             refMensaje.current.style.color = 'red';
         } else
             setMensajeError('');
         setFechaFin('');
         setFechaInicio('');
-        setFiltrar(false);
+        setFiltrar(0);
 
     }
 
