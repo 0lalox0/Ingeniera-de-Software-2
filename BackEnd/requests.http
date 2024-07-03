@@ -170,3 +170,6 @@ GET http://localhost:8000/api/filtrarPropuestaIntercambios?nombreSucursal="Sucur
 
 ###
 GET http://localhost:8000/api/productoCompra HTTP/1.1
+
+###
+GET http://localhost:8000/api/eliminarIntercambio/667c79c7ba3bd30a232f62b9 HTTP/1.1

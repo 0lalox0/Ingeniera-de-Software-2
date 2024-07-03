@@ -17,6 +17,17 @@ router.get('/propuestaIntercambio', (req, res) => {
     .then((data) => res.json(data)).catch((error) => res.json({message: error}))
 })
 
+
+//obtener los intercambios de un producto para eliminarlos logicamente
+router.get('/eliminarIntercambio/:id', (req, res) => {
+    const { id } = req.params
+    IntercambioSchema.find({
+        $or: [{ productoOfrecido: id }, { productoDeseado: id }],
+      estado: 'pendiente'
+    })
+    .then((data) => res.json(data)).catch((error) => res.json({message: error}))
+})
+
 //actualizar un intercambio
 router.put('/propuestaIntercambio/:id', (req, res) => {
     const { id } = req.params
