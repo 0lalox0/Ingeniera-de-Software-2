@@ -179,12 +179,6 @@ export const GestionPropuestasAceptadas = () => {
         console.log(propuesta);
         if (precio > 0) {
             let n = new Date();
-            refMensaje.current.style.color = '#07f717';
-            setMessage("Se registro la compra exitosamente");
-            console.log(precio);
-            console.log(empleado._id);
-            console.log(nombreSucursalEmpleado)
-            console.log(n);
             try {
                 const response = await fetch("http://localhost:8000/api/productoCompra", {
                     method: "POST",
@@ -201,25 +195,22 @@ export const GestionPropuestasAceptadas = () => {
             } catch (error) {
                 console.error('Error:', error);
             }
-            const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/${propuesta._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    registrado : true
-                }),
-            });
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            closeModal();
-            window.location.reload();
+            
         }
-        else {
-            refMensaje.current.style.color = 'red';
-            setMessage("El valor ingresado debe ser un número positivo.");
+        const res = await fetch(`http://localhost:8000/api/propuestaIntercambio/${propuesta._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                registrado : true
+            }),
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        closeModal();
+        window.location.reload();
     }
     if (contador)
         return <img src={cargando} width='10%' height='10%' />
