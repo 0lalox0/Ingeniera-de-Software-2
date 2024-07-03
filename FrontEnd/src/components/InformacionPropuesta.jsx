@@ -102,7 +102,7 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
                                                     </>
                                                 }
                                             </>
-                                            }
+                                        }
                                             </>
                                         
                                     }
@@ -122,55 +122,61 @@ export const InformacionPropuesta = ({ meMandaron, propuesta, realizarIntercambi
                                 <p style={{ color: 'red' }}> Han rechazado tu propuesta de intercambio.</p>
                                 :
                                 <>
-                                    {propuesta.estado == 'realizado' ?
-                                        <>
-                                            <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
-                                            {!propuesta.calificoDeseado ? (
-                                                <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
-                                            ) : (
-                                                <p style={{ color: '#fcba03' }}>¡Has calificado al usuario!</p>
-                                            )}
-                                            <Modal
-                                                isOpen={modalIsOpen}
-                                                onRequestClose={closeModal}
-                                                contentLabel="Valorar usuario"
-                                                style={{
-                                                    content: {
-                                                        width: '150px',
-                                                        height: '200px',
-                                                        margin: 'auto',
-                                                        overflow: 'hidden',
-                                                        position: 'fixed',
-                                                        top: '50%',
-                                                        left: '50%',
-                                                        transform: 'translate(30%, -120%)'
-                                                    },
-                                                }}
-                                            >
-                                                <form>
-                                                    {['1', '2', '3', '4', '5'].map((value) => (
-                                                        <div key={value}>
-                                                            <input
-                                                                type="radio"
-                                                                id={`rating-${value}`}
-                                                                name="rating"
-                                                                value={value}
-                                                                checked={rating === value}
-                                                                onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
-                                                            />
-                                                            <label htmlFor={`rating-${value}`}>{value}</label>
-                                                        </div>
-                                                    ))}
-                                                </form>
-                                                <button onClick={(event) => sumarPuntos(puntajeElegido, idUsuarioDeseado, 'Deseado', propuesta._id)} className='btn btn-warning'>Guardar</button>
-                                            </Modal>
+                                {propuesta.estado == 'rechazadoAutom' ?
+                                <p style={{ color: 'red' }}> Se ha Rechazado automaticamente esta propuesta porque se ha eliminado un producto de esta.</p>
+                                :
+                                    <>
+                                        {propuesta.estado == 'realizado' ?
+                                            <>
+                                                <p style={{ color: '#07f717' }}> Intercambio realizado.</p>
+                                                {!propuesta.calificoDeseado ? (
+                                                    <button id='botonFecha' className="btn btn-warning" onClick={openModal}> Valorar usuario</button>
+                                                ) : (
+                                                    <p style={{ color: '#fcba03' }}>¡Has calificado al usuario!</p>
+                                                )}
+                                                <Modal
+                                                    isOpen={modalIsOpen}
+                                                    onRequestClose={closeModal}
+                                                    contentLabel="Valorar usuario"
+                                                    style={{
+                                                        content: {
+                                                            width: '150px',
+                                                            height: '200px',
+                                                            margin: 'auto',
+                                                            overflow: 'hidden',
+                                                            position: 'fixed',
+                                                            top: '50%',
+                                                            left: '50%',
+                                                            transform: 'translate(30%, -120%)'
+                                                        },
+                                                    }}
+                                                >
+                                                    <form>
+                                                        {['1', '2', '3', '4', '5'].map((value) => (
+                                                            <div key={value}>
+                                                                <input
+                                                                    type="radio"
+                                                                    id={`rating-${value}`}
+                                                                    name="rating"
+                                                                    value={value}
+                                                                    checked={rating === value}
+                                                                    onChange={(e) => { setPuntajeElegido(e.target.value); setRating(e.target.value); }}
+                                                                />
+                                                                <label htmlFor={`rating-${value}`}>{value}</label>
+                                                            </div>
+                                                        ))}
+                                                    </form>
+                                                    <button onClick={(event) => sumarPuntos(puntajeElegido, idUsuarioDeseado, 'Deseado', propuesta._id)} className='btn btn-warning'>Guardar</button>
+                                                </Modal>
 
-                                        </>
-                                        :
-                                        <>
-                                            {propuesta.estado == 'norealizado' ? <p style={{ color: 'red' }}> Intercambio cancelado. </p> : <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>}
-                                        </>
-                                    }
+                                            </>
+                                            :
+                                            <>
+                                                {propuesta.estado == 'norealizado' ? <p style={{ color: 'red' }}> Intercambio cancelado. </p> : <p style={{ color: '#439ac8' }}> La propuesta todavía no ha sido considerada.</p>}
+                                            </>
+                                        }
+                                    </>
+                                }       
                                 </>
                             }
                         </>

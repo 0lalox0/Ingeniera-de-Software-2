@@ -57,6 +57,8 @@ export const ListarPropuestas = () => {
                     const productoDeseado = await responseDeseado.json();
                     const responseOfrecido = await fetch(`http://localhost:8000/api/prodIntercambios/${propuesta.productoOfrecido}`);
                     const productoOfrecido = await responseOfrecido.json();
+                    //console.log(emailLocal);
+
                     if (productoDeseado.idUsuario === emailLocal || productoOfrecido.idUsuario === emailLocal) {
                         return propuesta;
                     }
@@ -100,10 +102,14 @@ export const ListarPropuestas = () => {
             let productosOcupados = products.filter(o => (o.ofrecido && o.ofrecido.idUsuario === emailLocal || o.deseado && o.deseado.idUsuario === emailLocal) &&
                 (o.ofrecido.estado == 'ocupado') || (o.deseado.estado == 'ocupado'));
             let propuestasPendientes = propuestasI.filter(p => p.estado === 'pendiente');
+            console.log("Propuestas: ",propuestasPendientes);
+            console.log("productos:",productosOcupados);
             if (productosOcupados.length > 0) {
                 let propuestasFiltradas = propuestasPendientes.filter(p => {
-                    return !productosOcupados.some(po => po.ofrecido._id == p.productoDeseado) && !productosOcupados.some(po => po.deseado._id == p.productoOfrecido);
+                    return !productosOcupados.some(po => po.ofrecido._id == p.productoDeseado || po.deseado._id == p.productoOfrecido || po.ofrecido._id == p.productoOfrecido || po.deseado == p.productoDeseado);
+                    //return !productosOcupados.some(po => po.ofrecido._id == p.productoDeseado) && !productosOcupados.some(po => po.deseado._id == p.productoOfrecido);
                 });
+                console.log("Filtro:",propuestasFiltradas);
                 let propuestasActualizadas = propuestasI.filter(o => !propuestasFiltradas.some(pf => pf._id === o._id));
                 setPropuestas(propuestasActualizadas);
             } else
