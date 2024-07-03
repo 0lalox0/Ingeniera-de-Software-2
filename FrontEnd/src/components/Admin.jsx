@@ -6,7 +6,6 @@ import estadisticas from '../assets/estadisticas.png';
 import empleados from '../assets/gestionar-empleados.png';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from './Card';
-import Footer from './Footer';
 
 export const Admin = () => {
   const { role } = useUser();

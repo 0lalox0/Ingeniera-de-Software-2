@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser';
 import { Mantenimiento } from './Mantenimiento';
 import * as d3 from 'd3';
+import cargando from '../assets/cargando.gif';
 
 export const EstadisticasSucursales = () => {
     const { role } = useUser();
@@ -13,6 +14,8 @@ export const EstadisticasSucursales = () => {
     const [sucursales, setSucursales] = useState([]);
     const [intercambios, setIntercambios] = useState({});
     const [ganancias, setGanancias] = useState({});
+    const [fechaInicio, setFechaInicio] = useState('');
+    const [fechaFin, setFechaFin] = useState('');
 
     const redirectAdminEstadisticas = () => navigate('/admin/estadisticas');
 
@@ -222,26 +225,57 @@ export const EstadisticasSucursales = () => {
         }
     }, [loading, ganancias]);
 
+    const chequearFecha = () => {
+        const hoy = new Date().toISOString().split('T')[0];
+        if (fechaInicio > fechaFin)
+            return false;
+        if (fechaInicio > hoy || fechaFin > hoy)
+            return false;
+        return true;
+    }
+
+    const aplicarFiltro = () => {
+        if (chequearFecha()) {
+            console.log('pasó');
+        } else
+            console.log('noooo');
+    }
+
+    const borrarFiltro = () => {
+        setFechaFin('');
+        setFechaInicio('');
+    }
+
     return (
         <>
             {role === 'admin' ?
-                <div className='clase-propuestas'>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div className='titulos titulo-propuestas' style={{ marginTop: '0px' }}>
                         <h1>Estadísticas - Sucursales</h1>
-                        <h2>Intercambios realizados por sucursal</h2>
-                        <p className='textoRedireccion' onClick={redirectAdminEstadisticas}> Volver a estadísticas</p>
-                    </div>
-                    <div style={{ marginTop: '150px' }}>
-                        {loading ? <p>Cargando...</p> : <svg ref={d3Container}></svg>}
-                    </div>
-                    <div className='titulos titulo-propuestas' style={{ marginTop: '400px' }}>
-                        <h2>Ganancias por sucursal</h2>
-                    </div>
-                    <div style={{ marginTop: '0px' }}>
-                        {loading ? <p>Cargando...</p> : <svg ref={d3GananciasContainer}></svg>}
+                        <h2 style={{ color: '#242465' }}> Intercambios realizados por sucursal</h2>
+                        <h2 style={{ color: '#439ac8' }}> Filtrado por fecha: </h2>
+                        <h4 style={{ color: '#439ac8' }}> Fecha de inicio: </h4>
+                        <input type="date" style={{ width: '30%' }}
+                            value={fechaInicio}
+                            onChange={e => setFechaInicio(e.target.value)}
+                        />
+                        <h4 style={{ color: '#439ac8' }}> Fecha de fin: </h4>
+                        <input type="date" style={{ width: '30%' }}
+                            value={fechaFin}
+                            onChange={e => setFechaFin(e.target.value)}
+                        />
+                        <div style={{ display: 'flex' }}>
+                            <button type="button" className="btn btn-primary" style={{ width: '30%', margin: '5px', marginLeft: '0' }} onClick={aplicarFiltro}> Filtrar </button>
+                            <button type='button' className='btn btn-danger' style={{ width: '30%', margin: '5px' }} onClick={borrarFiltro}> Borrar filtros</button>
+                        </div>
+                        <p className='textoRedireccion' onClick={redirectAdminEstadisticas} style={{ position: 'relative', top: '0' }}> Volver a estadísticas </p>
+                        <p className='errorContainer' style={{ position: 'relative', top: '0' }}> </p>
+                        {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3Container}></svg>}
+                        <h2 style={{ color: '#242465' }} >Ganancias por sucursal</h2>
+                        {loading ? <img src={cargando} width='10%' height='10%' /> : <svg ref={d3GananciasContainer}></svg>}
                     </div>
                 </div>
                 : <> <Mantenimiento> </Mantenimiento></>}
         </>
     );
-};
+}
