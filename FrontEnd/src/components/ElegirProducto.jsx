@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import useUser from '../hooks/useUser';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Mantenimiento } from './Mantenimiento';
 
 
 export const ElegirProducto = () => {
@@ -145,8 +146,7 @@ export const ElegirProducto = () => {
                         </>}
                 </>
                 :
-                <>
-                </>}
+                <Mantenimiento /> }
         </>
     )
 }

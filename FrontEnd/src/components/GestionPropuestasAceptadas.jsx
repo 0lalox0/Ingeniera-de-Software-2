@@ -214,11 +214,11 @@ export const GestionPropuestasAceptadas = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             closeModal();
-           //window.location.reload();
+            window.location.reload();
         }
         else {
             refMensaje.current.style.color = 'red';
-            setMessage("El valor ingresado debe ser un numero positivo");
+            setMessage("El valor ingresado debe ser un número positivo.");
         }
     }
     if (contador)
@@ -232,6 +232,7 @@ export const GestionPropuestasAceptadas = () => {
                 <div className='clase-propuestas propuestasIntercambios'>
                     <div className='titulos titulo-propuestas'>
                         <h1>Propuestas agendadas para intercambiar</h1>
+                        <small className="text-body-secondary"> Listando intercambios a realizar en la sucursal {nombreSucursalEmpleado}</small>
                         <p className='textoRedireccion' onClick={redirectEmpleado}> Volver a la gestión</p>
                     </div>
                     <table className="table table-hover">
@@ -254,7 +255,6 @@ export const GestionPropuestasAceptadas = () => {
                             {productos.map((producto, index) => {
                                 const fecha = new Date(propuestas[index].fecha);
                                 const fechaString = fecha.toLocaleDateString();
-                                console.log(nombreSucursalEmpleado);
                                 const rango = `${producto.deseado.inicioRango} - ${producto.deseado.finRango}`;
                                 return (
                                     <tr key={propuestas[index]._id}>
@@ -286,7 +286,7 @@ export const GestionPropuestasAceptadas = () => {
                                                                 contentLabel="Valorar usuario"
                                                                 style={{
                                                                     content: {
-                                                                        width: '10rem',
+                                                                        width: '15rem',
                                                                         height: '15rem',
                                                                         margin: 'auto',
                                                                         overflow: 'hidden',
